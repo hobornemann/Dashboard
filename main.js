@@ -1,12 +1,20 @@
-import './style.css'
+/* import './style.css'
 import javascriptLogo from './javascript.svg'
 import viteLogo from '/vite.svg'
 import { setupCounter } from './counter.js'
+ */
 
 import axios from 'axios'
 
 
-const url = 'https://jsonplaceholder.typicode.com/users'
+
+
+
+
+
+
+
+/* const url = 'https://jsonplaceholder.typicode.com/users'
 async function getUser(url) {
   try {
     const response = await axios.get(url);
@@ -16,12 +24,13 @@ async function getUser(url) {
   }
 }
 
-getUser(url);
+getUser(url); */
 
 
 
 
-document.querySelector('#app').innerHTML = `
+
+/* document.querySelector('#app').innerHTML = `
   <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="${viteLogo}" class="logo" alt="Vite logo" />
@@ -40,3 +49,4 @@ document.querySelector('#app').innerHTML = `
 `
 
 setupCounter(document.querySelector('#counter'))
+ */
