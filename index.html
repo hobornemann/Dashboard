@@ -9,22 +9,38 @@
   </head>
   <body class="body-container">
     <header class="header-container">
-      <p>10:23  11 Jan 2024</p>
+      <p class="dateTime">10:23  11 Jan 2024</p>
     </header>
     <div class="empty-container1"></div>
     <main class="main-container">
-        <h1 class="main-heading" contenteditable="editable">John Doe Dashboard</h1>
+        <h1 class="main-heading" contenteditable="true">John Doe Dashboard</h1>
         <section class="cards-container"> 
           <article class="card">
             <h3 class="card-heading">Snabblänkar</h3>
             <div class="webLinks-container">
               <!-- here the webLink items are inserted -->
+              <button class="webLink-card small-card">
+                <img class="webLink-favicon"></img>
+                <div class="webLink-heading">Google</div>
+              </button>  
+              <!-- here the webLink items are inserted -->
             </div>
-            <button class="button-webLinks button">Ny webblänk</button>
+            <button class="button-add-webLink button">Ny webblänk</button>
           </article>
           <article class="card">
-            <h3 class="card-heading">Dagens väder</h3>
+            <h3 class="card-heading">Väder</h3>
             <div class="weather-container">
+              <!-- here the weather items are inserted -->
+              <div class="weather-card small-card">
+                <img class="weather-icon" src="XXX"/>
+                <div class="weather-day-temperature-details">
+                  <div class="weather-day-heading">Idag</div>
+                  <div class="weather-temperature-details">
+                    <div class="weather-temperature">&nbsp;-4&deg;C&nbsp;</div>
+                    <div class="weather-details">&nbsp;Sol och moln&nbsp;</div>
+                  </div>
+                </div>
+              </div>  
               <!-- here the weather items are inserted -->
             </div>
             <button class="button-weather-location button">Ange ort</button>
@@ -37,7 +53,9 @@
           </article>
           <article class="card">
             <h3 class="card-heading">Anteckningar</h3>
-            <p class="notes">my notes kommer här </p>  
+            <div class="notes-card small-card">
+              <p class="notes" contenteditable="true">my notes kommer här </p>  
+            </div>
           </article>
         </section> 
     </main>
