@@ -2,46 +2,48 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <title>Dashboard</title>
     <script type="module" src="/main.js" defer></script>
+    <link rel="stylesheet" href="/style.css">
   </head>
   <body class="body-container">
     <header class="header-container">
       <p>10:23  11 Jan 2024</p>
     </header>
+    <div class="empty-container1"></div>
     <main class="main-container">
-        <h1 class="heading-container">John Doe Dashboard</h1>
+        <h1 class="main-heading" contenteditable="editable">John Doe Dashboard</h1>
         <section class="cards-container"> 
-          <article class="webLinks-card">
-            <h3 class="webLinks-heading">Snabblänkar</h3>
+          <article class="card">
+            <h3 class="card-heading">Snabblänkar</h3>
             <div class="webLinks-container">
               <!-- here the webLink items are inserted -->
             </div>
-            <button class="button-add-link">Ny webblänk</button>
+            <button class="button-webLinks button">Ny webblänk</button>
           </article>
-          <article class="weather-card">
-            <h3 class="weather-heading">Dagens väder</h3>
+          <article class="card">
+            <h3 class="card-heading">Dagens väder</h3>
             <div class="weather-container">
               <!-- here the weather items are inserted -->
             </div>
-            <button class="button-choose-location">Ange ort</button>
+            <button class="button-weather-location button">Ange ort</button>
           </article>
-          <article class="news-card">
-            <h3 class="news-heading">Nyheter</h3>
+          <article class="card">
+            <h3 class="card-heading">Nyheter</h3>
             <div class="news-container">
               <!-- here the news items are inserted -->
             </div>  
           </article>
-          <article class="notes-card">
-            <h3 class="notes-heading">Anteckningar</h3>
-            <p class="notes">my notes</p>  
+          <article class="card">
+            <h3 class="card-heading">Anteckningar</h3>
+            <p class="notes">my notes kommer här </p>  
           </article>
         </section> 
     </main>
+    <div class="empty-container2"></div>
     <footer class="footer-container">
-      <button class="button-change-background">Byt bakgrundsbild</button>
+      <button class="button-change-background button">Byt bakgrundsbild</button>
     </footer>
   </body>
 </html>

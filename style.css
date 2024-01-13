@@ -9,22 +9,23 @@
   --color06: rgba(255, 255, 255, 1); 
   --color07: rgba(0, 0, 0, 1); 
   --color08: rgba(181, 192, 200, 1);   */
-  /* --input-background-color: rgba(255, 255, 255, 0.70); */  
+  /* --input-background-color: rgba(255, 255, 255, 0.70); */ 
+  --body-background-color: rgba(232, 240, 254, 1.0); 
   --date-background-color: rgba(10, 42, 70, 85%); 
   --header-background-color: rgba(10, 42, 70, 85%); 
-  --card-background-color: rgba(181, 192, 200, 1); 
+  --card-background-color: rgba(200, 200, 200, 0.6); 
   --item-background-color: rgba(232, 240, 254, 1.0);
   --button-background-color: rgba(241, 123, 19, 1);    
   
   /* --card01-drop-shadow-color:  rgba(0, 0, 0, 0.25);  */
-  --button-hover-color:  rgba(181, 192, 200, 0.90);                                 
+  --button-hover-color:  rgba(200, 200, 200, 0.90);                                 
   --button-active-color: rgb(150, 153, 155);                                
 
   /* Global images, icons etc */
   --background-image-default: url("/images/halloween.jpg"); 
 
   /* Global fonts */        
-  --font-family01: Roboto;
+  --font-family01: arial; /* Roboto; */
   --font-family02: Helvetica;
 
 }
@@ -37,95 +38,126 @@
  box-sizing: border-box;
 }
 
-.header-container{
-  align-items: center;
-}
 
 
 .body-container{
+  display: grid;
+  grid-template-areas:
+  "header-container"
+  "empty-container1"
+  "main-container"
+  "empty-container2"
+  "footer-container";
+  grid-template-columns: auto;
+  grid-template-rows: 40px auto 1fr auto 100px; 
+
+  background-color: var(--body-background-color);
+  font-family: var(--font-family01);
+  background-image: url(/images/default-image.JPG);
+  background-position: center;
+  background-size: cover;
+  background-repeat: repeat;
+ /*  overflow: hidden; */
+} 
 
 
+.header-container{
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  height: clamp(3vh, 4vh, 5vh);
+  margin-top: 1vh;
 }
 
+.empty-container1, .empty-container2{
+  height: clamp(10px, 5vw, 5vw);
+}
 
 .main-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.main-heading{
+  font-size: clamp(18px, min(5vh, 3vw), 32px);
+  height: auto;
+}
+
+.cards-container{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  
+  width: 95vw;
+  flex-wrap: wrap;
+  gap: 2%;
 }
 
-.heading-container{
-
-}
-
-.cards-container{
-
-}
-
-.webLinks-card{
-
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  height: clamp(200px, 40vh, 70vh);
+  width: clamp(250px, 20%, 24%);
+  flex-wrap: wrap;
+  background-color: var(--card-background-color);
+  border-width: 2px;
+  border-radius: 5px;
+  margin: 0.5% 0%; 
+  padding: 2%;
 } 
 
-.webLinks-heading{
-
+.card-heading{
+  font-size: clamp(12px, min(2.5vh, 2.5vw), 18px); 
+  margin-bottom: 2vh;
 } 
 
 .webLinks-container{
 
 }
 
-.button-add-link{
-
+.button{
+  padding: 0.7vh 0.7vw;
+  border-radius: 4px;
+  border-width: 1px;
+  font-size: clamp(10px, 2vh, 15px);
 }
 
-.weather-card{
 
-}
 
-.weather-heading{
-
-}
 
 .weather-container{
 
 }
 
-.button-choose-location{
-  
-}
 
-.news-card{
 
-}
 
-.news-heading{
-
-}
 
 .news-container{
 
 }
 
-.notes-card{
-
-}
-
-.notes-heading{
-
-}
 
 .notes{
 
 }
 
 .footer-container{
+  display: flex;
+  justify-content: center;
+  height: 5vh;
+  margin-bottom: 2vh;
+  
 
 }
 
-.button-change-background{
 
-}
 
 
 
