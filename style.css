@@ -42,7 +42,7 @@
 .dateTime{
   display: flex;
   justify-content: center;
-  background-color: var(--card-background-color);
+  background-color: var(--item-background-color);
   border-radius: 1vh;
   width: clamp(150px, 20%, 24%);
   font-size: clamp(10px, 2vh, 15px);
@@ -126,8 +126,8 @@
   background-color: var(--card-background-color);
   border-width: 2px;
   border-radius: 5px;
-  margin: 2% 0%; 
-  padding: 2%;
+  margin: min(1.5vw, 1.5vh); 
+  padding: min(1.5vw, 1.5vh);
 } 
 
 .card-heading{
@@ -147,6 +147,8 @@
   align-items: center;
   border-width: 0.5px;
   font-size: clamp(10px, 2vh, 15px);
+  position: relative;
+  padding: 0;
   
   
 }
@@ -161,6 +163,11 @@
   font-weight: 600;
 }
 
+.button-delete-webLink{
+  position: absolute;
+  top: 0;
+  right: 3px;
+}
 
 .button{
   padding: 0.7vh 0.7vw;
