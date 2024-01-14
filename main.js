@@ -56,6 +56,17 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 
+mainHeading.addEventListener("input", () => {
+  dashboard.mainHeading = mainHeading.textContent;
+  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+})
+
+
+notes.addEventListener("input", () => {
+  dashboard.notes = notes.textContent;
+  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+})
+
 
 buttonChangeBackground.addEventListener("click", changeBackGroundImage())
 
@@ -82,6 +93,7 @@ dashboard.webLinks.map(webLink => {
   `<button class="webLink-card small-card">
     <img class="webLink-favicon" src="${webLink.webLinkUrl}"></img>
     <div class="webLink-heading">${webLink.webLinkHeading}</div>
+    <button class="button-delete-webLink">x</button>
   </button>`;
 });
 
@@ -209,6 +221,12 @@ function getDateTime(){
                   + currentDateTime.getDate(); 
   return dateTime;
 };
+
+function displayCurrentTime(){
+  const currentTime = setTimeout(getDateTime(), 30000);
+  dateTime.textContent = currentTime;
+  displayCurrentTime();
+}
 
 
 function changeBackGroundImage(){
