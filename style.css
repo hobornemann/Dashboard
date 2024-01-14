@@ -227,8 +227,8 @@
 }
 
 .weather-icon{
-
-
+  height: clamp(1vh, 4vh, 5vh);
+  width: clamp(1vh, 4vh, 5vh);
 }
 
 
