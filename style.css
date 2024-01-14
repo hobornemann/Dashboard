@@ -137,7 +137,6 @@
 
 .webLinks-container{
   width: 100%;
-  
 
 }
 
@@ -168,6 +167,32 @@
   top: 0;
   right: 3px;
 }
+
+.form-add-webLink{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  border-width: 0.5px;
+  width: 100%;
+  flex-wrap: wrap;
+  margin-top: min(2vh, 2vw);
+}
+
+.input{
+  display: block;
+  width: 100%;
+}
+
+
+.input::placeholder{
+  font-size: clamp(8px, 1.8vh, 13px);
+}
+
+.hidden{
+  display: none;
+}
+
+.footer-container
 
 .button{
   padding: 0.7vh 0.7vw;
