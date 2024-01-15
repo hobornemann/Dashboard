@@ -16,6 +16,59 @@
 
 import axios from 'axios'
 
+let lat = ""
+let lon = ""
+  //TODO: OBS!!! Skicka inte 
+
+
+// Detta är en callback-funktion
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    console.log("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  const lat = position.coords.latitude;
+  const lon = position.coords.longitude;
+  fetchData(lat, lon);
+/* console.log("lat", position.coords.latitude);
+lat = position.coords.latitude;
+console.log("lon", position.coords.longitude);
+lon = position.coords.longitude;
+ */
+}
+
+//const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}`
+
+
+getLocation();
+
+
+async function fetchData (lat, lon){
+
+  const APIkey = '51faa6f37756f34fb7074772eb5210f0'; 
+  //const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric`
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric`
+
+
+
+  try{
+    const response = await axios.get(url)
+    console.log(response)
+  }
+  catch(error){
+    console.error("Error", error.message)
+    //alert
+  }
+}
+
+/* fetchData()   // läggs in window. ...contentload... */
+
+
 
 // -------------------------------------------------------------
 // GLOBAL VARIABLES
@@ -36,8 +89,6 @@ const webLinkHeading = document.querySelector(".webLink-heading");
 const deleteWebLinkX = document.querySelector(".delete-webLink");
 const buttonOpenAddWebLinkForm = document.querySelector(".button-open-add-webLink-form");
 const formAddWebLink = document.querySelector(".form-add-webLink");
-const inputWebLinkUrl = document.querySelector(".input-webLink-url");
-const inputWebLinkHeading = document.querySelector(".input-webLink-heading");
 const buttonAddNewWebLink = document.querySelector(".button-add-new-webLink");
 const weatherContainer = document.querySelector(".weather-container");
 const notes = document.querySelector(".notes");
@@ -48,34 +99,26 @@ const buttonChangeBackground = document.querySelector(".button-change-background
 // EVENT-LISTENERS
 // -------------------------------------------------------------
 
+//TODO: delete or comment out localStorage = null when app has been developed
+// TODO: update dashboard with current weather forecasts 
+  // TODO: update favicon / FaviconUrl
 window.addEventListener("DOMContentLoaded", () => {
   
   // Reset dashboard in localStorage
-  localStorage.setItem("dashboard", null);
-  
+  //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
   let dashboardInLocalStorage = JSON.parse(localStorage.getItem("dashboard"));
-  
-  console.log("dashboardInLocalStorage: ")
-  console.log(dashboardInLocalStorage)
-  
-  
 
   if(dashboardInLocalStorage == null) {
     console.log("dashboardInLocalStorage == null");
-
     getDefaultDashboardAndStoreInLocalStorage();
   } else{
-
     dashboard = dashboardInLocalStorage;
   }
-  
   // TODO: update dashboard with current weather forecasts 
   // TODO: update favicon / FaviconUrl
-  console.log(dashboard);
-
   updateBodyContainerStepByStep();
-  //displayBodyContainer(dashboard) // TODO:  throws error
-  //displayCurrentTime();  TODO: activate clock by uncommenting this line
+  getAndDisplayDateAndTime();  
+  setInterval(getAndDisplayDateAndTime, 30000);
 });
 
 mainHeadingElement.addEventListener("input", () => {
@@ -104,6 +147,8 @@ buttonOpenAddWebLinkForm.addEventListener("click", ()=>{
   formAddWebLink.classList.remove("hidden");
 })
 
+buttonAddNewWebLink.addEventListener("click", addNewWebLink())
+
 buttonChangeBackground.addEventListener("click", changeBackGroundImage())
 
 
@@ -111,28 +156,96 @@ buttonChangeBackground.addEventListener("click", changeBackGroundImage())
 // FUNCTIONS
 // -------------------------------------------------------------
 
+
+// TODO: expand the dashboard object with news-data
+function getDefaultDashboardAndStoreInLocalStorage(){
+  
+  dashboard = {
+    date: "2023-12-13",
+    time: "14:55",
+    mainHeading: "My Dashboard",
+    webLinks: [
+      { 
+        id: 1,
+        webLinkFaviconUrl: "/images/default-icon.png",
+        webLinkHeading: "Google",
+        webLinkUrl: "www.google.se",
+      },
+    ],
+    weatherForecasts: [
+      {
+        weatherIconUrl: "/images/default-icon.png",
+        dayHeading: "Idag",
+        temperature: "-4&deg",
+        weatherComment: "Sol och moln",       
+      },
+      {
+        weatherIconUrl: "/images/default-icon.png",
+        dayHeading: "I morgon",
+        temperature: "-1&deg",
+        weatherComment: "Sol och klart"        
+      },
+      {
+        weatherIconUrl: "/images/default-icon.png",
+        dayHeading: "I övermorgon",
+        temperature: "+2&deg",
+        weatherComment: "Snö och moln"        
+      }
+    ],
+    news: [
+
+    ],
+    notes: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt.",
+  }; 
+
+  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+
+};
+
+
 function updateBodyContainerStepByStep(){
 
-  displayDateTime(); 
+  displayDateAndTime(); 
   displayMainHeading();
   displayWebLinkCards();
   displayWeatherCards();
   displayNotes();
-}
+};
 
 
+function getAndDisplayDateAndTime(){
+  getDateAndTime();
+  displayDateAndTime();
+};
 
+function getDateAndTime(){
+  const currentDateTime = new Date(); 
+  const time =    ((currentDateTime.getHours() < 10)?"0":"")
+                  + currentDateTime.getHours() + ":" 
+                  + ((currentDateTime.getMinutes() < 10)?"0":"")  
+                  + currentDateTime.getMinutes(); 
+                  
+  const date =    currentDateTime.getFullYear() + "-"
+                  + ((currentDateTime.getMonth() + 1 < 10)?"0":"") 
+                  + (currentDateTime.getMonth()+1)  + "-" 
+                  + ((currentDateTime.getDate() < 10)?"0":"") 
+                  + currentDateTime.getDate(); 
+  dashboard.time = time;
+  dashboard.date = date;
+  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+};
 
-
-
-function displayDateTime(){
-  const dateTimeElement = document.querySelector(".dateTime");
-  dateTimeElement.textContent = dashboard.dateTime;
+function displayDateAndTime(){
+  dashboard = JSON.parse(localStorage.getItem("dashboard"));
+  const timeElement = document.querySelector(".time");
+  const dateElement = document.querySelector(".date");
+  timeElement.textContent = dashboard.time;
+  dateElement.textContent = dashboard.date;
 };
 
 function displayMainHeading(){
   mainHeadingElement.textContent = dashboard.mainHeading;
-}
+};
 
 function displayWebLinkCards(){
   let webLinksContainerHtml = "";
@@ -174,83 +287,35 @@ function displayNotes(){
 };
 
 
-
-// TODO: expand the dashboard object with news-data
-function getDefaultDashboardAndStoreInLocalStorage(){
-  
-  dashboard = {
-    dateTime: "14:55  2023-12-13",
-    mainHeading: "My Dashboard",
-    webLinks: [
-      { 
-        id: 1,
-        webLinkFaviconUrl: "/images/default-icon.png",
-        webLinkHeading: "Google",
-        webLinkUrl: "www.google.se",
-      },
-    ],
-    weatherForecasts: [
-      {
-        weatherIconUrl: "/images/default-icon.png",
-        dayHeading: "Idag",
-        temperature: "-4&deg",
-        weatherComment: "Sol och moln",       
-      },
-      {
-        weatherIconUrl: "/images/default-icon.png",
-        dayHeading: "I morgon",
-        temperature: "-1&deg",
-        weatherComment: "Sol och klart"        
-      },
-      {
-        weatherIconUrl: "/images/default-icon.png",
-        dayHeading: "I övermorgon",
-        temperature: "+2&deg",
-        weatherComment: "Snö och moln"        
-      }
-    ],
-    news: [
-
-    ],
-    notes: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt.",
-  };
-
-  dashboard.dateTime = getDateTime();
-  localStorage.setItem("dashboard", JSON.stringify(dashboard));
- 
-}
-
-function getDateTime(){
-  const currentDateTime = new Date(); 
-  const dateTime =  + ((currentDateTime.getHours() < 10)?"0":"") 
-                  + currentDateTime.getHours() + ":" 
-                  + ((currentDateTime.getMinutes() < 10)?"0":"")  
-                  + currentDateTime.getMinutes() + "  " 
-                  + currentDateTime.getFullYear() + "-"
-                  + ((currentDateTime.getMonth() + 1 < 10)?"0":"") 
-                  + (currentDateTime.getMonth()+1)  + "-" 
-                  + ((currentDateTime.getDate() < 10)?"0":"") 
-                  + currentDateTime.getDate(); 
-  return dateTime;
-};
-
-function displayCurrentTime(){
-  const currentTime = setTimeout(getDateTime(), 30000);
-  dateTime.textContent = currentTime;
-  displayCurrentTime();
-}
-
 // TODO: get favicon and store url in the dashboard object
 // TODO: Do I need to call a display function to show the added webLinkButton or will that happen automatically?
 function addNewWebLink(){
-
+  // TODO: QUESTION: Why is dashboard not accessible from this function????  
+  dashboard = JSON.parse(localStorage.getItem("dashboard"));
+  console.log("dashboard in addNewWebLink");
+  console.log(dashboard);
   // add new webLink object to the dashboard object
-  const newWebLinkId = dashboard.webLinks.reduce((previous, current) => {
+ /*  const newWebLinkId = dashboard.webLinks.reduce((previous, current) => {
     return (previous && previous.id > current.id)? previous.id + 1 : current.id + 1;
-  })
+  }) */
+  const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id))
+  console.log ("newWebLinkId")
+  console.log (newWebLinkId)
+  
   const newWebLinkFaviconUrl = "";  // TODO:  // TODO: get favicon and store url in the dashboard object
-  const newWebLinkUrl = inputWebLinkUrl.textContent;
-  const newWebLinkHeading = inputWebLinkHeading.textContent;
+  console.log("inputWebLinkUrlElement")
+  //console.log(inputWebLinkUrlElement)
+  const newWebLinkUrl = document.querySelector("#input-webLink-url").value;
+
+  console.log("newWebLinkUrl")
+  console.log(newWebLinkUrl)
+
+  const inputWebLinkHeadingElement = document.querySelector(".input-webLink-heading");
+  const newWebLinkHeading = inputWebLinkHeadingElement.value;
+
+    
+    console.log("newWebLinkFaviconUrl")  
+    console.log(newWebLinkFaviconUrl)  
 
   dashboard.webLinks.push({
     id: newWebLinkId, 
@@ -259,21 +324,26 @@ function addNewWebLink(){
     webLinkUrl: newWebLinkUrl,
   })
 
-  // add new webLinkButton to the DOM
-  const webLinksContainerHtml = webLinksContainer.innerHTML;
+  console.log("dashboard")
 
+  console.log(dashboard)
+  // add new webLinkButton to the DOM
+  const webLinksContainer = document.querySelector(".webLinks-container");
+  let webLinksContainerHtml = webLinksContainer.innerHTML;
   const newWebLinkButtonHtml =  
   `<button class="webLink-card small-card" data-id=${newWebLinkId}>
     <img class="webLink-favicon" src="${newWebLinkFaviconUrl}">
     <div class="webLink-heading">${newWebLinkHeading}</div>
     <div class="delete-webLink">x</div>
   </button>`;
- 
   webLinksContainerHtml = webLinksContainerHtml + newWebLinkButtonHtml;
+
   webLinksContainer.innerHTML = webLinksContainerHtml;
+
+
   // TODO:  Do I need to call a display function to show the added webLinkButton or will that happen automatically?
   formAddWebLink.classList.add("hidden");
-}
+};
 
 // TODO: create function
 function changeBackGroundImage(){
