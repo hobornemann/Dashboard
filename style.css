@@ -41,11 +41,20 @@
 
 .dateTime{
   display: flex;
+  flex-direction: row;
   justify-content: center;
   background-color: var(--item-background-color);
   border-radius: 1vh;
   width: clamp(150px, 20%, 24%);
   font-size: clamp(10px, 2vh, 15px);
+}
+
+.time, .date{
+  margin: 0 4%;
+}
+
+.time{
+  font-weight: 600;
 }
 
 .body-container{
@@ -162,7 +171,7 @@
   font-weight: 600;
 }
 
-.button-delete-webLink{
+.delete-webLink{
   position: absolute;
   top: 0;
   right: 3px;

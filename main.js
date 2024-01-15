@@ -16,12 +16,15 @@
 
 import axios from 'axios'
 
+
 let lat = ""
 let lon = ""
   //TODO: OBS!!! Skicka inte 
 
 
 // Detta är en callback-funktion
+
+getLocation();
 
 function getLocation() {
   if (navigator.geolocation) {
@@ -45,7 +48,7 @@ lon = position.coords.longitude;
 //const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}`
 
 
-getLocation();
+
 
 
 async function fetchData (lat, lon){
@@ -67,6 +70,30 @@ async function fetchData (lat, lon){
 }
 
 /* fetchData()   // läggs in window. ...contentload... */
+
+
+
+fetchImages();
+
+async function fetchImages(){
+
+const ACCESS_KEY = "B2ExOK4J43juFpFQzHKSZ4FriOzV4_vTGZX1ESFsPao";
+const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
+
+console.log("fetchImages-url");
+console.log(url);
+
+
+  try{
+    const response = await axios.get(url)
+    console.log(response)
+  }
+  catch(error){
+    console.error("Error", error.message)
+    //alert
+  }
+}
+
 
 
 
