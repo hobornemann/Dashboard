@@ -135,7 +135,7 @@ function setDashboardInLocalStorage(dashboard){
 }
 
 function getDashboardFromLocalStorage(){
-  dashboard = getDashboardFromLocalStorage();
+  dashboard = JSON.parse(localStorage.getItem("dashboard"));
 }
 
 
@@ -246,8 +246,7 @@ function getDateAndTime(){
 };
 
 // DATE & TIME - DISPLAY DATE and TIME
-function displayDateAndTime(){
-  dashboard = getDashboardFromLocalStorage();
+async function displayDateAndTime(){
   const timeElement = document.querySelector(".time");
   const dateElement = document.querySelector(".date");
   timeElement.textContent = dashboard.time;
@@ -263,7 +262,6 @@ function renderMainHeading(){
   mainHeadingElement.addEventListener("input", () => {
     dashboard.mainHeading = mainHeadingElement.textContent;
     setDashboardInLocalStorage(dashboard);
-    console.log(getDashboardFromLocalStorage());
   })
 };
 
@@ -331,7 +329,7 @@ addNewWebLink_button.addEventListener("click", () => {
   })
 
   // Store new WebLink in localStorage   T
-  updateLocalStorage(dashboard);  
+  setDashboardInLocalStorage(dashboard);  
 
   // Render the new webLink 
 //TODO:  Append new webLink child to webLink container  (incl eventListener !!!)
@@ -358,7 +356,7 @@ addNewWebLink_button.addEventListener("click", () => {
 
 
 
-
+// TODO: Get weather data, store & render
 // WEATHER CARDS - RENDER 
 function renderWeatherCards(){
 
@@ -387,10 +385,8 @@ function renderWeatherCards(){
 
 // NOTE - RENDER 
 function renderNote(){
-
-  note.innerHTML = dashboard.note;
-
   const note_p = document.querySelector(".note");
+  note_p.innerHTML = dashboard.note;
   note_p.addEventListener("input", () => {
     dashboard.note = note.textContent;
     setDashboardInLocalStorage(dashboard);
@@ -398,22 +394,12 @@ function renderNote(){
 };
 
 
-
+// TODO: Get image, store & render
 // CHANGE BACKGROUND IMAGE
 const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
-changeBackgroundImage_button.addEventListener("click", changeBackGroundImage())
+changeBackgroundImage_button.addEventListener("click", () => {
 
-function changeBackGroundImage(){
-  // TODO:
-  };
-
-
-
-
-// -------------------------------------------------------------
-// FUNCTIONS
-// -------------------------------------------------------------
-
+}); 
 
 
 
