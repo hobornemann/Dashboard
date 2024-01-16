@@ -113,20 +113,22 @@ console.log(url);
 // GLOBAL VARIABLES & OBJECTS
 // -------------------------------------------------------------
 
-let dashboard;
+
 const defaultIconUrl = "/images/default-icon.png";
 
-
-function loadDashboardObject(){
-  let dashboardInLocalStorage = getDashboardFromLocalStorage();
+  // TODO: update dashboard with current weather forecasts 
+  // TODO: update favicon / FaviconUrl
+async function loadDashboardObject(){
+  let dashboard;
+  const dashboardInLocalStorage = await getDashboardFromLocalStorage();
   if(dashboardInLocalStorage == null) {
     console.log("dashboardInLocalStorage == null");
-    getDefaultDashboardAndStoreInLocalStorage();
+    dashboard = getDefaultDashboardObject();
   } else{
     dashboard = dashboardInLocalStorage;
   }
-  // TODO: update dashboard with current weather forecasts 
-  // TODO: update favicon / FaviconUrl
+  setDashboardInLocalStorage(dashboard);
+  return dashboard;
 };
 
 
@@ -135,14 +137,15 @@ function setDashboardInLocalStorage(dashboard){
 }
 
 function getDashboardFromLocalStorage(){
-  dashboard = JSON.parse(localStorage.getItem("dashboard"));
+  let dashboard = JSON.parse(localStorage.getItem("dashboard"));
+  return dashboard;
 }
 
 
 // TODO: expand the dashboard object with news-data
-function getDefaultDashboardAndStoreInLocalStorage(){
+function getDefaultDashboardObject(){
   
-  dashboard = {
+  let dashboard = {
     date: "2023-12-13",
     time: "14:55",
     mainHeading: "My Dashboard",
@@ -151,26 +154,26 @@ function getDefaultDashboardAndStoreInLocalStorage(){
         id: 1,
         webLinkFaviconUrl: "/images/default-icon.png",
         webLinkHeading: "Google",
-        webLinkUrl: "www.google.se",
+        webLinkUrl: "http://www.google.se",
       },
     ],
     weatherForecasts: [
       {
         weatherIconUrl: "/images/default-icon.png",
         dayHeading: "Idag",
-        temperature: "-4&deg",
+        temperature: "-4&deg;",
         weatherComment: "Sol och moln",       
       },
       {
         weatherIconUrl: "/images/default-icon.png",
         dayHeading: "I morgon",
-        temperature: "-1&deg",
+        temperature: "-1&deg;",
         weatherComment: "Sol och klart"        
       },
       {
         weatherIconUrl: "/images/default-icon.png",
         dayHeading: "I övermorgon",
-        temperature: "+2&deg",
+        temperature: "+2&deg;",
         weatherComment: "Snö och moln"        
       }
     ],
@@ -179,10 +182,7 @@ function getDefaultDashboardAndStoreInLocalStorage(){
     ],
     note: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt.",
   }; 
-
-  
-  setDashboardInLocalStorage(dashboard);
-
+  return dashboard;
 };
 
 
@@ -205,9 +205,9 @@ function getDefaultDashboardAndStoreInLocalStorage(){
 // WINDOW - ON-LOAD  
 window.addEventListener("DOMContentLoaded", () => {
   //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
-  loadDashboardObject();  
+  let dashboard = loadDashboardObject();  
   renderDynamicElementsOfIndexPage();
-  setInterval(renderDateAndTime, 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
+  setInterval(renderDateAndTime(), 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
 });
 
 
@@ -229,6 +229,7 @@ function renderDateAndTime(){
 
 // DATE & TIME - GET DATE and TIME
 function getDateAndTime(){
+  let dashboard = getDashboardFromLocalStorage();
   const currentDateTime = new Date(); 
   const time =    ((currentDateTime.getHours() < 10)?"0":"")
                   + currentDateTime.getHours() + ":" 
@@ -243,10 +244,13 @@ function getDateAndTime(){
   dashboard.time = time;
   dashboard.date = date;
   setDashboardInLocalStorage(dashboard);
+  console.log("dashboard in getDateAndTime: ", dashboard)
+
 };
 
 // DATE & TIME - DISPLAY DATE and TIME
-async function displayDateAndTime(){
+function displayDateAndTime(){
+  let dashboard = getDashboardFromLocalStorage();
   const timeElement = document.querySelector(".time");
   const dateElement = document.querySelector(".date");
   timeElement.textContent = dashboard.time;
@@ -257,6 +261,8 @@ async function displayDateAndTime(){
 
 // MAIN HEADING - RENDER
 function renderMainHeading(){
+  let dashboard = getDashboardFromLocalStorage();
+  console.log("dashboard in renderMainHeading: ", dashboard)
   const mainHeadingElement = document.querySelector(".main-heading");
   mainHeadingElement.textContent = dashboard.mainHeading;
   mainHeadingElement.addEventListener("input", () => {
@@ -276,13 +282,15 @@ openAddWebLinkForm_button.addEventListener("click", () =>{
 
 // WEBLINKS - RENDER ALL WEBLINK CARDS
 function renderAllWebLinkCards(){
+  let dashboard = getDashboardFromLocalStorage()
   let webLinksContainerHtml = "";
+  console.log("dashboard in renderAllWebLinkCards", dashboard)
 
    // Create dynamic HTML for all webLinks and display the HTML on the webpage 
   dashboard.webLinks.map(webLink => {
     webLinksContainerHtml = webLinksContainerHtml + 
     `<div class="webLink-card small-card" data-id="${webLink.id}">
-      <a href="${webLink.webLinkUrl}" class="button-goto-webLink-url" target="_blank" rel="noreferrer noopener"> 
+      <a href="${webLink.webLinkUrl}" class="goto-webLink-url-button" target="_blank" rel="noreferrer noopener"> 
         <img class="webLink-favicon" src="${webLink.webLinkFaviconUrl}">
         <div class="webLink-heading">${webLink.webLinkHeading}</div>
       </a>  
@@ -295,26 +303,38 @@ function renderAllWebLinkCards(){
 
   // Add a deleteWebLinkButton-EventListener to each webLink 
   const deleteWebLinkButtons = document.querySelectorAll(".delete-webLink-button");
+  console.log(deleteWebLinkButtons)
+  console.log("dashboard", dashboard)
+  
   deleteWebLinkButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
-      const webLinkId = e.currentTarget.parentNode.dataset.id;
+      const webLinkId = parseInt(e.currentTarget.parentNode.dataset.id);
       console.log("webLinkId: ", webLinkId)
+      console.log("dashboard", dashboard)
+      console.log("typeof webLinkId: ", typeof webLinkId)
 
-      // Delete the webLink object from the dashboard and localStorage 
-      dashboard = dashboard.webLinks.filter(webLink => webLink.id !== webLinkId);
+      // TODO: TODO:
+      // Update the webLinks array of the dashboard object and the localStorage object 
+      const myWebLinksArray = dashboard.webLinks.filter(webLink => webLink.id !== webLinkId);
+      
+      console.log("myWebLinksArray", myWebLinksArray)
+      console.log("dashboard after filter-function ", dashboard)
+
+      dashboard.webLinks = myWebLinksArray;
       setDashboardInLocalStorage(dashboard);
 
       // Delete the webLink-HTML from the webpage
       e.currentTarget.parentNode.parentNode.removeChild(e.currentTarget.parentNode);
     });
   });
+
 };
 
 
 // WEBLINKS - ADD NEW WEBLINK (and RENDER)
 const addNewWebLink_button = document.querySelector(".add-new-webLink-button");
 addNewWebLink_button.addEventListener("click", () => {
-  
+  let dashboard = getDashboardFromLocalStorage();
   // Store new WebLink in the Dashboard Object 
   const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id)) + 1;
   const newWebLinkFaviconUrl = defaultIconUrl;  // TODO:  get favicon and store url in the dashboard object
@@ -359,7 +379,7 @@ addNewWebLink_button.addEventListener("click", () => {
 // TODO: Get weather data, store & render
 // WEATHER CARDS - RENDER 
 function renderWeatherCards(){
-
+  let dashboard = getDashboardFromLocalStorage();
   let weatherContainerHtml = "";
   dashboard.weatherForecasts.map(weatherForecast => {
     weatherContainerHtml = weatherContainerHtml + 
@@ -378,13 +398,15 @@ function renderWeatherCards(){
 
   const weatherContainer = document.querySelector(".weather-container");
   weatherContainer.innerHTML = weatherContainerHtml;
+  return dashboard;
 };
 
 
 
 
 // NOTE - RENDER 
-function renderNote(){
+async function renderNote(){
+  let dashboard = getDashboardFromLocalStorage();
   const note_p = document.querySelector(".note");
   note_p.innerHTML = dashboard.note;
   note_p.addEventListener("input", () => {
