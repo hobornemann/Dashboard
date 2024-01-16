@@ -22,18 +22,20 @@
             <h3 class="card-heading">Snabblänkar</h3>
             <div class="webLinks-container">
               <!-- below the webLink items are inserted -->
-              <button class="webLink-card small-card" id="1">
-                <img class="webLink-favicon" src="">
-                <div class="webLink-heading">Google</div>
-                <div class="delete-webLink">x</div>
-              </button>  
+              <div class="webLink-card small-card" data-id="1">
+                <a href="www.Google.com" class="goto-webLink-url-button" target="_blank" rel="noreferrer noopener">  <!-- SECURITY-addition: rel="noreferrer noopener" -->
+                  <img class="webLink-favicon" src="">
+                  <div class="webLink-heading">Google</div>
+                </a>  
+                <button class="delete-webLink-button">&nbsp;x&nbsp;</button>
+              </div>
               <!-- above the webLink items are inserted -->
             </div>
-            <button class="button-open-add-webLink-form button">Ny webblänk</button>
-            <form class="form-add-webLink hidden"> 
-              <input class="input-webLink-url input" type="text" name="input-webLink-url" id="input-webLink-url" placeholder="Kopiera in webblänken här, tex www.google.se">          
-              <input class="input-webLink-heading input" type="text" name="input-webLink-heading" id="input-webLink-heading" placeholder="Skriv namnet på länken här, tex Google"> 
-              <input class="button-add-new-webLink button" type="submit" value="OK">
+            <button class="open-add-webLink-form-button button">Ny webblänk</button>
+            <form class="add-webLink-form hidden"> 
+              <input class="webLink-url-input input" type="text" name="webLink-url-input" id="webLink-url-input" placeholder="Kopiera in webblänken här, tex www.google.se">          
+              <input class="webLink-heading-input input" type="text" name="webLink-heading-input" id="webLink-heading-input" placeholder="Skriv namnet på länken här, tex Google"> 
+              <input class="add-new-webLink-card-button button" type="submit" value="OK">
             </form>               
           </article>
           <article class="card">
@@ -62,15 +64,15 @@
           </article>
           <article class="card">
             <h3 class="card-heading">Anteckningar</h3>
-            <div class="notes-card small-card">
-              <p class="notes" contenteditable="true">my notes kommer här </p>  
+            <div class="note-card small-card">
+              <p class="note" contenteditable="true">my note kommer här </p>  
             </div>
           </article>
         </section> 
     </main>
     <div class="empty-container2"></div>
     <footer class="footer-container">
-      <button class="button-change-background button">Byt bakgrundsbild</button>
+      <button class="change-background-image-button button">Byt bakgrundsbild</button>
     </footer>
   </body>
 </html>

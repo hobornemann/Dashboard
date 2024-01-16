@@ -3,9 +3,7 @@
 // ------------------------------------------------------------
 /*  - Imports
     - Global Variables
-    - DOM Elements
-    - Event-Listeners
-    - Functions
+    - Functions per Feature/Element
     - Other code
  */ 
 
@@ -24,7 +22,12 @@ let lon = ""
 
 // Detta är en callback-funktion
 
-getLocation();
+
+// ----------------------------------------------
+// UNCOMMENT WHEN READY TO USE - WEATHER
+// ----------------------------------------------
+
+/* getLocation();
 
 function getLocation() {
   if (navigator.geolocation) {
@@ -38,17 +41,10 @@ function showPosition(position) {
   const lat = position.coords.latitude;
   const lon = position.coords.longitude;
   fetchData(lat, lon);
-/* console.log("lat", position.coords.latitude);
-lat = position.coords.latitude;
-console.log("lon", position.coords.longitude);
-lon = position.coords.longitude;
- */
+
 }
 
 //const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}`
-
-
-
 
 
 async function fetchData (lat, lon){
@@ -67,13 +63,26 @@ async function fetchData (lat, lon){
     console.error("Error", error.message)
     //alert
   }
-}
+} */
 
 /* fetchData()   // läggs in window. ...contentload... */
 
+// ----------------------------------------------------
+// UNCOMMENT THE ABOVE 
+// ----------------------------------------------------
 
 
-fetchImages();
+
+
+
+
+
+
+// ----------------------------------------------
+// UNCOMMENT WHEN READY TO USE - IMAGES
+// ----------------------------------------------
+
+/* fetchImages();
 
 async function fetchImages(){
 
@@ -92,49 +101,24 @@ console.log(url);
     console.error("Error", error.message)
     //alert
   }
-}
+} */
 
+// ----------------------------------------------------
+// UNCOMMENT THE ABOVE 
+// ----------------------------------------------------
 
 
 
 // -------------------------------------------------------------
-// GLOBAL VARIABLES
+// GLOBAL VARIABLES & OBJECTS
 // -------------------------------------------------------------
 
 let dashboard;
-
-// -------------------------------------------------------------
-// DOM-ELEMENTS
-// -------------------------------------------------------------
-
-const bodyContainer = document.querySelector(".body-container");
-
-const mainHeadingElement = document.querySelector(".main-heading");
-const webLinksContainer = document.querySelector(".webLinks-container");
-const webLinkFavicon = document.querySelector(".webLink-favicon");
-const webLinkHeading = document.querySelector(".webLink-heading");
-const deleteWebLinkX = document.querySelector(".delete-webLink");
-const buttonOpenAddWebLinkForm = document.querySelector(".button-open-add-webLink-form");
-const formAddWebLink = document.querySelector(".form-add-webLink");
-const buttonAddNewWebLink = document.querySelector(".button-add-new-webLink");
-const weatherContainer = document.querySelector(".weather-container");
-const notes = document.querySelector(".notes");
-const buttonChangeBackground = document.querySelector(".button-change-background");
+const defaultIconUrl = "/images/default-icon.png";
 
 
-// -------------------------------------------------------------
-// EVENT-LISTENERS
-// -------------------------------------------------------------
-
-//TODO: delete or comment out localStorage = null when app has been developed
-// TODO: update dashboard with current weather forecasts 
-  // TODO: update favicon / FaviconUrl
-window.addEventListener("DOMContentLoaded", () => {
-  
-  // Reset dashboard in localStorage
-  //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
-  let dashboardInLocalStorage = JSON.parse(localStorage.getItem("dashboard"));
-
+function loadDashboardObject(){
+  let dashboardInLocalStorage = getDashboardFromLocalStorage();
   if(dashboardInLocalStorage == null) {
     console.log("dashboardInLocalStorage == null");
     getDefaultDashboardAndStoreInLocalStorage();
@@ -143,45 +127,16 @@ window.addEventListener("DOMContentLoaded", () => {
   }
   // TODO: update dashboard with current weather forecasts 
   // TODO: update favicon / FaviconUrl
-  updateBodyContainerStepByStep();
-  getAndDisplayDateAndTime();  
-  setInterval(getAndDisplayDateAndTime, 30000);
-});
+};
 
-mainHeadingElement.addEventListener("input", () => {
-  dashboard.mainHeading = mainHeadingElement.textContent;
+
+function setDashboardInLocalStorage(dashboard){
   localStorage.setItem("dashboard", JSON.stringify(dashboard));
-  console.log(JSON.parse(localStorage.getItem("dashboard")));
-})
+}
 
-buttonOpenAddWebLinkForm.addEventListener("click", () =>{
-  formAddWebLink.classList.remove("hidden");
-})
-
-deleteWebLinkX.addEventListener("click", () =>{
-  const webLinkId = this.parentNode.id;
-  dashboard = dashboard.webLinks.filter(webLink => webLink.id !== webLinkId);
-  localStorage.setItem("dashboard", JSON.stringify(dashboard));
-  this.parentNode.parentNode.removeChild(this.parentNode);
-})
-
-notes.addEventListener("input", () => {
-  dashboard.notes = notes.textContent;
-  localStorage.setItem("dashboard", JSON.stringify(dashboard));
-})
-
-buttonOpenAddWebLinkForm.addEventListener("click", ()=>{
-  formAddWebLink.classList.remove("hidden");
-})
-
-buttonAddNewWebLink.addEventListener("click", addNewWebLink())
-
-buttonChangeBackground.addEventListener("click", changeBackGroundImage())
-
-
-// -------------------------------------------------------------
-// FUNCTIONS
-// -------------------------------------------------------------
+function getDashboardFromLocalStorage(){
+  dashboard = getDashboardFromLocalStorage();
+}
 
 
 // TODO: expand the dashboard object with news-data
@@ -222,29 +177,57 @@ function getDefaultDashboardAndStoreInLocalStorage(){
     news: [
 
     ],
-    notes: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt.",
+    note: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt.",
   }; 
 
-  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+  
+  setDashboardInLocalStorage(dashboard);
 
 };
 
 
-function updateBodyContainerStepByStep(){
 
-  displayDateAndTime(); 
-  displayMainHeading();
-  displayWebLinkCards();
-  displayWeatherCards();
-  displayNotes();
+
+
+// -------------------------------------------------------------
+// FEATURES/ELEMENTS 
+// -------------------------------------------------------------
+
+// 
+
+
+
+//TODO: delete or comment out localStorage = null when app has been developed
+// TODO: update dashboard with current weather forecasts 
+  // TODO: update favicon / FaviconUrl
+
+
+// WINDOW - ON-LOAD  
+window.addEventListener("DOMContentLoaded", () => {
+  //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+  loadDashboardObject();  
+  renderDynamicElementsOfIndexPage();
+  setInterval(renderDateAndTime, 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
+});
+
+
+// WINDOW - RENDER DYNAMIC CONTENT
+function renderDynamicElementsOfIndexPage(){
+  renderDateAndTime(); 
+  renderMainHeading();
+  renderAllWebLinkCards();
+  renderWeatherCards();
+  renderNote();
 };
 
 
-function getAndDisplayDateAndTime(){
+// DATE & TIME - REDER DATE and TIME
+function renderDateAndTime(){
   getDateAndTime();
   displayDateAndTime();
 };
 
+// DATE & TIME - GET DATE and TIME
 function getDateAndTime(){
   const currentDateTime = new Date(); 
   const time =    ((currentDateTime.getHours() < 10)?"0":"")
@@ -254,43 +237,131 @@ function getDateAndTime(){
                   
   const date =    currentDateTime.getFullYear() + "-"
                   + ((currentDateTime.getMonth() + 1 < 10)?"0":"") 
-                  + (currentDateTime.getMonth()+1)  + "-" 
+                  + (currentDateTime.getMonth() + 1 )  + "-" 
                   + ((currentDateTime.getDate() < 10)?"0":"") 
                   + currentDateTime.getDate(); 
   dashboard.time = time;
   dashboard.date = date;
-  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+  setDashboardInLocalStorage(dashboard);
 };
 
+// DATE & TIME - DISPLAY DATE and TIME
 function displayDateAndTime(){
-  dashboard = JSON.parse(localStorage.getItem("dashboard"));
+  dashboard = getDashboardFromLocalStorage();
   const timeElement = document.querySelector(".time");
   const dateElement = document.querySelector(".date");
   timeElement.textContent = dashboard.time;
   dateElement.textContent = dashboard.date;
 };
 
-function displayMainHeading(){
+
+
+// MAIN HEADING - RENDER
+function renderMainHeading(){
+  const mainHeadingElement = document.querySelector(".main-heading");
   mainHeadingElement.textContent = dashboard.mainHeading;
+  mainHeadingElement.addEventListener("input", () => {
+    dashboard.mainHeading = mainHeadingElement.textContent;
+    setDashboardInLocalStorage(dashboard);
+    console.log(getDashboardFromLocalStorage());
+  })
 };
 
-function displayWebLinkCards(){
+
+
+// WEBLINKS - OPEN ADD-WEBLINK-FORM 
+const openAddWebLinkForm_button = document.querySelector(".open-add-webLink-form-button");
+openAddWebLinkForm_button.addEventListener("click", () =>{
+  const addWebLink_form = document.querySelector(".add-webLink-form");
+  addWebLink_form.classList.remove("hidden");
+})
+
+// WEBLINKS - RENDER ALL WEBLINK CARDS
+function renderAllWebLinkCards(){
   let webLinksContainerHtml = "";
+
+   // Create dynamic HTML for all webLinks and display the HTML on the webpage 
   dashboard.webLinks.map(webLink => {
     webLinksContainerHtml = webLinksContainerHtml + 
-    `<a href="${webLink.webLinkUrl}" target="_blank">
-      <button class="webLink-card small-card" id="${webLink.id}">
+    `<div class="webLink-card small-card" data-id="${webLink.id}">
+      <a href="${webLink.webLinkUrl}" class="button-goto-webLink-url" target="_blank" rel="noreferrer noopener"> 
         <img class="webLink-favicon" src="${webLink.webLinkFaviconUrl}">
         <div class="webLink-heading">${webLink.webLinkHeading}</div>
-        <div class="delete-webLink">x</div>
-      </button>
-    </a>`;
+      </a>  
+      <button class="delete-webLink-button">&nbsp;x&nbsp;</button>
+    </div>
+    `;
+    const webLinksContainer = document.querySelector(".webLinks-container");
+    webLinksContainer.innerHTML = webLinksContainerHtml;
   });
-  webLinksContainer.innerHTML = webLinksContainerHtml;
+
+  // Add a deleteWebLinkButton-EventListener to each webLink 
+  const deleteWebLinkButtons = document.querySelectorAll(".delete-webLink-button");
+  deleteWebLinkButtons.forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const webLinkId = e.currentTarget.parentNode.dataset.id;
+      console.log("webLinkId: ", webLinkId)
+
+      // Delete the webLink object from the dashboard and localStorage 
+      dashboard = dashboard.webLinks.filter(webLink => webLink.id !== webLinkId);
+      setDashboardInLocalStorage(dashboard);
+
+      // Delete the webLink-HTML from the webpage
+      e.currentTarget.parentNode.parentNode.removeChild(e.currentTarget.parentNode);
+    });
+  });
 };
 
 
-function displayWeatherCards(){
+// WEBLINKS - ADD NEW WEBLINK (and RENDER)
+const addNewWebLink_button = document.querySelector(".add-new-webLink-button");
+addNewWebLink_button.addEventListener("click", () => {
+  
+  // Store new WebLink in the Dashboard Object 
+  const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id)) + 1;
+  const newWebLinkFaviconUrl = defaultIconUrl;  // TODO:  get favicon and store url in the dashboard object
+  const newWebLinkUrl = document.querySelector("#webLink-url-input").value;
+  const newWebLinkHeading = document.querySelector("#webLink-heading-input").value;
+
+  dashboard.webLinks.push({
+    id: newWebLinkId, 
+    webLinkFaviconUrl: newWebLinkFaviconUrl,
+    webLinkHeading: newWebLinkHeading,
+    webLinkUrl: newWebLinkUrl,
+  })
+
+  // Store new WebLink in localStorage   T
+  updateLocalStorage(dashboard);  
+
+  // Render the new webLink 
+//TODO:  Append new webLink child to webLink container  (incl eventListener !!!)
+  const webLinksContainer =document.querySelector(".webLinks-container");
+  let webLinksContainerHtml = webLinksContainer.innerHTML;
+  const newWebLinkHtml =  
+  `<div class="webLink-card small-card" data-id=${newWebLinkId}>
+    <a href="${newWebLinkUrl}" class="goto-webLink-url-button" target="_blank" rel="noreferrer noopener">
+      <img class="webLink-favicon" src="${newWebLinkFaviconUrl}">
+      <div class="webLink-heading">${newWebLinkHeading}</div>
+    </a> 
+    <button class="delete-webLink-button">&nbsp;x&nbsp;</button>
+  </div>`;
+  webLinksContainerHtml = webLinksContainerHtml + newWebLinkHtml;
+  webLinksContainer.innerHTML = webLinksContainerHtml;
+
+  // TODO:  Do I need to call a display function to show the added webLinkButton or will that happen automatically?
+  
+
+  // Hide the Add WebLink Form again
+  addWebLink_form.classList.add("hidden");
+
+});
+
+
+
+
+// WEATHER CARDS - RENDER 
+function renderWeatherCards(){
+
   let weatherContainerHtml = "";
   dashboard.weatherForecasts.map(weatherForecast => {
     weatherContainerHtml = weatherContainerHtml + 
@@ -306,43 +377,79 @@ function displayWeatherCards(){
     </div>  
   `;
   });
+
+  const weatherContainer = document.querySelector(".weather-container");
   weatherContainer.innerHTML = weatherContainerHtml;
 };
 
-function displayNotes(){
-  notes.innerHTML = dashboard.notes;
+
+
+
+// NOTE - RENDER 
+function renderNote(){
+
+  note.innerHTML = dashboard.note;
+
+  const note_p = document.querySelector(".note");
+  note_p.addEventListener("input", () => {
+    dashboard.note = note.textContent;
+    setDashboardInLocalStorage(dashboard);
+  })
 };
 
 
+
+// CHANGE BACKGROUND IMAGE
+const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
+changeBackgroundImage_button.addEventListener("click", changeBackGroundImage())
+
+function changeBackGroundImage(){
+  // TODO:
+  };
+
+
+
+
+// -------------------------------------------------------------
+// FUNCTIONS
+// -------------------------------------------------------------
+
+
+
+
+
+
+// --------------------------------------------------------------
+// OTHER CODE
+// --------------------------------------------------------------
+
+
+
+
+/* 
 // TODO: get favicon and store url in the dashboard object
 // TODO: Do I need to call a display function to show the added webLinkButton or will that happen automatically?
-function addNewWebLink(){
+function renderNewWebLink(){
   // TODO: QUESTION: Why is dashboard not accessible from this function????  
-  dashboard = JSON.parse(localStorage.getItem("dashboard"));
+  dashboard = getDashboardFromLocalStorage();
   console.log("dashboard in addNewWebLink");
   console.log(dashboard);
   // add new webLink object to the dashboard object
- /*  const newWebLinkId = dashboard.webLinks.reduce((previous, current) => {
-    return (previous && previous.id > current.id)? previous.id + 1 : current.id + 1;
-  }) */
-  const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id))
+  const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id)) + 1;
   console.log ("newWebLinkId")
   console.log (newWebLinkId)
   
-  const newWebLinkFaviconUrl = "";  // TODO:  // TODO: get favicon and store url in the dashboard object
-  console.log("inputWebLinkUrlElement")
-  //console.log(inputWebLinkUrlElement)
-  const newWebLinkUrl = document.querySelector("#input-webLink-url").value;
+  const newWebLinkFaviconUrl = defaultIconUrl;  // TODO:  // TODO: get favicon and store url in the dashboard object
+  console.log("newWebLinkFaviconUrl")
+  console.log(newWebLinkFaviconUrl)
 
+  const newWebLinkUrl = document.querySelector("#webLink-url-input").value;
   console.log("newWebLinkUrl")
   console.log(newWebLinkUrl)
 
-  const inputWebLinkHeadingElement = document.querySelector(".input-webLink-heading");
-  const newWebLinkHeading = inputWebLinkHeadingElement.value;
-
-    
-    console.log("newWebLinkFaviconUrl")  
-    console.log(newWebLinkFaviconUrl)  
+  const newWebLinkHeading = document.querySelector("#webLink-heading-input").value;
+  console.log("newWebLinkHeading")  
+  console.log(newWebLinkHeading)  
 
   dashboard.webLinks.push({
     id: newWebLinkId, 
@@ -352,8 +459,13 @@ function addNewWebLink(){
   })
 
   console.log("dashboard")
-
   console.log(dashboard)
+
+  setDashboardInLocalStorage(dashboard);
+
+  console.log("CHECK localstorage for new weblink")
+
+
   // add new webLinkButton to the DOM
   const webLinksContainer = document.querySelector(".webLinks-container");
   let webLinksContainerHtml = webLinksContainer.innerHTML;
@@ -371,19 +483,21 @@ function addNewWebLink(){
   // TODO:  Do I need to call a display function to show the added webLinkButton or will that happen automatically?
   formAddWebLink.classList.add("hidden");
 };
-
+ */
 // TODO: create function
-function changeBackGroundImage(){
-// TODO:
-};
 
 
 
 
-// --------------------------------------------------------------
-// OTHER CODE
-// --------------------------------------------------------------
 
+// TODO: addNewWebLink_button.addEventListener("click", addNewWebLink())  QUESTION: varför funkar inte detta?
+
+
+/* mainHeadingElement.addEventListener("input", () => {
+  dashboard.mainHeading = mainHeadingElement.textContent;
+  localStorage.setItem("dashboard", JSON.stringify(dashboard));
+  console.log(JSON.parse(localStorage.getItem("dashboard")));
+}) */
 
 //Insert html-markup for news cards and store in localStorage 
 /* function displayBodyContainer(){
@@ -413,6 +527,15 @@ dashboard.webLinks.map(webLink => {
     <div class="delete-webLink">x</div>
   </button>`;
 });
+
+
+<div class="webLink-card small-card" data-id="1">
+                <a href="www.Google.com" class="button-goto-webLink-url" target="_blank" rel="noreferrer noopener">  <!-- SECURITY-addition: rel="noreferrer noopener" -->
+                  <img class="webLink-favicon" src="">
+                  <div class="webLink-heading">Google</div>
+                </a>  
+                <button class="delete-webLink-button">&nbsp;x&nbsp;</button>
+              </div>
 
 console.log("C")
 
@@ -475,6 +598,7 @@ bodyContainerHtml = bodyContainerHtml +
 `;
 
 console.log("G")
+
   bodyContainer.innerHTML = bodyContainerHtml;
   console.log("H")
 }; */

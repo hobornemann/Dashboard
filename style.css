@@ -149,17 +149,23 @@
 
 }
 
-.webLink-card{
+.webLink-card, .button-goto-webLink-url, .button-delete-webLink {
   display: flex;
+  flex-direction: row;
   justify-content: flex-start;
   align-items: center;
   border-width: 0.5px;
   font-size: clamp(10px, 2vh, 15px);
   position: relative;
   padding: 0;
-  
-  
+  background-color: var(--item-background-color);
+  border: none;
 }
+
+.button-goto-webLink-url{
+  width: 93%;
+}
+
 
 .webLink-favicon{
   height: clamp(1vh, 4vh, 5vh);
@@ -171,10 +177,11 @@
   font-weight: 600;
 }
 
-.delete-webLink{
+.button-delete-webLink{
+  width: 7%;
   position: absolute;
   top: 0;
-  right: 3px;
+  right: 0;
 }
 
 .form-add-webLink{
