@@ -388,7 +388,7 @@ function renderNote(){
   const note_p = document.querySelector(".note");
   note_p.innerHTML = dashboard.note;
   note_p.addEventListener("input", () => {
-    dashboard.note = note.textContent;
+    dashboard.note = note_p.textContent;
     setDashboardInLocalStorage(dashboard);
   })
 };

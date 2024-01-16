@@ -149,7 +149,7 @@
 
 }
 
-.webLink-card, .button-goto-webLink-url, .button-delete-webLink {
+.webLink-card, .goto-webLink-url-button, .delete-webLink-button {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -162,7 +162,7 @@
   border: none;
 }
 
-.button-goto-webLink-url{
+.goto-webLink-url-button{
   width: 93%;
 }
 
@@ -177,14 +177,14 @@
   font-weight: 600;
 }
 
-.button-delete-webLink{
+.delete-webLink-button{
   width: 7%;
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.form-add-webLink{
+.add-webLink-form{
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -248,7 +248,7 @@
 }
 
 
-.weather-day-temperature-details{
+.weather-day-temperature-comment{
   display: flex;
   flex-direction: column;
 
@@ -259,7 +259,7 @@
   font-weight: 600;
 }
 
-.weather-temperature-details{
+.weather-temperature-comment{
   display: flex;
   flex-direction: row;
 }
@@ -271,7 +271,7 @@
 
 }
 
-.weather-details{
+.weather-comment{
   margin-left: 1vh;
   background-color: var(--weather-details-background-color);
   border-radius: 1vh;
@@ -286,13 +286,13 @@
 }
 
 
-.notes{
+.note{
   overflow-y: scroll;
 
 }
 
 
-.notes-card{
+.note-card{
   font-size: clamp(10px, 2vh, 15px);
 
 }
