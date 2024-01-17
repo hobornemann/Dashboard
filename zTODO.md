@@ -7,7 +7,7 @@
 => KLART
 
 3. Denna del innehåller länkar som användaren sparat. Användaren kan ta bort länkar (3a) samt lägga till nya (3b). När användaren lägger till nya länkar ska användaren fylla i länken samt en rubrik som denna vill ska synas i dashboarden.
-=> TODO:
+=> KLART
 
 Extra utmaning: Hämta länkens favicon och visa som bild i dashboarden.
 => TODO:
@@ -25,13 +25,16 @@ Extra utmaning: Gör så att användaren kan anpassa orten som visas
 => KLART
 
 7. När användaren klickar på denna knapp ska en randomiserad bild från Unsplash API hämtas och läggas in som bakgrund på dashboarden.
-=> TODO:
+=> Klart
 
 Extra utmaning: Låt användaren fylla i ett sökord som används för att hitta en randomiserad bild så att det blir inom ett tema som användaren önskar.
 => TODO:
  
+8. TODO: Lägga ACCESS-KEYS i secret.json filen 
 
-8. VG-fråga:
+9. TODO: Import / Export  - Lägga delar av projektet i andra js-filer 
+
+10. VG-fråga:
 
 Denna del behöver du bara göra om du satsar på VG.
 

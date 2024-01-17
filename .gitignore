@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 
 # Secret stuff
-secret.json
+apiAccessKeys.json

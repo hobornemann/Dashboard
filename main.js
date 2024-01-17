@@ -114,6 +114,7 @@ console.log(url);
 // -------------------------------------------------------------
 
 
+
 const defaultIconUrl = "/images/default-icon.png";
 
   // TODO: update dashboard with current weather forecasts 
@@ -201,14 +202,16 @@ function getDefaultDashboardObject(){
 // TODO: update dashboard with current weather forecasts 
   // TODO: update favicon / FaviconUrl
 
-
+ 
 // WINDOW - ON-LOAD  
 window.addEventListener("DOMContentLoaded", () => {
   //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
-  let dashboard = loadDashboardObject();  
+  let dashboard = loadDashboardObject(); 
   renderDynamicElementsOfIndexPage();
+  loadFirstBackgroundImage();
   setInterval(renderDateAndTime(), 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
 });
+
 
 
 // WINDOW - RENDER DYNAMIC CONTENT
@@ -219,6 +222,65 @@ function renderDynamicElementsOfIndexPage(){
   renderWeatherCards();
   renderNote();
 };
+
+
+// ACCESS KEYS
+async function getApiAccessKeys(){
+  
+  try{
+    const response = await axios.get('./apiAccessKeys.json')
+    const apiAccessKeys = response;
+    return apiAccessKeys;
+  }
+  catch(error){
+    console.error("Error", error.message)
+  }
+  /* const accessKeys = fetch('./apiAccessKeys.json')
+      .then((response) => response.json()); */
+}
+
+
+// BACKGROUND IMAGE - LOAD FIRST IMAGE
+function loadFirstBackgroundImage(){
+  const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
+  triggerAnEvent(changeBackgroundImage_button, 'click');  // triggerAnEvent(myElement, 'click', { category: 'football' });
+};
+  
+
+// BACKGROUND IMAGE - GET IMAGE-URL 
+async function fetchImage(){
+const response = await getApiAccessKeys();
+const ACCESS_KEY = response.data.unsplash;
+const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
+  try{
+    const response = await axios.get(url)   
+    const imageUrl = response.data.urls.regular;
+    return imageUrl;
+  }
+  catch(error){
+    console.error("Error", error.message)
+  }
+} 
+
+
+// BACKGROUND IMAGE - CHANGE BACKGROUND IMAGE
+const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
+changeBackgroundImage_button.addEventListener("click", async () => {
+  const imageUrl = await fetchImage();
+  document.body.style.backgroundImage = `url(${imageUrl})`;
+}); 
+
+
+
+// HELP FUNCTION - TRIGGER AN EVENT function
+function triggerAnEvent (element, eventType, detail) {
+  element.dispatchEvent(new CustomEvent(eventType, { detail }));
+}
+
+
+
+
+
 
 
 // DATE & TIME - REDER DATE and TIME
@@ -285,6 +347,7 @@ function renderAllWebLinkCards(){
   let dashboard = getDashboardFromLocalStorage()
   let webLinksContainerHtml = "";
   console.log("dashboard in renderAllWebLinkCards", dashboard)
+  console.log("dashboard.webLinks in renderAllWebLinkCards",dashboard.webLinks)
 
    // Create dynamic HTML for all webLinks and display the HTML on the webpage 
   dashboard.webLinks.map(webLink => {
@@ -416,12 +479,7 @@ async function renderNote(){
 };
 
 
-// TODO: Get image, store & render
-// CHANGE BACKGROUND IMAGE
-const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
-changeBackgroundImage_button.addEventListener("click", () => {
 
-}); 
 
 
 

@@ -68,9 +68,10 @@
   grid-template-columns: auto;
   grid-template-rows: 40px auto 1fr auto 100px; 
 
-  background-color: var(--body-background-color);
+  /* background-color: var(--body-background-color); */
   font-family: var(--font-family01);
-  background-image: url(/images/default-image.JPG);
+  /* background-image: url(/images/default-image.JPG);
+   */
   background-position: center;
   background-size: cover;
   background-repeat: repeat;
