@@ -290,13 +290,14 @@
 
 
 .note{
-  overflow-y: scroll;
+  overflow: scroll;
 
 }
 
 
 .note-card{
   font-size: clamp(10px, 2vh, 15px);
+  height: 80%;
 
 }
 
