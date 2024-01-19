@@ -10,21 +10,35 @@ import{
 export{
   fetchImage,
   getApiAccessKeys,
-  getDateAndTime,
+  updateDateAndTime,
   fetchWeatherData,
-  getLocation
+  getLocation,
+  getFavicon
 }
 
 
 
-
+HÄR
 // TODO: get Favicons via google's url
 // WEBLINKS - GET FAVICON-URLs
-async function getFavicon(){
+async function getFavicon(url){
+
+  if(url.substring(0,7) == "http://"){
+      url = url.slice(7)
+    } else if (url.substring(0,8) == "https://"){
+      url = url.slice(8)
+    } else if (url.substring(0,4) == "www."){
+      url = url.slice(4)
+    }
+    
+    url = url.substring(0, url.indexOf('/'));
+    url = `www.${url}`
+    console.log("url: ", url)
+
 
   try{
-
-    return ""  // TODO:
+    //return `http://www.google.com/s2/favicons?domain=${url}`// TODO:
+    return `https://www.google.com/s2/favicons?domain=${url}&sz=256`
   }
   catch(error){
     console.error("Favicon could not be retrieved", error.message)
@@ -32,23 +46,23 @@ async function getFavicon(){
   }
 }
 
-
+//TODO: UNCOMMENT THE LINES BELOW WHEN PROJECT IS FINISHED
 // BACKGROUND IMAGE - GET IMAGE-URL 
 async function fetchImage(){
     let imageUrl ="/images/default-image.jpg";
-    const response = await getApiAccessKeys();
-    const ACCESS_KEY = response.data.unsplash;
-    console.log("ACCESS_KEY unsplash",ACCESS_KEY)
+    /* const response = await getApiAccessKeys();
+    let ACCESS_KEY = response.data.unsplash;
     const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
       try{
-        // const response = await axios.get(url)    //TODO: UNCOMMENT THIS LINE WHEN FINISHED
+        const response = await axios.get(url)    
         if(response){
           imageUrl = response.data.urls.regular; 
         }
       }
       catch(error){
-        console.log("Error", error.message)
+        console.log("Error: ", error.message)
       }
+      ACCESS_KEY=""; */
       return imageUrl;
 } 
 
@@ -63,125 +77,140 @@ async function fetchImage(){
       return apiAccessKeys;
     }
     catch(error){
-      console.error("Error", error.message)
+      console.error("Error: ", error.message)
     }
-    /* const accessKeys = fetch('./apiAccessKeys.json')
-        .then((response) => response.json()); */
   }
   
   
   
   // DATE & TIME - GET DATE and TIME
-  function getDateAndTime(){
-
+  function updateDateAndTime(){
     try{
       let dashboard = getDashboardFromLocalStorage();
       const currentDateTime = new Date(); 
-      const time =    ((currentDateTime.getHours() < 10)?"0":"")
-                      + currentDateTime.getHours() + ":" 
-                      + ((currentDateTime.getMinutes() < 10)?"0":"")  
-                      + currentDateTime.getMinutes(); 
-                      
       const date =    currentDateTime.getFullYear() + "-"
                       + ((currentDateTime.getMonth() + 1 < 10)?"0":"") 
                       + (currentDateTime.getMonth() + 1 )  + "-" 
                       + ((currentDateTime.getDate() < 10)?"0":"") 
                       + currentDateTime.getDate(); 
-      dashboard.time = time;
+      const time =    ((currentDateTime.getHours() < 10)?"0":"")
+                      + currentDateTime.getHours() + ":" 
+                      + ((currentDateTime.getMinutes() < 10)?"0":"")  
+                      + currentDateTime.getMinutes();                         
       dashboard.date = date;
+      dashboard.time = time;
       setDashboardInLocalStorage(dashboard);
-      return true
-      //console.log("dashboard in getDateAndTime: ", dashboard)
+    } 
+    catch(error){
+      console.log("Kunde inte uppdatera datum och tid", error.message)
+    }      
+}
 
-    } catch(error){
-      console.log("Error", error.message)
-    }
-  
-  };
   
 
   
 // WEATHER - FETCH WEATHER DATA
 async function fetchWeatherData (){
-
+  
   try{
   const coords = await getLocation();
-  console.log("coords", coords)
+  // console.log("coords", coords)
   const apiKeysResponse = await getApiAccessKeys();
-  const APIkey = apiKeysResponse.data.openWeatherMap;
-  console.log("APIkey weather: ", APIkey)
+  let APIkey = apiKeysResponse.data.openWeatherMap;
   //const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=SE`
-  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${APIkey}&units=metric`
-  console.log("url weather: ", url)
-  // https://api.openweathermap.org/data/2.5/forecast?lat=59.2583266&lon=18.0834523&appid=51faa6f37756f34fb7074772eb5210f0&units=metric
+  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${APIkey}&units=metric&lang=sv`
+  APIkey = "";
+  //console.log("url weather: ", url)
   
     const weatherResponse = await axios.get(url)
-    console.log("weatherResponse: ",weatherResponse)
+    console.log("weatherResponse: ", weatherResponse)
     const weatherData = weatherResponse.data;
-    console.log("weatherData",weatherData);
+    //console.log("weatherData", weatherData);
 
     saveWeatherDataToDashboardAndLocalStorage(weatherData); 
   }
   catch(error){
     console.log("Error:", error.message)
-    //alert
   }
 } 
 
 function saveWeatherDataToDashboardAndLocalStorage(weatherData){
   
   // Get array-index of today, tomorrow and tomorrow-next (at 12.00 hours, or now if now is after 12.00 hours)
-  console.log("weatherData",weatherData) 
+  console.log("weatherData in saveWeathDataToDashboardAndLocalStorage",weatherData) 
 
   const dateTimeStringNow = weatherData.list[0].dt_txt;
-  console.log("weatherData.list[0].dt_txt",weatherData.list[0].dt_txt) 
+  //console.log("weatherData.list[0].dt_txt",weatherData.list[0].dt_txt) 
   const dateTime = new Date(dateTimeStringNow);
-  console.log("dateTime",dateTime)
+  console.log("dateTime in saveWeatherData...",dateTime)
   const hoursNow = dateTime.getHours();
 
-  console.log("hourNow",hoursNow)
+  console.log("hoursNow",hoursNow)
   
-  
-  
-  let indexOfToday = null;
-  let indexOfTomorrow = null;
-  let indexOfTomorrowNext = null;
+
+  let indexOfTodayInOpenWeatherMap = null;
+  let indexOfTomorrowInOpenWeatherMap = null;
+  let indexOfTomorrowNextInOpenWeatherMap = null;
 
   if (hoursNow < 12){
-    indexOfToday = (12-hoursNow)/3;
-    indexOfTomorrow = indexOfToday + (24/3);
-    indexOfTomorrowNext = indexOfTomorrow + (24/3);
+    indexOfTodayInOpenWeatherMap = (12-hoursNow)/3;
+    indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24/3);
+    indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
   } else {
-    indexOfToday = 0;
-    indexOfTomorrow = indexOfToday + (24-hoursNow)/3 + (12/3);
-    indexOfTomorrowNext = indexOfTomorrow + (24/3);
+    indexOfTodayInOpenWeatherMap = 0;
+    indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24-hoursNow)/3 + (12/3);
+    indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
   }
 
-  const days =[indexOfToday, indexOfTomorrow, indexOfTomorrowNext]
-console.log("days",days)
+  const indicesInOpenWeatherMap =[indexOfTodayInOpenWeatherMap, indexOfTomorrowInOpenWeatherMap, indexOfTomorrowNextInOpenWeatherMap]
+  console.log("indicesInOpenWeatherMap", indicesInOpenWeatherMap)
 
   // Hitta the index of today
   let dashboard = getDashboardFromLocalStorage();
-
-  days.forEach(index =>{
-    dashboard.weatherForecasts[index].dateTime = weatherData.list[index].dt_txt;
-    dashboard.weatherForecasts[index].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[index].weather[0].icon}@2x.png`;   
-    dashboard.weatherForecasts[index].temperature = weatherData.list[index].main.temp;
-    dashboard.weatherForecasts[index].weatherDescription = weatherData.list[index].weather[0].description;
+  console.log("dashboard in saveWeatherData...", dashboard)
+  let dayIndex = 0;
+  indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {
+    dashboard.weatherForecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
+    dashboard.weatherForecasts[dayIndex].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[indexInOpenWeatherMap].weather[0].icon}@2x.png`;   
+    dashboard.weatherForecasts[dayIndex].temperature = weatherData.list[indexInOpenWeatherMap].main.temp;
+    dashboard.weatherForecasts[dayIndex].weatherDescription = weatherData.list[indexInOpenWeatherMap].weather[0].description;
+    dayIndex = dayIndex + 1;
   })
-  
+  console.log("dashboard with updated weather-info: ",dashboard)
   setDashboardInLocalStorage(dashboard); 
+  dashboard = getDashboardFromLocalStorage();
+  console.log("dashboard with updated weather-info: ",dashboard)
 };
 
 
 function getLocation() {
   if (navigator.geolocation) {
     return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(position => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          //console.log("lat, lon: ", lat, lon);
+          resolve({ lat, lon });
+        },
+        error => {
+          reject(error); 
+        });
+    });
+  } else {
+    console.log("Geolocation is not supported by this browser.");
+  }
+};
+
+
+
+/* function getLocation() {
+  if (navigator.geolocation) {
+    return new Promise((resolve, reject) => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(position => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
-          console.log("lat, lon: ", lat, lon);
+          //console.log("lat, lon: ", lat, lon);
           resolve({ lat, lon });
         },
         error => {
@@ -194,4 +223,4 @@ function getLocation() {
   }
 };
 
-
+ */

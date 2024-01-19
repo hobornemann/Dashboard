@@ -17,7 +17,7 @@ export{
       webLinks: [
         { 
           id: 1,
-          webLinkFaviconUrl: "/images/default-icon.png",
+          webLinkFaviconUrl: "https://www.google.com/s2/favicons?domain=www.google.se&sz=256",
           webLinkHeading: "Google",
           webLinkUrl: "http://www.google.se",
         },
@@ -43,7 +43,7 @@ export{
           dayHeading: "I övermorgon",
           temperature: -10,
           weatherDescription: "Snö och moln"        
-        }
+        },
       ],
       news: [
   
@@ -60,13 +60,14 @@ export{
   async function getDashboardObject(){
     let dashboard;
     const dashboardInLocalStorage = await getDashboardFromLocalStorage();
+    //console.log("dashboardInLocalStorage",dashboardInLocalStorage)
     if(dashboardInLocalStorage == null) {
-      console.log("dashboardInLocalStorage == null");
+      //console.log("dashboardInLocalStorage == null");
       dashboard = getDefaultDashboardObject();
     } else{
       dashboard = dashboardInLocalStorage;
     }
-    setDashboardInLocalStorage(dashboard);
+    setDashboardInLocalStorage(dashboard);  
     return dashboard;
   };
   

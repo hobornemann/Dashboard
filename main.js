@@ -25,9 +25,10 @@ import{
 import{
   fetchImage,
   getApiAccessKeys,
-  getDateAndTime,
+  updateDateAndTime,
   fetchWeatherData,
-  getLocation
+  getLocation,
+  getFavicon
 } from "./fetchData.js"
 
 
@@ -49,13 +50,11 @@ const defaultIconUrl = "/images/default-icon.png";
 
  
 // WINDOW - ON-LOAD  
-window.addEventListener("DOMContentLoaded", () => {
-  localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
-  let dashboard = getDashboardObject();
- 
-  let weatherData = fetchWeatherData()
-
-
+window.addEventListener("DOMContentLoaded", async () => {
+  //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+  let dashboard =  await getDashboardObject();
+  //console.log("dashboard in window onload",dashboard)
+  let weatherData = await fetchWeatherData()
   renderDynamicElementsOfIndexPage();
   renderIntialBackgroundImage();
   setInterval(renderDateAndTime(), 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
@@ -79,15 +78,15 @@ function renderDynamicElementsOfIndexPage(){
 const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
 changeBackgroundImage_button.addEventListener("click", async () => {
   const imageUrl = await fetchImage();  
-  console.log("imageUrl in eventlistener",imageUrl)
+  //console.log("imageUrl in eventlistener",imageUrl)
   document.body.style.backgroundImage = `url(${imageUrl})`;
 }); 
 
 
 
 // DATE & TIME - REDER DATE and TIME
-async function renderDateAndTime(){
-  const response = await getDateAndTime();  // TODO: Fixa await-funktionaliteten!!!
+function renderDateAndTime(){
+  updateDateAndTime();  
   displayDateAndTime();
 };
 
@@ -95,10 +94,10 @@ async function renderDateAndTime(){
 // DATE & TIME - DISPLAY DATE and TIME
 function displayDateAndTime(){
   let dashboard = getDashboardFromLocalStorage();
-  const timeElement = document.querySelector(".time");
   const dateElement = document.querySelector(".date");
-  timeElement.textContent = dashboard.time;
+  const timeElement = document.querySelector(".time");
   dateElement.textContent = dashboard.date;
+  timeElement.textContent = dashboard.time;
 };
 
 
@@ -123,6 +122,7 @@ openAddWebLinkForm_button.addEventListener("click", () =>{
   const addWebLink_form = document.querySelector(".add-webLink-form");
   addWebLink_form.classList.remove("hidden");
 })
+
 
 // WEBLINKS - RENDER ALL WEBLINK CARDS
 function renderAllWebLinkCards(){
@@ -178,11 +178,12 @@ function renderAllWebLinkCards(){
 
 // WEBLINKS - ADD NEW WEBLINK (and RENDER)
 const addNewWebLink_button = document.querySelector(".add-new-webLink-button");
-addNewWebLink_button.addEventListener("click", () => {
+addNewWebLink_button.addEventListener("click", async () => {
   let dashboard = getDashboardFromLocalStorage();
   // Store new WebLink in the Dashboard Object 
   const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id)) + 1;
-  const newWebLinkFaviconUrl = defaultIconUrl;  // TODO:  get favicon and store url in the dashboard object
+  const newWebLinkFaviconUrl = await getFavicon(document.querySelector("#webLink-url-input").value);  // TODO:  get favicon and store url in the dashboard object
+  console.log("newWebLinkFaviconUrl", newWebLinkFaviconUrl)
   const newWebLinkUrl = document.querySelector("#webLink-url-input").value;
   const newWebLinkHeading = document.querySelector("#webLink-heading-input").value;
 
@@ -226,14 +227,18 @@ addNewWebLink_button.addEventListener("click", () => {
 function renderWeatherCards(){
   let dashboard = getDashboardFromLocalStorage();
   let weatherContainerHtml = "";
+  console.log("dashboard i renderWeatherCards: ", dashboard)
   dashboard.weatherForecasts.map(weatherForecast => {
+    let dateTime = new Date(weatherForecast.dateTime);
+    let timeForForecast = dateTime.toLocaleTimeString('sv-SE').slice(0, -3);
+    
     weatherContainerHtml = weatherContainerHtml + 
     `<div class="weather-card small-card">
       <img class="weather-icon" src="${weatherForecast.weatherIconUrl}">
       <div class="weather-day-temperature-comment">
-        <div class="weather-day-heading">${weatherForecast.dayHeading}</div>
+        <div class="weather-day-heading">${weatherForecast.dayHeading} (kl. ${timeForForecast})</div>
         <div class="weather-temperature-comment">
-          <div class="weather-temperature">&nbsp${weatherForecast.temperature}&deg&nbsp</div>
+          <div class="weather-temperature">&nbsp${Math.round(weatherForecast.temperature)}&deg&nbsp</div>
           <div class="weather-comment">&nbsp${weatherForecast.weatherDescription}&nbsp</div>
         </div>
       </div>
@@ -252,10 +257,10 @@ function renderWeatherCards(){
 // NOTE - RENDER 
 async function renderNote(){
   let dashboard = getDashboardFromLocalStorage();
-  const note_p = document.querySelector(".note");
-  note_p.innerHTML = dashboard.note;
-  note_p.addEventListener("input", () => {
-    dashboard.note = note_p.textContent;
+  const note = document.querySelector(".note");
+  note.innerHTML = dashboard.note;
+  note.addEventListener("input", () => {
+    dashboard.note = note.innerHTML;
     setDashboardInLocalStorage(dashboard);
   })
 };
