@@ -9,11 +9,14 @@
 3. Denna del innehåller länkar som användaren sparat. Användaren kan ta bort länkar (3a) samt lägga till nya (3b). När användaren lägger till nya länkar ska användaren fylla i länken samt en rubrik som denna vill ska synas i dashboarden.
 => KLART
 
+3.a Göra om Ny weblänk till dialog
+=> TODO:
+
 Extra utmaning: Hämta länkens favicon och visa som bild i dashboarden.
 => TODO:
 
 4. Här ska vädret i närtid visas. Denna behöver inte se #ut exakt som i skissen men det ska vara data som hämtas från något öppet API. För att avgöra vilken stad vädret ska visas för ska browserns geolocation-api användas.
-=> TODO:
+=> KLART
 
 Extra utmaning: Gör så att användaren kan anpassa orten som visas
 => TODO:
@@ -30,11 +33,19 @@ Extra utmaning: Gör så att användaren kan anpassa orten som visas
 Extra utmaning: Låt användaren fylla i ett sökord som används för att hitta en randomiserad bild så att det blir inom ett tema som användaren önskar.
 => TODO:
  
-8. TODO: Lägga ACCESS-KEYS i secret.json filen 
+8. Lägga ACCESS-KEYS i secret.json filen 
+=> KLART
 
-9. TODO: Import / Export  - Lägga delar av projektet i andra js-filer 
+9. Import / Export  - Lägga delar av projektet i andra js-filer 
+=> KLART
 
-10. VG-fråga:
+10. Clean up the project
+=> TODO:
+
+10. b) Lägg till try-catch error handling
+=> TODO: 
+
+11. VG-fråga:
 
 Denna del behöver du bara göra om du satsar på VG.
 
@@ -45,6 +56,6 @@ VG-nivån bedöms genom kvalitén på koden i kombination med din förmåga att 
 
  
 
-Din inlämning
+12. Inlämning  TODO:
 Lämna in länk till ett github-repo i Canvas
 Obs! Publicera inte någon API-nyckel i ditt repo eller ev hostad sida (säkerhetsrisk). Skriv i ReadME att användaren kan hämta egen nyckel på sidan xxx.

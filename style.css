@@ -171,6 +171,14 @@
   text-decoration: none;
 }
 
+.webLink-dialog{
+  width: 100%;
+  position: relative;
+  top: -3vh;
+  padding: 1vh;
+
+}
+
 .goto-webLink-url-button{
   width: 93%;
 }
@@ -286,7 +294,6 @@
   margin-left: 1vh;
   background-color: var(--weather-details-background-color);
   border-radius: 1vh;
-
 }
 
 
@@ -317,8 +324,6 @@
   justify-content: center;
   height: 5vh;
   margin-bottom: 2vh;
-  
-
 }
 
 

@@ -73,11 +73,24 @@ export{
   
   
   function setDashboardInLocalStorage(dashboard){
-    localStorage.setItem("dashboard", JSON.stringify(dashboard));
+    try{
+      localStorage.setItem("dashboard", JSON.stringify(dashboard));
+    } catch (error) {
+      console.error("Error setting object in local storage: ", error);
+    }
   }
   
+
   function getDashboardFromLocalStorage(){
-    let dashboard = JSON.parse(localStorage.getItem("dashboard"));
+    let dashboard = null;
+    const localStorageData = localStorage.getItem("dashboard");
+    if (localStorageData) {
+      try {
+        dashboard = JSON.parse(localStorageData);
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+    }
     return dashboard;
   }
   

@@ -11,5 +11,10 @@ FRÅGOR TILL SANDRA
           const myWebLinksArray = dashboard.webLinks.filter(webLink => !(webLink.id == webLinkId)); // fungerade bra
 Svar:  webLinkId var en sträng, medan webLink.id var en integer !!!! parseInt() av webLinkId hade funkat bra 
 
-4. 
+4. Behöver man både new Promise med resolve-reject och try-catch? Eller, är resolve-reject en typ av error handler redan?
+    - se tex funktionen getLocation i fetchData.js. Behöver man lägga till en try-catch här? Det verkar som att det redan finns tillräcklig error handling...
+    - Eller, behöver man skapa en try-catch för varje funktion man kallar på?
+    - Eller, räcker det med / ska man ha en try-catch i varje kod som innehåller minst en funktion 
+
+5. 
 

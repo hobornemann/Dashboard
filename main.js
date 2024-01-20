@@ -28,7 +28,8 @@ import{
   updateDateAndTime,
   fetchWeatherData,
   getLocation,
-  getFavicon
+  getFaviconUrl,
+  getWebsiteMainUrl
 } from "./fetchData.js"
 
 
@@ -51,10 +52,10 @@ const defaultIconUrl = "/images/default-icon.png";
  
 // WINDOW - ON-LOAD  
 window.addEventListener("DOMContentLoaded", async () => {
-  //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+  localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
   let dashboard =  await getDashboardObject();
-  //console.log("dashboard in window onload",dashboard)
-  let weatherData = await fetchWeatherData()
+  console.log("dashboard in window onload",dashboard)
+  await fetchWeatherData()
   renderDynamicElementsOfIndexPage();
   renderIntialBackgroundImage();
   setInterval(renderDateAndTime(), 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
@@ -116,17 +117,11 @@ function renderMainHeading(){
 
 
 
-// WEBLINKS - OPEN ADD-WEBLINK-FORM 
-const openAddWebLinkForm_button = document.querySelector(".open-add-webLink-form-button");
-openAddWebLinkForm_button.addEventListener("click", () =>{
-  const addWebLink_form = document.querySelector(".add-webLink-form");
-  addWebLink_form.classList.remove("hidden");
-})
-
 
 // WEBLINKS - RENDER ALL WEBLINK CARDS
 function renderAllWebLinkCards(){
   let dashboard = getDashboardFromLocalStorage()
+  console.log("dashboard in renderAllWebLinkCards:", dashboard)
   let webLinksContainerHtml = "";
   //console.log("dashboard in renderAllWebLinkCards", dashboard)
   //console.log("dashboard.webLinks in renderAllWebLinkCards",dashboard.webLinks)
@@ -172,20 +167,36 @@ function renderAllWebLinkCards(){
       e.currentTarget.parentNode.parentNode.removeChild(e.currentTarget.parentNode);
     });
   });
-
 };
 
 
-// WEBLINKS - ADD NEW WEBLINK (and RENDER)
+
+
+// WEBLINKS - OPEN WEBLINK-DIALOG 
+const openWebLinkDialog_button = document.querySelector(".open-webLink-dialog-button");
+openWebLinkDialog_button.addEventListener("click", () =>{
+  const webLinkDialog = document.querySelector(".webLink-dialog");
+  webLinkDialog.show()
+})
+
+
+
+   //TODO: 
+// WEBLINKS - ADD NEW WEBLINK 
 const addNewWebLink_button = document.querySelector(".add-new-webLink-button");
-addNewWebLink_button.addEventListener("click", async () => {
+addNewWebLink_button.addEventListener("click", () =>{
+  
   let dashboard = getDashboardFromLocalStorage();
+  let websiteUrl = document.querySelector(".webLink-url-input").value;
+  console.log("websiteUrl in addNewWebLink-eventlistener: ", websiteUrl)
+  let websiteMainUrl = getWebsiteMainUrl(websiteUrl);
+
+
   // Store new WebLink in the Dashboard Object 
   const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id)) + 1;
-  const newWebLinkFaviconUrl = await getFavicon(document.querySelector("#webLink-url-input").value);  // TODO:  get favicon and store url in the dashboard object
-  console.log("newWebLinkFaviconUrl", newWebLinkFaviconUrl)
-  const newWebLinkUrl = document.querySelector("#webLink-url-input").value;
-  const newWebLinkHeading = document.querySelector("#webLink-heading-input").value;
+  const newWebLinkUrl = document.querySelector(".webLink-url-input").value;
+  const newWebLinkFaviconUrl = getFaviconUrl(websiteMainUrl);
+  const newWebLinkHeading = document.querySelector(".webLink-heading-input").value;
 
   dashboard.webLinks.push({
     id: newWebLinkId, 
@@ -194,12 +205,17 @@ addNewWebLink_button.addEventListener("click", async () => {
     webLinkUrl: newWebLinkUrl,
   })
 
-  // Store new WebLink in localStorage   T
+  console.log("dashboard when addNewWebLink ready", dashboard)
+
+  // Store new WebLink in localStorage  
   setDashboardInLocalStorage(dashboard);  
 
-  // Render the new webLink 
-//TODO:  Append new webLink child to webLink container  (incl eventListener !!!)
-  const webLinksContainer =document.querySelector(".webLinks-container");
+
+  renderAllWebLinkCards();
+
+  /* // Render the new webLink 
+  //TODO:  Append new webLink child to webLink container  (incl eventListener !!!)
+  const webLinksContainer = document.querySelector(".webLinks-container");
   let webLinksContainerHtml = webLinksContainer.innerHTML;
   const newWebLinkHtml =  
   `<div class="webLink-card small-card" data-id=${newWebLinkId}>
@@ -211,23 +227,45 @@ addNewWebLink_button.addEventListener("click", async () => {
   </div>`;
   webLinksContainerHtml = webLinksContainerHtml + newWebLinkHtml;
   webLinksContainer.innerHTML = webLinksContainerHtml;
-
-  // TODO:  Do I need to call a display function to show the added webLinkButton or will that happen automatically?
   
+  // TODO:  Do I need to call a display function to show the added webLinkButton or will that happen automatically?
+  console.log("Slutet på addNewWebLink") */
 
-  // Hide the Add WebLink Form again
-  addWebLink_form.classList.add("hidden");
 
+
+  const webLinkDialog = document.querySelector(".webLink-dialog");
+  webLinkDialog.close()
+  document.querySelector(".webLink-url-input").value = "";
+  document.querySelector(".webLink-heading-input").value = "";
 });
 
 
 
-// TODO: Get weather data, store & render
+
+  
+
+
+
+
+
+
+
+// WEBLINKS - CANCEL NEW WEBLINK 
+const cancelNewWebLink_button = document.querySelector(".cancel-new-webLink-button");
+cancelNewWebLink_button.addEventListener("click", () =>{
+  document.querySelector(".webLink-url-input").value = "";
+  document.querySelector(".webLink-heading-input").value = "";
+  const webLinkDialog = document.querySelector(".webLink-dialog");
+  webLinkDialog.close()
+})
+
+
+
 // WEATHER CARDS - RENDER 
 function renderWeatherCards(){
   let dashboard = getDashboardFromLocalStorage();
   let weatherContainerHtml = "";
-  console.log("dashboard i renderWeatherCards: ", dashboard)
+  //console.log("dashboard i renderWeatherCards: ", dashboard)
   dashboard.weatherForecasts.map(weatherForecast => {
     let dateTime = new Date(weatherForecast.dateTime);
     let timeForForecast = dateTime.toLocaleTimeString('sv-SE').slice(0, -3);

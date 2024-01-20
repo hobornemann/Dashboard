@@ -31,12 +31,13 @@
               </div>
               <!-- above the webLink items are inserted -->
             </div>
-            <button class="open-add-webLink-form-button button">Ny webblänk</button>
-            <form class="add-webLink-form hidden"> 
-              <input class="webLink-url-input input" type="text" name="webLink-url-input" id="webLink-url-input" placeholder="Kopiera in webblänken här, tex www.google.se">          
-              <input class="webLink-heading-input input" type="text" name="webLink-heading-input" id="webLink-heading-input" placeholder="Skriv namnet på länken här, tex Google"> 
-              <input class="add-new-webLink-button button" type="submit" value="OK">
-            </form>               
+            <button class="open-webLink-dialog-button button">Ny webblänk</button>
+            <dialog class="webLink-dialog">
+              <input class="webLink-url-input input" type="text" name="webLink-url-input" id="webLink-url-input" placeholder="tex www.google.se">          
+              <input class="webLink-heading-input input" type="text" name="webLink-heading-input" id="webLink-heading-input" placeholder="tex Google-Search"> 
+              <button class="add-new-webLink-button button">OK</button>
+              <button class="cancel-new-webLink-button button">Avbryt</button>
+            </dialog>
           </article>
           <article class="card">
             <h3 class="card-heading">Väderprognoser</h3>
