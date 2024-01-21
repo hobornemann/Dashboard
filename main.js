@@ -69,6 +69,7 @@ function renderDynamicElementsOfIndexPage(){
   renderMainHeading();
   renderAllWebLinkCards();
   renderWeatherCards();
+  renderNewsCards()
   renderNote();
 };
 
@@ -266,7 +267,32 @@ function renderWeatherCards(){
   return dashboard;
 };
 
+//TODO: TODO: TODO: TODO: 
+// NEWS - RENDER
+function renderNewsCards(){
+  let dashboard = getDashboardFromLocalStorage();
+  let newsContainerHtml = "";
+  //console.log("dashboard i renderNewsCards: ", dashboard)
+  dashboard.newsArticles.map(newsArticle => {
+    
+    newsContainerHtml = newsContainerHtml + 
+    `<div class="news-card small-card">
+      <img class="news-icon" src="${weatherForecast.weatherIconUrl}">
+      <div class="news-day-temperature-comment">
+        <div class="weather-day-heading">${weatherForecast.dayHeading} (kl. ${timeForForecast})</div>
+        <div class="weather-temperature-comment">
+          <div class="weather-temperature">&nbsp${Math.round(weatherForecast.temperature)}&deg&nbsp</div>
+          <div class="weather-comment">&nbsp${weatherForecast.weatherDescription}&nbsp</div>
+        </div>
+      </div>
+    </div>  
+  `;
+  });
 
+  const weatherContainer = document.querySelector(".weather-container");
+  weatherContainer.innerHTML = weatherContainerHtml;
+  return dashboard;
+}
 
 
 // NOTE - RENDER 
