@@ -7,7 +7,7 @@ export{
 }
 
 
-  // TODO: expand the dashboard object with news-data
+  // MODEL - Default Dashboard Object
   function getDefaultDashboardObject(){
     
     let dashboard = {
@@ -67,9 +67,7 @@ export{
   };
 
   
-
-  // TODO: update dashboard with current weather forecasts 
-  // TODO: update favicon / FaviconUrl
+  // MODEL - Get Dashboard Object
   async function getDashboardObject(){
     let dashboard;
     const dashboardInLocalStorage = await getDashboardFromLocalStorage();
@@ -84,7 +82,8 @@ export{
     return dashboard;
   };
   
-  
+
+  // MODEL - Set Dashboard Object in Local Storage
   function setDashboardInLocalStorage(dashboard){
     try{
       localStorage.setItem("dashboard", JSON.stringify(dashboard));
@@ -94,6 +93,7 @@ export{
   }
   
 
+  // MODEL - Get Dashboard from Local Storage
   function getDashboardFromLocalStorage(){
     let dashboard = null;
     const localStorageData = localStorage.getItem("dashboard");
