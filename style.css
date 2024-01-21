@@ -66,7 +66,7 @@
   "emptyContainer2"
   "footerContainer";
   grid-template-columns: auto;
-  grid-template-rows: 40px auto 1fr auto 100px; 
+  grid-template-rows: 0.2fr auto 1fr auto 0.2fr; 
 
   /* background-color: var(--body-background-color); */
   font-family: var(--font-family01);
@@ -75,6 +75,7 @@
   background-position: center;
   background-size: cover;
   background-repeat: repeat;
+  height: 100vh;
  /*  overflow: hidden; */
 } 
 
@@ -155,6 +156,11 @@
 .open-webLink-dialog-button{
   width: 100%;
   background-color: white;
+  padding: 0.7vh 0.7vw;
+  border-radius: 4px;
+  border-width: 1px;
+  margin: 0.7vh 0vw;
+  font-size: clamp(10px, 2vh, 15px);
 }
 
 .webLinks-container{
@@ -243,7 +249,9 @@
   display: none;
 }
 
-.footer-container
+.footer-container{
+  grid-area: footerContainer;
+}
 
 .button{
   padding: 0.7vh 0.7vw;

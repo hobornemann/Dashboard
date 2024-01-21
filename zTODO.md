@@ -10,10 +10,10 @@
 => KLART
 
 3.a Göra om Ny weblänk till dialog
-=> TODO:
+=> KLART
 
 Extra utmaning: Hämta länkens favicon och visa som bild i dashboarden.
-=> TODO:
+=> KLART
 
 4. Här ska vädret i närtid visas. Denna behöver inte se #ut exakt som i skissen men det ska vara data som hämtas från något öppet API. För att avgöra vilken stad vädret ska visas för ska browserns geolocation-api användas.
 => KLART
