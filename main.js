@@ -267,30 +267,33 @@ function renderWeatherCards(){
   return dashboard;
 };
 
+
 //TODO: TODO: TODO: TODO: 
 // NEWS - RENDER
 function renderNewsCards(){
   let dashboard = getDashboardFromLocalStorage();
   let newsContainerHtml = "";
+  let imageUrl = "https://ichef.bbci.co.uk/news/1024/branded_news/C23F/production/_132372794_p0h60l8w.jpg";
+  let articleUrl = "https://www.bbc.co.uk/news/uk-england-leicestershire-68023459";
   //console.log("dashboard i renderNewsCards: ", dashboard)
   dashboard.newsArticles.map(newsArticle => {
-    
     newsContainerHtml = newsContainerHtml + 
-    `<div class="news-card small-card">
-      <img class="news-icon" src="${weatherForecast.weatherIconUrl}">
-      <div class="news-day-temperature-comment">
-        <div class="weather-day-heading">${weatherForecast.dayHeading} (kl. ${timeForForecast})</div>
-        <div class="weather-temperature-comment">
-          <div class="weather-temperature">&nbsp${Math.round(weatherForecast.temperature)}&deg&nbsp</div>
-          <div class="weather-comment">&nbsp${weatherForecast.weatherDescription}&nbsp</div>
-        </div>
+    `
+    <a class="news-card small-card" href="${newsArticle.articleUrl}" target=_blank>
+      <div class="news-author-and-image">
+        <div class="news-author">${newsArticle.author}</div>
+        <img class="news-image" src="${newsArticle.imageUrl}">
       </div>
-    </div>  
-  `;
+      <div class="news-title-and-description">
+        <div class="news-title">${newsArticle.title}</div>
+        <div class="news-description">${newsArticle.description}</div>
+      </div>
+    </a> 
+    `;
   });
 
-  const weatherContainer = document.querySelector(".weather-container");
-  weatherContainer.innerHTML = weatherContainerHtml;
+  const newsContainer = document.querySelector(".news-container");
+  newsContainer.innerHTML = newsContainerHtml;
   return dashboard;
 }
 

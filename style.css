@@ -16,6 +16,7 @@
   --card-background-color: rgba(200, 200, 200, 0.6); 
   --item-background-color: rgb(255, 255, 255, 1);
   --weather-details-background-color: rgba(255, 255, 255, 1);
+  --news-details-background-color: rgba(255, 255, 255, 1);
   --button-background-color: rgba(241, 123, 19, 1);    
   
   /* --card01-drop-shadow-color:  rgba(0, 0, 0, 0.25);  */
@@ -33,29 +34,16 @@
 
 
 
+/* ---------------------------------------------------------------- */
+/* MAJOR ELEMENTS */
+/* ---------------------------------------------------------------- */
+
 * {
- margin: 0;
- padding: 0;
- box-sizing: border-box;
-}
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+ }
 
-.dateTime{
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  background-color: var(--item-background-color);
-  border-radius: 1vh;
-  width: clamp(150px, 20%, 24%);
-  font-size: clamp(10px, 2vh, 15px);
-}
-
-.time, .date{
-  margin: 0 4%;
-}
-
-.time{
-  font-weight: 600;
-}
 
 .body-container{
   display: grid;
@@ -153,6 +141,58 @@
   margin-bottom: 2vh;
 } 
 
+.small-card{
+  padding: 0.7vh 0.7vw;
+  width: 100%;
+  background-color: var(--item-background-color);
+  border-radius: 5px;
+  margin-top: 0.7vh;
+  margin-bottom: 0.7vh;
+}
+
+.button{
+  padding: 0.7vh 0.7vw;
+  border-radius: 4px;
+  border-width: 1px;
+  margin: 0.7vh 0vw;
+  font-size: clamp(10px, 2vh, 15px);
+}
+
+.footer-container{
+  grid-area: footerContainer;
+  display: flex;
+  justify-content: center;
+  height: 5vh;
+  margin-bottom: 2vh;
+}
+
+/* ---------------------------------------------------------------- */
+/* DATE & TIME */
+/* ---------------------------------------------------------------- */
+
+.dateTime{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  background-color: var(--item-background-color);
+  border-radius: 1vh;
+  width: clamp(150px, 20%, 24%);
+  font-size: clamp(10px, 2vh, 15px);
+}
+
+.time, .date{
+  margin: 0 4%;
+}
+
+.time{
+  font-weight: 600;
+}
+
+
+/* ---------------------------------------------------------------- */
+/* WEBLINKS */
+/* ---------------------------------------------------------------- */
+
 .open-webLink-dialog-button{
   width: 100%;
   background-color: white;
@@ -206,8 +246,6 @@
   
 }
 
-
-
 .webLink-heading-input, .webLink-url-input{
   margin-bottom: 2vh;
 }
@@ -215,7 +253,6 @@
 .goto-webLink-url-button{
   width: 93%;
 }
-
 
 .webLink-favicon{
   height: clamp(1vh, 4vh, 5vh);
@@ -234,41 +271,20 @@
   right: 0;
 }
 
-
 .input{
   display: block;
   width: 100%;
 }
 
-
 .input::placeholder{
   font-size: clamp(8px, 1.8vh, 13px);
 }
 
-.hidden{
-  display: none;
-}
 
-.footer-container{
-  grid-area: footerContainer;
-}
 
-.button{
-  padding: 0.7vh 0.7vw;
-  border-radius: 4px;
-  border-width: 1px;
-  margin: 0.7vh 0vw;
-  font-size: clamp(10px, 2vh, 15px);
-}
-
-.small-card{
-  padding: 0.7vh 0.7vw;
-  width: 100%;
-  background-color: var(--item-background-color);
-  border-radius: 5px;
-  margin-top: 0.7vh;
-  margin-bottom: 0.7vh;
-}
+/* ---------------------------------------------------------------- */
+/* WEATHER */
+/* ---------------------------------------------------------------- */
 
 .weather-container{
   width: 100%;
@@ -324,10 +340,65 @@
 
 
 
+/* ---------------------------------------------------------------- */
+/* NEWS */
+/* ---------------------------------------------------------------- */
 
 .news-container{
-
+  width: 100%;
+  overflow-y: scroll;
 }
+
+.news-card{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: clamp(10px, 2vh, 15px);
+  height: clamp(6vh, 12vh, 16vh);
+  text-decoration: none;
+}
+
+.news-author-and-image{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: 100%;
+  max-width: 100%; 
+  object-fit: cover;
+  overflow: hidden;
+}
+
+.news-author{
+  font-size: clamp(9px, 1.8vh, 13.5px);
+}
+
+.news-image{
+  max-height: 70%;
+  border-radius: 5px;
+  object-fit: scale-down; 
+}
+
+.news-title-and-description{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 1vh;
+}
+
+.news-title{
+  font-weight: 700;
+}
+
+.news-description{
+  background-color: var(--news-details-background-color);
+  font-size: clamp(9px, 1.8vh, 13.5px);
+}
+
+
+/* ---------------------------------------------------------------- */
+/* NOTE */
+/* ---------------------------------------------------------------- */
 
 
 .note{
@@ -344,13 +415,7 @@
 
 }
 
-.footer-container{
-  grid-area: footerContainer;
-  display: flex;
-  justify-content: center;
-  height: 5vh;
-  margin-bottom: 2vh;
-}
+
 
 
 
