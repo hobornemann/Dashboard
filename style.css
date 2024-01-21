@@ -64,6 +64,7 @@
   background-size: cover;
   background-repeat: repeat;
   height: 100vh;
+  color: var(--color01);
  /*  overflow: hidden; */
 } 
 
@@ -157,6 +158,7 @@
   border-width: 1px;
   margin: 0.7vh 0vw;
   font-size: clamp(10px, 2vh, 15px);
+  color: var(--color01);
 }
 
 .footer-container{
@@ -175,10 +177,12 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
   background-color: var(--item-background-color);
   border-radius: 1vh;
   width: clamp(150px, 20%, 24%);
   font-size: clamp(10px, 2vh, 15px);
+  height: 3vh;
 }
 
 .time, .date{
@@ -253,6 +257,8 @@
 
 .goto-webLink-url-button{
   width: 93%;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .webLink-favicon{
@@ -270,6 +276,8 @@
   position: absolute;
   top: 0;
   right: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .input{
@@ -289,6 +297,7 @@
 
 .weather-container{
   width: 100%;
+  color: var(--color01);
 }
 
 .weather-card{
@@ -356,10 +365,11 @@
   flex-direction: column;
   justify-content: flex-start;
   font-size: clamp(10px, 2vh, 13px);
-  height: clamp(10vh, 20vh, 27vh);
+  height: clamp(10vh, 22vh, 27vh);
   text-decoration: none;
   width: 98%;
 }
+
 a{
   color: var(--color01);
 }
@@ -428,6 +438,7 @@ a{
 .note{
   height: 100%;
   overflow-y: scroll;
+  color: var(--color01);
 }
 
 

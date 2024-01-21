@@ -22,7 +22,7 @@ Extra utmaning: Gör så att användaren kan anpassa orten som visas
 => TODO:
 
 5. Denna del får du fritt bestämma vad den ska innehålla. Det ska dock vara data från ett externt API och exempelvis kan det vara senaste nyheterna eller aktiekurser.
-=> TODO:
+=> KLART
 
 6. I den här delen ska användaren kunna skriva snabba anteckningar. Tänk en stor textarea bara där det som skrivs sparas hela tiden. Det ska inte finnas flera olika anteckningar utan bara just en yta.
 => KLART

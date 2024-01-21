@@ -1,12 +1,14 @@
 // ============================================================
 // CONTENTS 
 // ============================================================
-/* A. THIS FILE - 
-    - Imports
-    - Global Variables
+/* A. main.js 
     - EventListeners & related Functions 
-   B. MODEL.JS
-   C. FETCHDATA.JS
+   B. index.html
+   C. style.css
+   D. model.JS
+   E. fetchData.JS
+   F. apiAccessKeys.json
+   G. README.md 
  */ 
 
 // -------------------------------------------------------------
@@ -33,13 +35,6 @@ import{
   fetchNewsData,
   getDateAndTimeString
 } from "./fetchData.js"
-
-
-// -------------------------------------------------------------
-// GLOBAL VARIABLES & OBJECTS
-// -------------------------------------------------------------
-
-const defaultIconUrl = "/images/default-icon.png";
 
 
 
@@ -255,7 +250,7 @@ function renderWeatherCards(){
     `<div class="weather-card small-card">
       <img class="weather-icon" src="${weatherForecast.weatherIconUrl}">
       <div class="weather-day-temperature-comment">
-        <div class="weather-day-heading">${weatherForecast.dayHeading} (kl. ${timeForForecast})</div>
+        <div class="weather-day-heading">${weatherForecast.dayHeading} (${timeForForecast})</div>
         <div class="weather-temperature-comment">
           <div class="weather-temperature">&nbsp${Math.round(weatherForecast.temperature)}&deg&nbsp</div>
           <div class="weather-comment">&nbsp${weatherForecast.weatherDescription}&nbsp</div>
@@ -279,6 +274,7 @@ function renderNewsCards(){
   // let imageUrl = "https://ichef.bbci.co.uk/news/1024/branded_news/C23F/production/_132372794_p0h60l8w.jpg";
   // let articleUrl = "https://www.bbc.co.uk/news/uk-england-leicestershire-68023459";
 
+  console.log("dashboard in renderNewsCards: ", dashboard)
 
   //console.log("dashboard i renderNewsCards: ", dashboard)
   dashboard.newsArticles.map(newsArticle => {
@@ -286,7 +282,7 @@ function renderNewsCards(){
     let dateAndTimeString = getDateAndTimeString(newsArticle.publicationDate);
     newsContainerHtml = newsContainerHtml + 
     `
-    <a class="news-card small-card" href="${newsArticle.articleUrl}" target=_blank>
+    <a class="news-card small-card" href="${newsArticle.url}" target="_blank">
       <div class="news-image-author-and-publication-date">
         <img class="news-image" src="${newsArticle.imageUrl}">
         <div class="news-author-and-publication-date">
@@ -307,9 +303,9 @@ function renderNewsCards(){
   return dashboard;
 }
 
-//TODO: TODO: TODO: TODO: TODO: 
+//TODO: TODO: TODO: TODO: TODO: ????????  a href istället ! 
 // NEWS - NEWS CARD EVENT LISTENER
-const newsCards = document.querySelectorsAll(".news-card")
+//const newsCards = document.querySelectorsAll(".news-card");
 
 
 
