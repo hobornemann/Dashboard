@@ -137,8 +137,9 @@
 } 
 
 .card-heading{
-  font-size: clamp(12px, min(2.5vh, 2.5vw), 18px); 
+  font-size: clamp(13px, min(2.75vh, 2.75vw), 20px); 
   margin-bottom: 2vh;
+  
 } 
 
 .small-card{
@@ -346,53 +347,71 @@
 
 .news-container{
   width: 100%;
+  height: clamp(160px, 52vh, 80vh);
   overflow-y: scroll;
 }
 
 .news-card{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
-  font-size: clamp(10px, 2vh, 15px);
-  height: clamp(6vh, 12vh, 16vh);
+  font-size: clamp(10px, 2vh, 13px);
+  height: clamp(10vh, 20vh, 27vh);
   text-decoration: none;
+  width: 98%;
+}
+a{
+  color: var(--color01);
 }
 
-.news-author-and-image{
+
+.news-image-author-and-publication-date{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  height: clamp(2.5vh, 5vh, 7vh);
+  max-width: 100%; 
+  color: var(--color03);
+}
+
+.news-image{
+  max-height: 100%;
+  border-radius: 5px;
+  object-fit: scale-down; 
+}
+
+.news-author-and-publication-date{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: flex-start;
-  height: 100%;
-  max-width: 100%; 
-  object-fit: cover;
-  overflow: hidden;
+  align-items: flex-end;
 }
 
 .news-author{
   font-size: clamp(9px, 1.8vh, 13.5px);
 }
 
-.news-image{
-  max-height: 70%;
-  border-radius: 5px;
-  object-fit: scale-down; 
+.news-publication-date{
+  font-size: clamp(8px, 1.6vh, 12px);
 }
 
 .news-title-and-description{
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-left: 1vh;
+  margin-top: 1vh;
 }
 
 .news-title{
+  font-size: clamp(10px, 2vh, 15px);
   font-weight: 700;
 }
 
 .news-description{
   background-color: var(--news-details-background-color);
   font-size: clamp(9px, 1.8vh, 13.5px);
+  margin-top: 0.5vh;
 }
 
 
@@ -400,21 +419,16 @@
 /* NOTE */
 /* ---------------------------------------------------------------- */
 
-
-.note{
-  max-height: 100%;
-  overflow-y: scroll;
-  white-space: pre-wrap;
-
-}
-
-
 .note-card{
   font-size: clamp(10px, 2vh, 15px);
-  height: 80%;
-
+  height: clamp(160px, 51vh, 80vh);
+  margin-bottom: -2vh;
 }
 
+.note{
+  height: 100%;
+  overflow-y: scroll;
+}
 
 
 

@@ -29,7 +29,9 @@ import{
   fetchWeatherData,
   getLocation,
   getFaviconUrl,
-  extractMainDomainUrl
+  extractMainDomainUrl,
+  fetchNewsData,
+  getDateAndTimeString
 } from "./fetchData.js"
 
 
@@ -52,10 +54,11 @@ const defaultIconUrl = "/images/default-icon.png";
  
 // WINDOW - ON-LOAD  
 window.addEventListener("DOMContentLoaded", async () => {
-  //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+  localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
   let dashboard =  await getDashboardObject();
   console.log("dashboard in window onload",dashboard)
   await fetchWeatherData()
+  await fetchNewsData();
   renderDynamicElementsOfIndexPage();
   renderIntialBackgroundImage();
   setInterval(renderDateAndTime(), 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
@@ -122,7 +125,7 @@ function renderMainHeading(){
 // WEBLINKS - RENDER ALL WEBLINK CARDS
 function renderAllWebLinkCards(){
   let dashboard = getDashboardFromLocalStorage()
-  console.log("dashboard in renderAllWebLinkCards:", dashboard)
+  //console.log("dashboard in renderAllWebLinkCards:", dashboard)
   let webLinksContainerHtml = "";
   //console.log("dashboard in renderAllWebLinkCards", dashboard)
   //console.log("dashboard.webLinks in renderAllWebLinkCards",dashboard.webLinks)
@@ -273,16 +276,23 @@ function renderWeatherCards(){
 function renderNewsCards(){
   let dashboard = getDashboardFromLocalStorage();
   let newsContainerHtml = "";
-  let imageUrl = "https://ichef.bbci.co.uk/news/1024/branded_news/C23F/production/_132372794_p0h60l8w.jpg";
-  let articleUrl = "https://www.bbc.co.uk/news/uk-england-leicestershire-68023459";
+  // let imageUrl = "https://ichef.bbci.co.uk/news/1024/branded_news/C23F/production/_132372794_p0h60l8w.jpg";
+  // let articleUrl = "https://www.bbc.co.uk/news/uk-england-leicestershire-68023459";
+
+
   //console.log("dashboard i renderNewsCards: ", dashboard)
   dashboard.newsArticles.map(newsArticle => {
+
+    let dateAndTimeString = getDateAndTimeString(newsArticle.publicationDate);
     newsContainerHtml = newsContainerHtml + 
     `
     <a class="news-card small-card" href="${newsArticle.articleUrl}" target=_blank>
-      <div class="news-author-and-image">
-        <div class="news-author">${newsArticle.author}</div>
+      <div class="news-image-author-and-publication-date">
         <img class="news-image" src="${newsArticle.imageUrl}">
+        <div class="news-author-and-publication-date">
+          <div class="news-author">${newsArticle.author}</div>
+          <div class="news-publication-date">${dateAndTimeString}</div>
+        </div>  
       </div>
       <div class="news-title-and-description">
         <div class="news-title">${newsArticle.title}</div>
@@ -296,6 +306,13 @@ function renderNewsCards(){
   newsContainer.innerHTML = newsContainerHtml;
   return dashboard;
 }
+
+//TODO: TODO: TODO: TODO: TODO: 
+// NEWS - NEWS CARD EVENT LISTENER
+const newsCards = document.querySelectorsAll(".news-card")
+
+
+
 
 
 // NOTE - RENDER 

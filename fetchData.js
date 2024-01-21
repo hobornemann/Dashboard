@@ -14,7 +14,9 @@ export{
   fetchWeatherData,
   getLocation,
   extractMainDomainUrl,
-  getFaviconUrl
+  getFaviconUrl,
+  fetchNewsData,
+  getDateAndTimeString
 }
 
 
@@ -114,7 +116,34 @@ async function fetchImage(){
     }      
 }
 
-  
+  // DATE & TIME - GET DATE and TIME
+  function getDateAndTimeString(dateTime){
+    try{
+      
+      const myDateTime = new Date(dateTime); 
+      const date = myDateTime.toLocaleDateString('sv-SE'); 
+      let time = myDateTime.toLocaleTimeString('sv-SE'); 
+      time  = time.slice(0, -3);
+/* 
+      const date =    currentDateTime.getFullYear() + "-"
+                      + ((currentDateTime.getMonth() + 1 < 10)?"0":"") 
+                      + (currentDateTime.getMonth() + 1 )  + "-" 
+                      + ((currentDateTime.getDate() < 10)?"0":"") 
+                      + currentDateTime.getDate(); 
+      const time =    ((currentDateTime.getHours() < 10)?"0":"")
+                      + currentDateTime.getHours() + ":" 
+                      + ((currentDateTime.getMinutes() < 10)?"0":"")  
+                      + currentDateTime.getMinutes();  */                        
+     /*  dashboard.date = date;
+      dashboard.time = time; */
+      //setDashboardInLocalStorage(dashboard);
+      return `${date} ${time}`
+    } 
+    catch(error){
+      console.log("Kunde inte konvertera dateTime till datum och tid", error.message)
+    }      
+}
+
 
   
 // WEATHER - FETCH WEATHER DATA
@@ -205,8 +234,9 @@ async function fetchNewsData (){
   const apiKeysResponse = await getApiAccessKeys();
   let APIkey = apiKeysResponse.data.newsApi;
   //const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=API_KEY`
-  const url = `https://newsapi.org/v2/top-headlines?country=se&apiKey=${APIkey}`
+  const url = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${APIkey}`
 
+  // https://newsapi.org/v2/top-headlines?country=se&apiKey=${APIkey}
   // https://newsapi.org/v2/everything?q=Apple&from=2024-01-21&sortBy=popularity&apiKey=API_KEY
   // https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=API_KEY
   
@@ -216,48 +246,38 @@ async function fetchNewsData (){
   const newsResponse = await axios.get(url)
   console.log("newsResponse: ", newsResponse)
   const newsData = newsResponse.data;  //TODO: checka .data
-  //console.log("weatherData", weatherData);
-
-    saveNewsDataToDashboardAndLocalStorage(weatherData); 
+  console.log("newsData in fetchNewsData", newsData);
+  saveNewsDataToDashboardAndLocalStorage(newsData); // TODO:
   }
   catch(error){
     console.log("Error:", error.message)
   }
 } 
 
-//TODO:
-function saveNewsDataToDashboardAndLocalStorage(){
-  // Get array-index of today, tomorrow and tomorrow-next
-  const dateTimeStringNow = weatherData.list[0].dt_txt;
-  const dateTime = new Date(dateTimeStringNow);
-  const hoursNow = dateTime.getHours();
+//TODO: TODO: TODO: TODO: 
+function saveNewsDataToDashboardAndLocalStorage(newsData){
+  console.log("newsData",newsData);
 
-  let indexOfTodayInOpenWeatherMap = null;
-  let indexOfTomorrowInOpenWeatherMap = null;
-  let indexOfTomorrowNextInOpenWeatherMap = null;
-
-  if (hoursNow < 12){
-    indexOfTodayInOpenWeatherMap = (12-hoursNow)/3;
-    indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24/3);
-    indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
-  } else {
-    indexOfTodayInOpenWeatherMap = 0;
-    indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24-hoursNow)/3 + (12/3);
-    indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
-  }
-
-  const indicesInOpenWeatherMap =[indexOfTodayInOpenWeatherMap, indexOfTomorrowInOpenWeatherMap, indexOfTomorrowNextInOpenWeatherMap]
-  
- 
-  let dashboard = getDashboardFromLocalStorage();
-  let dayIndex = 0;
-  indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {
-    dashboard.weatherForecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
-    dashboard.weatherForecasts[dayIndex].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[indexInOpenWeatherMap].weather[0].icon}@2x.png`;   
-    dashboard.weatherForecasts[dayIndex].temperature = weatherData.list[indexInOpenWeatherMap].main.temp;
-    dashboard.weatherForecasts[dayIndex].weatherDescription = weatherData.list[indexInOpenWeatherMap].weather[0].description;
-    dayIndex = dayIndex + 1;
-  })
-  setDashboardInLocalStorage(dashboard); 
-  dashboard = getDashboardFromLocalStorage();
+  try{
+      let dashboard = getDashboardFromLocalStorage();
+      dashboard.newsArticles = [];
+      setDashboardInLocalStorage(dashboard); 
+      newsData.articles.map(newsItem => {
+        dashboard.newsArticles.push({
+          id: newsItem.source.id,
+          name: newsItem.source.name,
+          author: newsItem.author,
+          title: newsItem.title,
+          description: newsItem.description,
+          url: newsItem.url,
+          imageUrl: newsItem.urlToImage,
+          publicationDate: newsItem.publishedAt,
+          content: newsItem.content
+        })
+      })
+      setDashboardInLocalStorage(dashboard); 
+    } 
+    catch (error){
+      console.log("Error occurred when saving news data.", error.message);
+    }
 }

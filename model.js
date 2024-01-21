@@ -57,7 +57,7 @@ export{
           description: "Mick Smith, a country singer, writes the song for his wife of nearly 60 years, Diana.",
           url: "https://www.bbc.co.uk/news/uk-england-leicestershire-68023459",
           imageUrl: "https://ichef.bbci.co.uk/news/1024/branded_news/C23F/production/_132372794_p0h60l8w.jpg",
-          publishedAt: "2024-01-21T09:07:16.5435358Z",
+          publicationDate: "2024-01-21T09:07:16.5435358Z",
           content: "A man who has recently been diagnosed with Alzheimer's disease has written a song to remember his love for his wife.\r\nMick Smith is a country singer, from Syston in Leicestershire, and performs at de… [+393 chars]"
         }  
       ],
