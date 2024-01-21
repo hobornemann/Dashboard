@@ -19,40 +19,6 @@ export{
 
 
 
-// TODO: get Favicons via google's url
-// WEBLINKS - GET FAVICON-URLs
-/* async function fetchFaviconUrl(websiteMainUrl){
-  let faviconUrl ="/images/default-icon.png";
-   const response = await getApiAccessKeys();
-  let ACCESS_KEY = response.data.unsplash;
-  const url = `google.com/s2/favicons?domain_url=${websiteMainUrl}&sz=256`;
-    try{
-      const response = await axios.get(url)  
-      console.log("response", response)  
-      if(response){
-        faviconUrl = response
-        console.log("faviconUrl: ", faviconUrl)
-      }
-    }
-    catch(error){
-      console.log("Error: ", error.message)
-    }
-    return faviconUrl;
-  } */
-  
-
-//TODO:  
-/* 
-  function getFaviconUrl(websiteMainUrl) {
-    
-    console.log("websiteMainUrl in getFaviconUrl",websiteMainUrl)
-    // Construct the URL for the Google favicon service
-    const faviconUrl = `https://www.google.com/s2/favicons?domain=${websiteMainUrl}&sz=256`;
-    console.log("faviconUrl in getFaviconUrl: ",faviconUrl)
-// &sz=256
-    return faviconUrl;
-} */
-
 function getFaviconUrl(websiteMainDomainUrl) {
   try{
     const faviconUrl = `https://www.google.com/s2/favicons?domain=${websiteMainDomainUrl}&sz=256`;
@@ -67,7 +33,7 @@ function getFaviconUrl(websiteMainDomainUrl) {
 
 
 
-//TODO: TODO: TODO:
+
 function extractMainDomainUrl(websiteUrl){
   try{
     const urlObject = new URL(websiteUrl);
@@ -78,33 +44,7 @@ function extractMainDomainUrl(websiteUrl){
     alert("Unable to extract main domain url. Please check the spelling of the website-url.", error.message)
   }
 }
-  
 
-
-
-  /* console.log("websitUrl in getWebsiteMainUrl",websiteUrl)
-  if(validateWebsiteUrl(websiteUrl)){
-    let websiteMainUrl = "";
-      
-      if(websiteUrl.substring(0,7) == "http://"){
-        websiteMainUrl = websiteUrl.slice(7)
-      } else if (websiteUrl.substring(0,8) == "https://"){
-        websiteMainUrl = websiteUrl.slice(8)
-      } 
-
-      websiteMainUrl = websiteMainUrl.substring(0, websiteMainUrl.indexOf('/')-1);
-      console.log("websiteMainUrl: ", websiteMainUrl)
-      
-      if(websiteMainUrl){
-        return websiteMainUrl;
-      } else {
-        error => {
-          reject(error); 
-          console.log("Error occurred in the getWebsiteMainUrl function.", error.message)
-        }
-      };  
-    }; 
-} */
 
 
 
@@ -203,17 +143,10 @@ async function fetchWeatherData (){
 
 function saveWeatherDataToDashboardAndLocalStorage(weatherData){
   
-  // Get array-index of today, tomorrow and tomorrow-next (at 12.00 hours, or now if now is after 12.00 hours)
-  //console.log("weatherData in saveWeathDataToDashboardAndLocalStorage",weatherData) 
-
+  // Get array-index of today, tomorrow and tomorrow-next
   const dateTimeStringNow = weatherData.list[0].dt_txt;
-  //console.log("weatherData.list[0].dt_txt",weatherData.list[0].dt_txt) 
   const dateTime = new Date(dateTimeStringNow);
-  //console.log("dateTime in saveWeatherData...",dateTime)
   const hoursNow = dateTime.getHours();
-
-  //console.log("hoursNow",hoursNow)
-  
 
   let indexOfTodayInOpenWeatherMap = null;
   let indexOfTomorrowInOpenWeatherMap = null;
@@ -230,11 +163,9 @@ function saveWeatherDataToDashboardAndLocalStorage(weatherData){
   }
 
   const indicesInOpenWeatherMap =[indexOfTodayInOpenWeatherMap, indexOfTomorrowInOpenWeatherMap, indexOfTomorrowNextInOpenWeatherMap]
-  //console.log("indicesInOpenWeatherMap", indicesInOpenWeatherMap)
-
-  // Hitta the index of today
+  
+ 
   let dashboard = getDashboardFromLocalStorage();
-  //console.log("dashboard in saveWeatherData...", dashboard)
   let dayIndex = 0;
   indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {
     dashboard.weatherForecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
@@ -243,11 +174,9 @@ function saveWeatherDataToDashboardAndLocalStorage(weatherData){
     dashboard.weatherForecasts[dayIndex].weatherDescription = weatherData.list[indexInOpenWeatherMap].weather[0].description;
     dayIndex = dayIndex + 1;
   })
-  //console.log("dashboard with updated weather-info: ",dashboard)
   setDashboardInLocalStorage(dashboard); 
   dashboard = getDashboardFromLocalStorage();
-  //console.log("dashboard with updated weather-info: ",dashboard)
-};
+ };
 
 
 function getLocation() {
@@ -256,7 +185,6 @@ function getLocation() {
         navigator.geolocation.getCurrentPosition(position => {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
-          //console.log("lat, lon: ", lat, lon);
           resolve({ lat, lon });
         },
         error => {
@@ -270,25 +198,66 @@ function getLocation() {
 };
 
 
+//TODO: TODO: TODO: TODO:
+// NEWS - FETCH NEWS DATA
+async function fetchNewsData (){
+  try{
+  const apiKeysResponse = await getApiAccessKeys();
+  let APIkey = apiKeysResponse.data.newsApi;
+  //const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=API_KEY`
+  const url = `https://newsapi.org/v2/top-headlines?country=se&apiKey=${APIkey}`
 
-/* function getLocation() {
-  if (navigator.geolocation) {
-    return new Promise((resolve, reject) => {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          //console.log("lat, lon: ", lat, lon);
-          resolve({ lat, lon });
-        },
-        error => {
-          reject(error); 
-        });
-      } else {
-        console.log("Geolocation is not supported by this browser.");
-      }
-    })
+  // https://newsapi.org/v2/everything?q=Apple&from=2024-01-21&sortBy=popularity&apiKey=API_KEY
+  // https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=API_KEY
+  
+  APIkey = "";
+  //console.log("url news: ", url)
+  
+  const newsResponse = await axios.get(url)
+  console.log("newsResponse: ", newsResponse)
+  const newsData = newsResponse.data;  //TODO: checka .data
+  //console.log("weatherData", weatherData);
+
+    saveNewsDataToDashboardAndLocalStorage(weatherData); 
   }
-};
+  catch(error){
+    console.log("Error:", error.message)
+  }
+} 
 
- */
+//TODO:
+function saveNewsDataToDashboardAndLocalStorage(){
+  // Get array-index of today, tomorrow and tomorrow-next
+  const dateTimeStringNow = weatherData.list[0].dt_txt;
+  const dateTime = new Date(dateTimeStringNow);
+  const hoursNow = dateTime.getHours();
+
+  let indexOfTodayInOpenWeatherMap = null;
+  let indexOfTomorrowInOpenWeatherMap = null;
+  let indexOfTomorrowNextInOpenWeatherMap = null;
+
+  if (hoursNow < 12){
+    indexOfTodayInOpenWeatherMap = (12-hoursNow)/3;
+    indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24/3);
+    indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
+  } else {
+    indexOfTodayInOpenWeatherMap = 0;
+    indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24-hoursNow)/3 + (12/3);
+    indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
+  }
+
+  const indicesInOpenWeatherMap =[indexOfTodayInOpenWeatherMap, indexOfTomorrowInOpenWeatherMap, indexOfTomorrowNextInOpenWeatherMap]
+  
+ 
+  let dashboard = getDashboardFromLocalStorage();
+  let dayIndex = 0;
+  indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {
+    dashboard.weatherForecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
+    dashboard.weatherForecasts[dayIndex].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[indexInOpenWeatherMap].weather[0].icon}@2x.png`;   
+    dashboard.weatherForecasts[dayIndex].temperature = weatherData.list[indexInOpenWeatherMap].main.temp;
+    dashboard.weatherForecasts[dayIndex].weatherDescription = weatherData.list[indexInOpenWeatherMap].weather[0].description;
+    dayIndex = dayIndex + 1;
+  })
+  setDashboardInLocalStorage(dashboard); 
+  dashboard = getDashboardFromLocalStorage();
+}
