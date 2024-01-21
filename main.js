@@ -29,7 +29,7 @@ import{
   fetchWeatherData,
   getLocation,
   getFaviconUrl,
-  getWebsiteMainUrl
+  extractMainDomainUrl
 } from "./fetchData.js"
 
 
@@ -52,7 +52,7 @@ const defaultIconUrl = "/images/default-icon.png";
  
 // WINDOW - ON-LOAD  
 window.addEventListener("DOMContentLoaded", async () => {
-  localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+  //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
   let dashboard =  await getDashboardObject();
   console.log("dashboard in window onload",dashboard)
   await fetchWeatherData()
@@ -175,8 +175,14 @@ function renderAllWebLinkCards(){
 // WEBLINKS - OPEN WEBLINK-DIALOG 
 const openWebLinkDialog_button = document.querySelector(".open-webLink-dialog-button");
 openWebLinkDialog_button.addEventListener("click", () =>{
-  const webLinkDialog = document.querySelector(".webLink-dialog");
-  webLinkDialog.show()
+  const webLinkDialog = document.querySelector(".webLink-dialog-outer");
+  const numberOfWebLinks = document.querySelectorAll(".webLink-card").length;
+  console.log("numberOfWebLinks",numberOfWebLinks)
+  if(numberOfWebLinks < 7){
+    webLinkDialog.show()
+  } else {
+    alert("Maximalt antal webblänkar är 7. Radera en webblänk för att kunna lägga till en ny.")
+  }
 })
 
 
@@ -186,32 +192,50 @@ openWebLinkDialog_button.addEventListener("click", () =>{
 const addNewWebLink_button = document.querySelector(".add-new-webLink-button");
 addNewWebLink_button.addEventListener("click", () =>{
   
-  let dashboard = getDashboardFromLocalStorage();
   let websiteUrl = document.querySelector(".webLink-url-input").value;
-  console.log("websiteUrl in addNewWebLink-eventlistener: ", websiteUrl)
-  let websiteMainUrl = getWebsiteMainUrl(websiteUrl);
+  let websiteMainDomainUrl = extractMainDomainUrl(websiteUrl);
+  if(websiteMainDomainUrl){
+    let dashboard = getDashboardFromLocalStorage();
+    websiteUrl = document.querySelector(".webLink-url-input").value;
+    //console.log("websiteUrl in addNewWebLink-eventlistener: ", websiteUrl)
+    websiteMainDomainUrl = extractMainDomainUrl(websiteUrl);
+    //console.log("websiteMainDomainUrl in extractMainDomainUrl-eventlistener: ", websiteMainDomainUrl)
+  
+    // Store new WebLink in the Dashboard Object 
+    const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id)) + 1;
+    const newWebLinkUrl = document.querySelector(".webLink-url-input").value;
+    const newWebLinkFaviconUrl = getFaviconUrl(websiteMainDomainUrl);
+  console.log("newWebLinkFaviconUrl from getFaviconUrl-function",newWebLinkFaviconUrl)
+    //TODO:
+    const newWebLinkHeading = document.querySelector(".webLink-heading-input").value;
+  
+    dashboard.webLinks.push({
+      id: newWebLinkId, 
+      webLinkFaviconUrl: newWebLinkFaviconUrl,
+      webLinkHeading: newWebLinkHeading,
+      webLinkUrl: newWebLinkUrl
+    })
+  
+    console.log("dashboard when addNewWebLink ready", dashboard)
+  
+    // Store new WebLink in localStorage  
+    setDashboardInLocalStorage(dashboard);  
+  
+    document.querySelector(".webLink-url-input").value = "";
+    document.querySelector(".webLink-heading-input").value = "";
+    const webLinkDialog = document.querySelector(".webLink-dialog-outer");
+    webLinkDialog.close()
+  
+    renderAllWebLinkCards();
 
+  } else {
+    if(!websiteMainDomainUrl){
+      alert("Webbadressen du angav är inte helt korrekt. Glöm inte att skriva 'http://' eller 'https://' i början av webbadressen.")
+    } else if (numberOfWebLinks > 7){
+      alert("Maximalt antal webadresser är 7.")
+    }
 
-  // Store new WebLink in the Dashboard Object 
-  const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id)) + 1;
-  const newWebLinkUrl = document.querySelector(".webLink-url-input").value;
-  const newWebLinkFaviconUrl = getFaviconUrl(websiteMainUrl);
-  const newWebLinkHeading = document.querySelector(".webLink-heading-input").value;
-
-  dashboard.webLinks.push({
-    id: newWebLinkId, 
-    webLinkFaviconUrl: newWebLinkFaviconUrl,
-    webLinkHeading: newWebLinkHeading,
-    webLinkUrl: newWebLinkUrl,
-  })
-
-  console.log("dashboard when addNewWebLink ready", dashboard)
-
-  // Store new WebLink in localStorage  
-  setDashboardInLocalStorage(dashboard);  
-
-
-  renderAllWebLinkCards();
+  }
 
   /* // Render the new webLink 
   //TODO:  Append new webLink child to webLink container  (incl eventListener !!!)
@@ -230,13 +254,7 @@ addNewWebLink_button.addEventListener("click", () =>{
   
   // TODO:  Do I need to call a display function to show the added webLinkButton or will that happen automatically?
   console.log("Slutet på addNewWebLink") */
-
-
-
-  const webLinkDialog = document.querySelector(".webLink-dialog");
-  webLinkDialog.close()
-  document.querySelector(".webLink-url-input").value = "";
-  document.querySelector(".webLink-heading-input").value = "";
+  
 });
 
 
@@ -255,7 +273,7 @@ const cancelNewWebLink_button = document.querySelector(".cancel-new-webLink-butt
 cancelNewWebLink_button.addEventListener("click", () =>{
   document.querySelector(".webLink-url-input").value = "";
   document.querySelector(".webLink-heading-input").value = "";
-  const webLinkDialog = document.querySelector(".webLink-dialog");
+  const webLinkDialog = document.querySelector(".webLink-dialog-outer");
   webLinkDialog.close()
 })
 

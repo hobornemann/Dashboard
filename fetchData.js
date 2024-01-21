@@ -13,7 +13,7 @@ export{
   updateDateAndTime,
   fetchWeatherData,
   getLocation,
-  getWebsiteMainUrl,
+  extractMainDomainUrl,
   getFaviconUrl
 }
 
@@ -53,34 +53,38 @@ export{
     return faviconUrl;
 } */
 
-function getFaviconUrl(websiteMainUrl) {
-  return new Promise((resolve, reject) => {
-    console.log("websiteMainUrl in getFaviconUrl",websiteMainUrl)
-    // Construct the URL for the Google favicon service
-    const faviconUrl = `https://www.google.com/s2/favicons?domain=${websiteMainUrl}&sz=256`;
-    console.log("faviconUrl in getFaviconUrl: ", faviconUrl)
-    if(faviconUrl){
-      resolve(faviconUrl);
-    } else {
-      error => {
-        reject(error); 
-        console.log("Error occurred in the getFaviconUrl function.", error.message)
-      }
-    };
-  })
+function getFaviconUrl(websiteMainDomainUrl) {
+  try{
+    const faviconUrl = `https://www.google.com/s2/favicons?domain=${websiteMainDomainUrl}&sz=256`;
+    return faviconUrl;
+  }
+  catch(error){
+    alert("Unable to get the faviconUrl.", error.message)
+    const faviconUrl = "/images/default-icon.png";
+    return faviconUrl;
+  }
 }
 
 
 
-// https://t3.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://www.seb.se&size=256
+//TODO: TODO: TODO:
+function extractMainDomainUrl(websiteUrl){
+  try{
+    const urlObject = new URL(websiteUrl);
+    const mainDomainUrl = urlObject.hostname;
+    return mainDomainUrl;
+  } 
+  catch(error){
+    alert("Unable to extract main domain url. Please check the spelling of the website-url.", error.message)
+  }
+}
+  
 
 
 
-function getWebsiteMainUrl(websiteUrl){
-  console.log("websitUrl in getWebsiteMainUrl",websiteUrl)
+  /* console.log("websitUrl in getWebsiteMainUrl",websiteUrl)
   if(validateWebsiteUrl(websiteUrl)){
     let websiteMainUrl = "";
-    return new Promise((resolve, reject) => {
       
       if(websiteUrl.substring(0,7) == "http://"){
         websiteMainUrl = websiteUrl.slice(7)
@@ -90,23 +94,17 @@ function getWebsiteMainUrl(websiteUrl){
 
       websiteMainUrl = websiteMainUrl.substring(0, websiteMainUrl.indexOf('/')-1);
       console.log("websiteMainUrl: ", websiteMainUrl)
+      
       if(websiteMainUrl){
-        resolve (websiteMainUrl)
+        return websiteMainUrl;
       } else {
         error => {
           reject(error); 
           console.log("Error occurred in the getWebsiteMainUrl function.", error.message)
         }
       };  
-    });  
-  } else {
-    alert("Webbadressen som angivits är endera tom eller inkorrekt. Vänligen försök igen.")
-    console.log()
-  }
-}
-
-
-
+    }; 
+} */
 
 
 

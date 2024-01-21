@@ -20,24 +20,29 @@
         <section class="cards-container"> 
           <article class="card">
             <h3 class="card-heading">Snabblänkar</h3>
+            <button class="open-webLink-dialog-button button">Skapa ny webblänk</button>
+            <dialog class="webLink-dialog-outer">
+              <div class="webLink-dialog-inner">
+                <p>Kopiera websidans url och klistra in den här:</p>
+                <input class="webLink-url-input input" type="text" name="webLink-url-input" id="webLink-url-input" placeholder="tex https://google.com">          
+                <p>Skriv in det namn du vill ha för sidan:</p>
+                <input class="webLink-heading-input input" type="text" name="webLink-heading-input" id="webLink-heading-input" placeholder="tex Google-Sök"> 
+                <button class="add-new-webLink-button button">OK</button>
+                <button class="cancel-new-webLink-button button">Avbryt</button>
+              </div>
+            </dialog>
             <div class="webLinks-container">
               <!-- below the webLink items are inserted -->
-              <div class="webLink-card small-card" data-id="1">
-                <a href="www.Google.com" class="goto-webLink-url-button" target="_blank" rel="noreferrer noopener">  <!-- SECURITY-addition: rel="noreferrer noopener" -->
+              <!-- <div class="webLink-card small-card" data-id="1">
+                <a href="www.Google.com" class="goto-webLink-url-button" target="_blank" rel="noreferrer noopener">  
                   <img class="webLink-favicon" src="https://www.google.com/s2/favicons?domain=www.google.se&sz=256">
                   <div class="webLink-heading">Google</div>
                 </a>  
                 <button class="delete-webLink-button">&nbsp;x&nbsp;</button>
-              </div>
+              </div> -->
               <!-- above the webLink items are inserted -->
             </div>
-            <button class="open-webLink-dialog-button button">Ny webblänk</button>
-            <dialog class="webLink-dialog">
-              <input class="webLink-url-input input" type="text" name="webLink-url-input" id="webLink-url-input" placeholder="tex www.google.se">          
-              <input class="webLink-heading-input input" type="text" name="webLink-heading-input" id="webLink-heading-input" placeholder="tex Google-Search"> 
-              <button class="add-new-webLink-button button">OK</button>
-              <button class="cancel-new-webLink-button button">Avbryt</button>
-            </dialog>
+            
           </article>
           <article class="card">
             <h3 class="card-heading">Väderprognoser</h3>
