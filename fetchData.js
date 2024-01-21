@@ -20,7 +20,7 @@ export{
 }
 
 
-
+// WEBLINK 
 function getFaviconUrl(websiteMainDomainUrl) {
   try{
     const faviconUrl = `https://www.google.com/s2/favicons?domain=${websiteMainDomainUrl}&sz=256`;
@@ -34,26 +34,28 @@ function getFaviconUrl(websiteMainDomainUrl) {
 }
 
 
-
-
+// WEBLINK 
 function extractMainDomainUrl(websiteUrl){
-  try{
-    const urlObject = new URL(websiteUrl);
-    const mainDomainUrl = urlObject.hostname;
-    return mainDomainUrl;
-  } 
-  catch(error){
-    alert("Unable to extract main domain url. Please check the spelling of the website-url.", error.message)
+  if(validateWebsiteUrl(websiteUrl)){
+    try{
+      const urlObject = new URL(websiteUrl);
+      const mainDomainUrl = urlObject.hostname;
+      return mainDomainUrl;
+    } 
+    catch(error){
+      alert("Unable to extract main domain url. Please check the spelling of the website-url.", error.message)
+    }
+  } else {
+    alert("Unable to extract main domain url. Please check the spelling of the website-url.")
   }
 }
 
 
-
-
-  function validateWebsiteUrl(websiteUrl) {
-    var urlPattern = /^(https?:\/\/)?([a-z\d.-]+)\.([a-z]{2,})(\/[^\s]*)?$/i;
-    return urlPattern.test(websiteUrl);
-  }
+// WEBLINK
+function validateWebsiteUrl(websiteUrl) {
+  var urlPattern = /^(https?:\/\/)?([a-z\d.-]+)\.([a-z]{2,})(\/[^\s]*)?$/i;
+  return urlPattern.test(websiteUrl);
+}
 
 
 //TODO: UNCOMMENT THE LINES BELOW WHEN PROJECT IS FINISHED
@@ -119,24 +121,10 @@ async function fetchImage(){
   // DATE & TIME - GET DATE and TIME
   function getDateAndTimeString(dateTime){
     try{
-      
       const myDateTime = new Date(dateTime); 
       const date = myDateTime.toLocaleDateString('sv-SE'); 
       let time = myDateTime.toLocaleTimeString('sv-SE'); 
       time  = time.slice(0, -3);
-/* 
-      const date =    currentDateTime.getFullYear() + "-"
-                      + ((currentDateTime.getMonth() + 1 < 10)?"0":"") 
-                      + (currentDateTime.getMonth() + 1 )  + "-" 
-                      + ((currentDateTime.getDate() < 10)?"0":"") 
-                      + currentDateTime.getDate(); 
-      const time =    ((currentDateTime.getHours() < 10)?"0":"")
-                      + currentDateTime.getHours() + ":" 
-                      + ((currentDateTime.getMinutes() < 10)?"0":"")  
-                      + currentDateTime.getMinutes();  */                        
-     /*  dashboard.date = date;
-      dashboard.time = time; */
-      //setDashboardInLocalStorage(dashboard);
       return `${date} ${time}`
     } 
     catch(error){
@@ -149,26 +137,20 @@ async function fetchImage(){
 // WEATHER - FETCH WEATHER DATA
 async function fetchWeatherData (){
   try{
-  const coords = await getLocation();
-  // console.log("coords", coords)
-  const apiKeysResponse = await getApiAccessKeys();
-  let APIkey = apiKeysResponse.data.openWeatherMap;
-  //const url = `http://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${APIkey}&units=metric&lang=SE`
-  const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${APIkey}&units=metric&lang=sv`
-  APIkey = "";
-  //console.log("url weather: ", url)
-  
+    const coords = await getLocation();
+    const apiKeysResponse = await getApiAccessKeys();
+    let APIkey = apiKeysResponse.data.openWeatherMap;
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${APIkey}&units=metric&lang=sv`
+    APIkey = "";  
     const weatherResponse = await axios.get(url)
-    //console.log("weatherResponse: ", weatherResponse)
     const weatherData = weatherResponse.data;
-    //console.log("weatherData", weatherData);
-
     saveWeatherDataToDashboardAndLocalStorage(weatherData); 
   }
   catch(error){
     console.log("Error:", error.message)
   }
 } 
+
 
 function saveWeatherDataToDashboardAndLocalStorage(weatherData){
   
@@ -192,10 +174,9 @@ function saveWeatherDataToDashboardAndLocalStorage(weatherData){
   }
 
   const indicesInOpenWeatherMap =[indexOfTodayInOpenWeatherMap, indexOfTomorrowInOpenWeatherMap, indexOfTomorrowNextInOpenWeatherMap]
-  
- 
   let dashboard = getDashboardFromLocalStorage();
   let dayIndex = 0;
+
   indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {
     dashboard.weatherForecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
     dashboard.weatherForecasts[dayIndex].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[indexInOpenWeatherMap].weather[0].icon}@2x.png`;   
@@ -208,6 +189,7 @@ function saveWeatherDataToDashboardAndLocalStorage(weatherData){
  };
 
 
+ // WEATHER - Get GeoLocation
 function getLocation() {
   if (navigator.geolocation) {
     return new Promise((resolve, reject) => {
@@ -227,26 +209,20 @@ function getLocation() {
 };
 
 
-//TODO: TODO: TODO: TODO:
+
 // NEWS - FETCH NEWS DATA
 async function fetchNewsData (){
   try{
   const apiKeysResponse = await getApiAccessKeys();
   let APIkey = apiKeysResponse.data.newsApi;
-  //const url = `https://newsapi.org/v2/top-headlines?country=us&apiKey=API_KEY`
+  //const url = `https://newsapi.org/v2/top-headlines?country=se&apiKey=${APIkey}`
+  //const url = `https://newsapi.org/v2/everything?q=Apple&from=2024-01-21&sortBy=popularity&apiKey=${APIkey}`
+  //const url = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${APIkey}`
   const url = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${APIkey}`
-
-  // https://newsapi.org/v2/top-headlines?country=se&apiKey=${APIkey}
-  // https://newsapi.org/v2/everything?q=Apple&from=2024-01-21&sortBy=popularity&apiKey=API_KEY
-  // https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=API_KEY
-  
   APIkey = "";
-  //console.log("url news: ", url)
   
   const newsResponse = await axios.get(url)
-  console.log("newsResponse: ", newsResponse)
-  const newsData = newsResponse.data;  //TODO: checka .data
-  console.log("newsData in fetchNewsData", newsData);
+  const newsData = newsResponse.data; 
   saveNewsDataToDashboardAndLocalStorage(newsData); // TODO:
   }
   catch(error){
@@ -254,10 +230,8 @@ async function fetchNewsData (){
   }
 } 
 
-//TODO: TODO: TODO: TODO: 
+// NEWS - Save News Data to Dashboard and LocalStorage
 function saveNewsDataToDashboardAndLocalStorage(newsData){
-  console.log("newsData",newsData);
-
   try{
       let dashboard = getDashboardFromLocalStorage();
       dashboard.newsArticles = [];

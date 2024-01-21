@@ -37,7 +37,7 @@ GitHub
 
 ## 3. Getting Started
 
-# Prerequisites
+### Prerequisites
 
 1. An IDE like e.g. VS Code or IntelliJ
 2. Node.js, npm, Vite, Axios
@@ -47,7 +47,7 @@ GitHub
 <script type="module" src="/main.js" defer></script>
 5. Access to https://github.com/hobornemann/Dashboard 
 
-# Installation
+### Installation
 
 1. The project is temporarily public. 
 2. Once access has been provided, log in to GitHub and clone the project:
@@ -181,18 +181,57 @@ function getPrimeFactorArrayOfANumber(number){
 }
 ```
 
+### Code Review 
+
+In this section, I will provide some comments on the code, i.e. what I perceive to be the strengths and weaknesses. 
+
+1. Strengths
+
+a) MVC-inspired Module Structure: 
+
+=> Model: 
+> This application has a backend in the form of 
+  a localStorage object (model.js) and the accessible databases of the API-providers (fetchData.js).
+
+=> View: 
+> the single-page HTML-document (index.html) only contains structural elements. It neither contains any styles nor any functionality. The dynamic parts of the web page are generated dynamically to fit data-items fetched from localStorage or the API-providers.
+> all styles are included in one file (style.css). Elements that belong to each other are grouped together (weblinks, weather forecasts, news articles, notes). 
+
+=> Controller:
+> all event listeners are located in one file (main.js). Event listeners that are related to each other are also grouped together. 
+
+b) Naming:
+> HTML-elements, JS-objects/variables and functions have been given names that enable other developers to understand the code.
+
+c) Refactoring
+> 
+TODO:
+
+
+2. Weaknesses
+
+a) Testing:
+> The application has not been properly tested. The project lacks both unit tests and UI-test.
+
+b) Error handling:
+> 
+TODO:
+>
+
+c) Accessibility:
+> 
+TODO:
+
+d) Long names:
+> unless you use special software to shrink the size of the application, longer names has the disadvantage of making the application larger than needs to be from a performance perspective. However, performance should not be an issue for this application. The clarity of code aspect is more important in this case.    
+
+
+
+
+
 ## 5. Roadmap 
 
 For the time being, there are no plans to extend, update or permanently publish the application. It serves as a solution to an educational assignment. 
-
-### Strengths & Weaknesses
-
-TODO:
-
-### Error Handling
-
-TODO:
-
 
 
 

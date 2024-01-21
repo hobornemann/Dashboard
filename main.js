@@ -1,16 +1,3 @@
-// ============================================================
-// CONTENTS 
-// ============================================================
-/* A. main.js 
-    - EventListeners & related Functions 
-   B. index.html
-   C. style.css
-   D. model.JS
-   E. fetchData.JS
-   F. apiAccessKeys.json
-   G. README.md 
- */ 
-
 // -------------------------------------------------------------
 // IMPORTS
 // -------------------------------------------------------------
@@ -43,22 +30,19 @@ import{
 // -------------------------------------------------------------
 
 //TODO: delete or comment out localStorage = null when app has been developed
-// TODO: update dashboard with current weather forecasts 
-  // TODO: update favicon / FaviconUrl
+//TODO: uncomment unsplash image code
+//TODO: ändra setInterval till 30000 när appen är färdig
 
- 
 // WINDOW - ON-LOAD  
 window.addEventListener("DOMContentLoaded", async () => {
-  localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+  // localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
   let dashboard =  await getDashboardObject();
-  console.log("dashboard in window onload",dashboard)
   await fetchWeatherData()
   await fetchNewsData();
   renderDynamicElementsOfIndexPage();
   renderIntialBackgroundImage();
   setInterval(renderDateAndTime(), 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
 });
-
 
 
 // WINDOW - RENDER DYNAMIC CONTENT
@@ -70,17 +54,6 @@ function renderDynamicElementsOfIndexPage(){
   renderNewsCards()
   renderNote();
 };
-
-
-  
-
-// BACKGROUND IMAGE - CHANGE BACKGROUND IMAGE
-const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
-changeBackgroundImage_button.addEventListener("click", async () => {
-  const imageUrl = await fetchImage();  
-  //console.log("imageUrl in eventlistener",imageUrl)
-  document.body.style.backgroundImage = `url(${imageUrl})`;
-}); 
 
 
 
@@ -105,7 +78,6 @@ function displayDateAndTime(){
 // MAIN HEADING - RENDER
 function renderMainHeading(){
   let dashboard = getDashboardFromLocalStorage();
-  //console.log("dashboard in renderMainHeading: ", dashboard)
   const mainHeadingElement = document.querySelector(".main-heading");
   mainHeadingElement.textContent = dashboard.mainHeading;
   mainHeadingElement.addEventListener("input", () => {
@@ -120,10 +92,7 @@ function renderMainHeading(){
 // WEBLINKS - RENDER ALL WEBLINK CARDS
 function renderAllWebLinkCards(){
   let dashboard = getDashboardFromLocalStorage()
-  //console.log("dashboard in renderAllWebLinkCards:", dashboard)
   let webLinksContainerHtml = "";
-  //console.log("dashboard in renderAllWebLinkCards", dashboard)
-  //console.log("dashboard.webLinks in renderAllWebLinkCards",dashboard.webLinks)
 
    // Create dynamic HTML for all webLinks and display the HTML on the webpage 
   dashboard.webLinks.map(webLink => {
@@ -141,24 +110,14 @@ function renderAllWebLinkCards(){
   });
 
   // Add a deleteWebLinkButton-EventListener to each webLink 
-  const deleteWebLinkButtons = document.querySelectorAll(".delete-webLink-button");
-  //console.log(deleteWebLinkButtons)
-  //console.log("dashboard", dashboard)
-  
+  const deleteWebLinkButtons = document.querySelectorAll(".delete-webLink-button");  
   deleteWebLinkButtons.forEach((button) => {
     button.addEventListener("click", (e) => {
       const webLinkId = parseInt(e.currentTarget.parentNode.dataset.id);
-      //console.log("webLinkId: ", webLinkId)
-      //console.log("dashboard", dashboard)
-      //console.log("typeof webLinkId: ", typeof webLinkId)
 
-      // TODO: TODO:
       // Update the webLinks array of the dashboard object and the localStorage object 
       const myWebLinksArray = dashboard.webLinks.filter(webLink => webLink.id !== webLinkId);
       
-      //console.log("myWebLinksArray", myWebLinksArray)
-      //console.log("dashboard after filter-function ", dashboard)
-
       dashboard.webLinks = myWebLinksArray;
       setDashboardInLocalStorage(dashboard);
 
@@ -169,14 +128,11 @@ function renderAllWebLinkCards(){
 };
 
 
-
-
 // WEBLINKS - OPEN WEBLINK-DIALOG 
 const openWebLinkDialog_button = document.querySelector(".open-webLink-dialog-button");
 openWebLinkDialog_button.addEventListener("click", () =>{
   const webLinkDialog = document.querySelector(".webLink-dialog-outer");
   const numberOfWebLinks = document.querySelectorAll(".webLink-card").length;
-  console.log("numberOfWebLinks",numberOfWebLinks)
   if(numberOfWebLinks < 7){
     webLinkDialog.show()
   } else {
@@ -185,8 +141,6 @@ openWebLinkDialog_button.addEventListener("click", () =>{
 })
 
 
-
-   //TODO: 
 // WEBLINKS - ADD NEW WEBLINK 
 const addNewWebLink_button = document.querySelector(".add-new-webLink-button");
 addNewWebLink_button.addEventListener("click", () =>{
@@ -197,21 +151,25 @@ addNewWebLink_button.addEventListener("click", () =>{
     let dashboard = getDashboardFromLocalStorage();
     websiteUrl = document.querySelector(".webLink-url-input").value;
     websiteMainDomainUrl = extractMainDomainUrl(websiteUrl);
-    // Store new WebLink in the Dashboard Object 
+
+    // Store new WebLink Item in the Dashboard Object 
     const newWebLinkId = Math.max(...dashboard.webLinks.map(webLink => webLink.id)) + 1;
     const newWebLinkUrl = document.querySelector(".webLink-url-input").value;
     const newWebLinkFaviconUrl = getFaviconUrl(websiteMainDomainUrl);
     const newWebLinkHeading = document.querySelector(".webLink-heading-input").value;
+
     dashboard.webLinks.push({
       id: newWebLinkId, 
       webLinkFaviconUrl: newWebLinkFaviconUrl,
       webLinkHeading: newWebLinkHeading,
       webLinkUrl: newWebLinkUrl
     })
-    // Store new WebLink in localStorage  
+
+    // Store new WebLink Item in localStorage  
     setDashboardInLocalStorage(dashboard);  
     document.querySelector(".webLink-url-input").value = "";
     document.querySelector(".webLink-heading-input").value = "";
+
     const webLinkDialog = document.querySelector(".webLink-dialog-outer");
     webLinkDialog.close()
     renderAllWebLinkCards();
@@ -241,11 +199,10 @@ cancelNewWebLink_button.addEventListener("click", () =>{
 function renderWeatherCards(){
   let dashboard = getDashboardFromLocalStorage();
   let weatherContainerHtml = "";
-  //console.log("dashboard i renderWeatherCards: ", dashboard)
   dashboard.weatherForecasts.map(weatherForecast => {
     let dateTime = new Date(weatherForecast.dateTime);
     let timeForForecast = dateTime.toLocaleTimeString('sv-SE').slice(0, -3);
-    
+    // Create dynamic HTML for all weather forecasts and display on the webpage 
     weatherContainerHtml = weatherContainerHtml + 
     `<div class="weather-card small-card">
       <img class="weather-icon" src="${weatherForecast.weatherIconUrl}">
@@ -266,23 +223,18 @@ function renderWeatherCards(){
 };
 
 
-//TODO: TODO: TODO: TODO: 
-// NEWS - RENDER
+// NEWS - RENDER NEWS ARTICLES
 function renderNewsCards(){
   let dashboard = getDashboardFromLocalStorage();
   let newsContainerHtml = "";
   // let imageUrl = "https://ichef.bbci.co.uk/news/1024/branded_news/C23F/production/_132372794_p0h60l8w.jpg";
   // let articleUrl = "https://www.bbc.co.uk/news/uk-england-leicestershire-68023459";
 
-  console.log("dashboard in renderNewsCards: ", dashboard)
-
-  //console.log("dashboard i renderNewsCards: ", dashboard)
   dashboard.newsArticles.map(newsArticle => {
-
     let dateAndTimeString = getDateAndTimeString(newsArticle.publicationDate);
+    // Create dynamic HTML for all weather forecasts and display on the webpage 
     newsContainerHtml = newsContainerHtml + 
-    `
-    <a class="news-card small-card" href="${newsArticle.url}" target="_blank">
+    `<a class="news-card small-card" href="${newsArticle.url}" target="_blank">
       <div class="news-image-author-and-publication-date">
         <img class="news-image" src="${newsArticle.imageUrl}">
         <div class="news-author-and-publication-date">
@@ -303,15 +255,9 @@ function renderNewsCards(){
   return dashboard;
 }
 
-//TODO: TODO: TODO: TODO: TODO: ????????  a href istället ! 
-// NEWS - NEWS CARD EVENT LISTENER
-//const newsCards = document.querySelectorsAll(".news-card");
 
 
-
-
-
-// NOTE - RENDER 
+// NOTE - RENDER NOTE
 function renderNote(){
   let dashboard = getDashboardFromLocalStorage();
   const note = document.querySelector(".note");
@@ -327,8 +273,16 @@ function renderNote(){
 // BACKGROUND IMAGE - RENDER INITIAL IMAGE
 function renderIntialBackgroundImage(){
   const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
-  triggerAnEvent(changeBackgroundImage_button, 'click');  // triggerAnEvent(myElement, 'click', { category: 'football' });
+  triggerAnEvent(changeBackgroundImage_button, 'click');  
 };
+
+
+// BACKGROUND IMAGE - CHANGE BACKGROUND IMAGE
+const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
+changeBackgroundImage_button.addEventListener("click", async () => {
+  const imageUrl = await fetchImage();  
+  document.body.style.backgroundImage = `url(${imageUrl})`;
+}); 
 
 
 
@@ -340,6 +294,6 @@ function triggerAnEvent (element, eventType, detail) {
 
 
 // --------------------------------------------------------------
-// OTHER CODE
+// END OF CODE
 // --------------------------------------------------------------
 
