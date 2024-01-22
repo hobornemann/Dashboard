@@ -19,7 +19,7 @@ Extra utmaning: Hämta länkens favicon och visa som bild i dashboarden.
 => KLART
 
 Extra utmaning: Gör så att användaren kan anpassa orten som visas
-=> TODO:
+=> KLART
 
 5. Denna del får du fritt bestämma vad den ska innehålla. Det ska dock vara data från ett externt API och exempelvis kan det vara senaste nyheterna eller aktiekurser.
 => KLART
