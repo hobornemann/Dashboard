@@ -132,7 +132,9 @@ Files starting with a "z":          Please ignore. Educational/personal files on
 
 The default dashboard object (which is also stored in local storage) looks as follows: 
 
- `let dashboard = {
+ `function getDefaultDashboardObject(){
+    
+    let dashboard = {
       date: "2023-12-13",
       time: "14:55",
       mainHeading: "My Dashboard",
@@ -184,7 +186,9 @@ The default dashboard object (which is also stored in local storage) looks as fo
         }  
       ],
       note: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt.",
-    };` 
+    }; 
+    return dashboard;
+  };`
 
 
     The window-onload function looks as follows. After the data has been fetched from the internal dashboard object as well as the external data providers of weather forecasts, news etc, the webpage is rendered and the date and clock of the webpage is set on an interval to be continuously updated. 
