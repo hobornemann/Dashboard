@@ -195,13 +195,13 @@ The default dashboard object (which is also stored in local storage) looks as fo
 
 `window.addEventListener("DOMContentLoaded", async () => { 
   try{
-    // localStorage.setItem("dashboard", null); 
+    // localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
     let dashboard =  await getDashboardObject();
     await fetchWeatherData()
     await fetchNewsData();
     renderDynamicElementsOfIndexPage();
     renderIntialBackgroundImage();
-    setInterval(renderDateAndTime, 100000);  
+    setInterval(renderDateAndTime, 100000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
   }
   catch(error){
     console.log("Error in window.addEventListener function. ", error.message)
@@ -209,7 +209,6 @@ The default dashboard object (which is also stored in local storage) looks as fo
 });`
 
 The renderDynamicElementsOfIndexPage is including functions that will render the different parts of the webpage:
-
 
 `function renderDynamicElementsOfIndexPage(){
   try{
@@ -224,6 +223,7 @@ The renderDynamicElementsOfIndexPage is including functions that will render the
     console.log("Error in the renderDynamicElementsOfIndexPage() function. ", error.message)
   }
 };`
+
 
 The typical structure of the rendering functions can be seen in the below example. First, the necessary data is fetched. Second, the dynamic HTML is created and inserted into the webpage. Third, any necessary event listeners are added to the HTML-elements that have just been created. 
 
