@@ -55,7 +55,7 @@ I din readme-fil på github ska du ha med ett resonemang kring din kod. I denna 
 VG-nivån bedöms genom kvalitén på koden i kombination med din förmåga att se just styrkor och brister i den. Detta betyder att om din kod har allt för låg kvalité räcker det inte med resonemang kring det för att rädda upp, men det betyder också att ingen kod behöver vara helt perfekt men det är bra att du själv kan peka på de brister du då ser.
 
 12. Inlämning  
-Lämna in länk till ett github-repo i Canvas TODO:
+Lämna in länk till ett github-repo i Canvas 
 
 Obs! Publicera inte någon API-nyckel i ditt repo eller ev hostad sida (säkerhetsrisk). Skriv i ReadME att användaren kan hämta egen nyckel på sidan.
 => KLART
