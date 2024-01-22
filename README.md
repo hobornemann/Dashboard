@@ -132,7 +132,7 @@ Files starting with a "z":          Please ignore. Educational/personal files on
 
 The default dashboard object (which is also stored in local storage) looks as follows: 
 
- let dashboard = {
+ `let dashboard = {
       date: "2023-12-13",
       time: "14:55",
       mainHeading: "My Dashboard",
@@ -184,13 +184,12 @@ The default dashboard object (which is also stored in local storage) looks as fo
         }  
       ],
       note: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt.",
-    }; 
+    };` 
 
 
     The window-onload function looks as follows. After the data has been fetched from the internal dashboard object as well as the external data providers of weather forecasts, news etc, the webpage is rendered and the date and clock of the webpage is set on an interval to be continuously updated. 
 
-    // WINDOW  
-window.addEventListener("DOMContentLoaded", async () => { 
+`window.addEventListener("DOMContentLoaded", async () => { 
   try{
     // localStorage.setItem("dashboard", null); 
     let dashboard =  await getDashboardObject();
@@ -203,12 +202,12 @@ window.addEventListener("DOMContentLoaded", async () => {
   catch(error){
     console.log("Error in window.addEventListener function. ", error.message)
   }
-});
+});`
 
 The renderDynamicElementsOfIndexPage is including functions that will render the different parts of the webpage:
 
-// WINDOW 
-function renderDynamicElementsOfIndexPage(){
+
+`function renderDynamicElementsOfIndexPage(){
   try{
     renderDateAndTime(); 
     renderMainHeading();
@@ -220,12 +219,11 @@ function renderDynamicElementsOfIndexPage(){
   catch(error){
     console.log("Error in the renderDynamicElementsOfIndexPage() function. ", error.message)
   }
-};
+};`
 
 The typical structure of the rendering functions can be seen in the below example. First, the necessary data is fetched. Second, the dynamic HTML is created and inserted into the webpage. Third, any necessary event listeners are added to the HTML-elements that have just been created. 
 
-// WEBLINKS 
-function renderAllWebLinkCards(){
+`function renderAllWebLinkCards(){
   // Get the data
   let dashboard = getDashboardFromLocalStorage()
   let webLinksContainerHtml = "";
@@ -268,7 +266,7 @@ function renderAllWebLinkCards(){
   catch(error) {
     console.log("Error in adding event listeners to deleteWebLinkButtons in getDashboardFromLocalStorage() function.", error.message)
 }
-};
+};`
 
 
 
