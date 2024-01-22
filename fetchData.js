@@ -24,7 +24,7 @@ export{
 // BACKGROUND IMAGE
 async function fetchImage(){
   let imageUrl ="/images/default-image.jpg";
-/*   try{
+  try{
     const apiKeyResponse = await getApiAccessKeys();
     let ACCESS_KEY = apiKeyResponse.data.unsplash;
     const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
@@ -35,7 +35,7 @@ async function fetchImage(){
   }
   catch(error){
     console.log("Error: Unable to fetch image from Unsplash in fetchImage() function.", error.message)
-  } */
+  }
   return imageUrl;
 } 
 
