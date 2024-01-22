@@ -90,7 +90,7 @@ function renderMainHeading(){
     mainHeadingElement.textContent = dashboard.mainHeading;
   
     mainHeadingElement.addEventListener("input", () => {
-      dashboard.mainHeading = mainHeadingElement.textContent;
+      dashboard.mainHeading = mainHeadingElement.innerHTML;
       setDashboardInLocalStorage(dashboard);
     })
   }
@@ -98,6 +98,8 @@ function renderMainHeading(){
     console.log("Error in renderMainHeading() function.", error.message)
   }
 };
+
+
 
 
 // WEBLINKS 
