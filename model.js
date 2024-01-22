@@ -22,29 +22,37 @@ export{
           webLinkUrl: "http://www.google.se",
         },
       ],
-      weatherForecasts: [
+      weather: 
         {
-          dateTime: "",
-          weatherIconUrl: "/images/default-icon.png",
-          dayHeading: "Idag",
-          temperature: -5,
-          weatherDescription: "Sol och moln",       
+          cityId: 0,
+          lat: 0,
+          lon: 0,
+          cityName: "",
+          countryCode: "",
+          forecasts: [
+            {
+              dateTime: "",
+              weatherIconUrl: "/images/default-icon.png",
+              dayHeading: "Idag",
+              temperature: -5,
+              weatherDescription: "Sol och moln"
+            },
+            {
+              dateTime: "",
+              weatherIconUrl: "/images/default-icon.png",
+              dayHeading: "I morgon",
+              temperature: -7,
+              weatherDescription: "Sol och klart"
+            },
+            {
+              dateTime: "",
+              weatherIconUrl: "/images/default-icon.png",
+              dayHeading: "I övermorgon",
+              temperature: -10,
+              weatherDescription: "Snö och moln"
+            },
+          ]
         },
-        {
-          dateTime: "",
-          weatherIconUrl: "/images/default-icon.png",
-          dayHeading: "I morgon",
-          temperature: -7,
-          weatherDescription: "Sol och klart"        
-        },
-        {
-          dateTime: "",
-          weatherIconUrl: "/images/default-icon.png",
-          dayHeading: "I övermorgon",
-          temperature: -10,
-          weatherDescription: "Snö och moln"        
-        },
-      ],
       newsArticles: [
         {
           source: 

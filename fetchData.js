@@ -24,7 +24,7 @@ export{
 // BACKGROUND IMAGE
 async function fetchImage(){
   let imageUrl ="/images/default-image.jpg";
-  try{
+ /*  try{
     const apiKeyResponse = await getApiAccessKeys();
     let ACCESS_KEY = apiKeyResponse.data.unsplash;
     const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
@@ -35,7 +35,7 @@ async function fetchImage(){
   }
   catch(error){
     console.log("Error: Unable to fetch image from Unsplash in fetchImage() function.", error.message)
-  }
+  } */
   return imageUrl;
 } 
 
@@ -135,26 +135,55 @@ function validateWebsiteUrl(websiteUrl) {
 
 
 // WEATHER 
-async function fetchWeatherData (){
+async function fetchWeatherData (cityName, countryCode){
+  let dashboard = getDashboardFromLocalStorage();
+  let weatherData = null; 
+  console.log("dashboard start of fetchWeatherData()",dashboard)
   try{
-    const coords = await getLocation();
-    const apiKeysResponse = await getApiAccessKeys();
-    let APIkey = apiKeysResponse.data.openWeatherMap;
-    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${APIkey}&units=metric&lang=sv`
-    APIkey = "";  
-    const weatherResponse = await axios.get(url)
-    const weatherData = weatherResponse.data;
-    saveWeatherDataToDashboardAndLocalStorage(weatherData); 
+    if(cityName == ""  || countryCode == ""){
+      // get weather for the user's current Location
+      const coords = await getLocation();
+      const apiKeysResponse = await getApiAccessKeys();
+      let APIkey = apiKeysResponse.data.openWeatherMap;
+      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${APIkey}&units=metric&lang=sv`
+      APIkey = "";  
+      const weatherResponse = await axios.get(url)
+      weatherData = weatherResponse.data;
+    } else {
+      // get weather for the cityName + countryCode location
+      const apiKeysResponse = await getApiAccessKeys();
+      let APIkey = apiKeysResponse.data.openWeatherMap;
+      const urlCityNameCountryCode = `https://api.openweathermap.org/data/2.5/weather?q=${cityName},${countryCode}&appid=${APIkey}&units=metric&lang=sv`
+      const weatherResponseCityNameCountryCode = await axios.get(urlCityNameCountryCode)
+      const weatherDataOfCityNameCountryCode = weatherResponseCityNameCountryCode.data; 
+      const lat = weatherDataOfCityNameCountryCode.coord.lat;
+      const lon = weatherDataOfCityNameCountryCode.coord.lon;
+      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${weatherDataOfCityNameCountryCode.coord.lat}&lon=${weatherDataOfCityNameCountryCode.coord.lon}&appid=${APIkey}&units=metric&lang=sv`
+      APIkey = "";  
+      const weatherResponse = await axios.get(url)
+      weatherData = weatherResponse.data;
+      weatherData.city.coord.lat = lat;
+      weatherData.city.coord.lon = lon;
+    }
+    saveWeatherDataToDashboardAndLocalStorage(weatherData);
   }
   catch(error){
     console.log("Error: Unable to fetch weather data in fetchWeatherData () function.", error.message)
   }
 } 
 
+
 // WEATHER 
 function saveWeatherDataToDashboardAndLocalStorage(weatherData){
+  console.log("weatherData in saveWeatherData...", weatherData)
   let dashboard = getDashboardFromLocalStorage();
   try{
+    // Save cityName, countryCode etc
+    dashboard.weather.lat = weatherData.city.coord.lat;
+    dashboard.weather.lon = weatherData.city.coord.lon;
+    dashboard.weather.cityName = weatherData.city.name;
+    dashboard.weather.countryCode = weatherData.city.country;
+
     // Get array-index of today, tomorrow and tomorrow-next
     const dateTimeStringNow = weatherData.list[0].dt_txt;
     const dateTime = new Date(dateTimeStringNow);
@@ -178,10 +207,10 @@ function saveWeatherDataToDashboardAndLocalStorage(weatherData){
     let dayIndex = 0;
   
     indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {
-      dashboard.weatherForecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
-      dashboard.weatherForecasts[dayIndex].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[indexInOpenWeatherMap].weather[0].icon}@2x.png`;   
-      dashboard.weatherForecasts[dayIndex].temperature = weatherData.list[indexInOpenWeatherMap].main.temp;
-      dashboard.weatherForecasts[dayIndex].weatherDescription = weatherData.list[indexInOpenWeatherMap].weather[0].description;
+      dashboard.weather.forecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
+      dashboard.weather.forecasts[dayIndex].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[indexInOpenWeatherMap].weather[0].icon}@2x.png`;   
+      dashboard.weather.forecasts[dayIndex].temperature = weatherData.list[indexInOpenWeatherMap].main.temp;
+      dashboard.weather.forecasts[dayIndex].weatherDescription = weatherData.list[indexInOpenWeatherMap].weather[0].description;
       dayIndex = dayIndex + 1;
     })
   }

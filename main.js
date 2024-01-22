@@ -36,9 +36,9 @@ import{
 // WINDOW  
 window.addEventListener("DOMContentLoaded", async () => { 
   try{
-    // localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+    //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
     let dashboard =  await getDashboardObject();
-    await fetchWeatherData()
+    await fetchWeatherData("","")
     await fetchNewsData();
     renderDynamicElementsOfIndexPage();
     renderIntialBackgroundImage();
@@ -235,22 +235,22 @@ cancelNewWebLink_button.addEventListener("click", () =>{
 
 // WEATHER 
 function renderWeatherCards(){
+  let dashboard = getDashboardFromLocalStorage();
+  let weatherContainerHtml = "";
   try{
-    let dashboard = getDashboardFromLocalStorage();
-    let weatherContainerHtml = "";
-
-    // Create dynamic HTML for all weather forecasts and display on the webpage 
-    dashboard.weatherForecasts.map(weatherForecast => {
-      let dateTime = new Date(weatherForecast.dateTime);
+    weatherContainerHtml = `<div class="weather-location-heading">${dashboard.weather.cityName} (${dashboard.weather.countryCode})</div>`;
+    // Create dynamic HTML for all weather forecasts and display on the webpage   
+    dashboard.weather.forecasts.map(forecast => {
+      let dateTime = new Date(forecast.dateTime);
       let timeForForecast = dateTime.toLocaleTimeString('sv-SE').slice(0, -3);
       weatherContainerHtml = weatherContainerHtml + 
       `<div class="weather-card small-card">
-        <img class="weather-icon" src="${weatherForecast.weatherIconUrl}">
+        <img class="weather-icon" src="${forecast.weatherIconUrl}">
         <div class="weather-day-temperature-comment">
-          <div class="weather-day-heading">${weatherForecast.dayHeading} (${timeForForecast})</div>
+          <div class="weather-day-heading">${forecast.dayHeading} (${timeForForecast})</div>
           <div class="weather-temperature-comment">
-            <div class="weather-temperature">&nbsp${Math.round(weatherForecast.temperature)}&deg&nbsp</div>
-            <div class="weather-comment">&nbsp${weatherForecast.weatherDescription}&nbsp</div>
+            <div class="weather-temperature">&nbsp${Math.round(forecast.temperature)}&deg&nbsp</div>
+            <div class="weather-comment">&nbsp${forecast.weatherDescription}&nbsp</div>
           </div>
         </div>
       </div>  
@@ -265,6 +265,57 @@ function renderWeatherCards(){
     console.log("Error in renderWeatherCards() function. ", error.message)
   }
 };
+
+
+// WEATHER 
+const openWeatherDialog_button = document.querySelector(".open-weather-dialog-button");
+openWeatherDialog_button.addEventListener("click", () =>{
+  try{
+    const weatherDialog = document.querySelector(".weather-dialog-outer");
+      weatherDialog.show()
+  }
+  catch(error){
+    console.log("Error when adding event listener to openWeatherDialog_button.", error.message)
+  }
+});
+
+// WEATHER 
+const changeWeatherLocation_button = document.querySelector(".change-weather-location-button");
+changeWeatherLocation_button.addEventListener("click", () =>{
+  try{
+    let cityName = document.querySelector(".weather-cityName-input").value;
+    let countryCode = document.querySelector(".weather-countryCode-input").value;
+    let dashboard = getDashboardFromLocalStorage();
+    dashboard.weather.cityName = cityName;
+    dashboard.weather.countryCode = countryCode;
+    // Store new Weather Item in localStorage  
+    setDashboardInLocalStorage(dashboard); 
+    document.querySelector(".weather-cityName-input").value = "";
+    document.querySelector(".weather-countryCode-input").value = "";
+    const weatherDialog = document.querySelector(".weather-dialog-outer");
+    weatherDialog.close()
+    fetchWeatherData(cityName,countryCode);
+    renderWeatherCards(); 
+  }
+  catch(error){
+    console.log("Error: ", error.message);
+  } 
+});
+
+// WEATHER 
+const cancelChangeWeatherLocation_button = document.querySelector(".cancel-change-weather-location-button");
+cancelChangeWeatherLocation_button.addEventListener("click", () =>{
+  try{
+    document.querySelector(".weather-cityName-input").value = "";
+    document.querySelector(".weather-countryCode-input").value = "";
+    const weatherDialog = document.querySelector(".weather-dialog-outer");
+    weatherDialog.close()
+  }
+  catch(error){
+    console.log("Error when adding event listeners to cancelChangeWeatherLocation_button. ", error.message)
+  }
+});
+
 
 
 // NEWS 

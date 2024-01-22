@@ -126,7 +126,8 @@ Package-lock:                       package-lock.json
 Files to ignore for Git:            .gitignore
 Images:                             Images-folder
 
-Files starting with a "z":          Please ignore. Educational/personal files only (which would not be included in a real project situation).
+Files starting with a "z":          Please ignore. Educational/personal files only 
+(which would not be included in a real project situation).
    
 
 
@@ -340,6 +341,9 @@ f) Limits on free data
 g) Language
 > The app is targeting a Swedish speaking audience only. 
 > The news feed from BBC is in English only. 
+
+h) Overloaded functions 
+> Two similar functions could have been structured as one overloaded function (I didn't have time to look into how to do that). 
 
 
 ## 5. Roadmap 

@@ -40,10 +40,20 @@
           </article>
           <article class="card">
             <h3 class="card-heading">Väderprognoser</h3>
+            <button class="open-weather-dialog-button button">Byt ort</button>
+            <dialog class="weather-dialog-outer">
+              <div class="weather-dialog-inner">
+                <p>Ange stadens namn:</p>
+                <input class="weather-cityName-input input" type="text" name="weather-city-input" id="weather-city-input" placeholder="tex Göteborg">          
+                <p>Ange landskoden:</p>
+                <input class="weather-countryCode-input input" type="text" name="weather-countryCode-input" id="weather-countryCode-input" placeholder="tex SE för Sverige"> 
+                <button class="change-weather-location-button button">OK</button>
+                <button class="cancel-change-weather-location-button button">Avbryt</button>
+              </div>
+            </dialog>
             <div class="weather-container">
               <!-- weather items are inserted here-->
             </div>
-            <!-- <button class="button-weather-location button">Ange ort</button> -->
           </article>
           <article class="card">
             <h3 class="card-heading">Nyheter från BBC</h3>
