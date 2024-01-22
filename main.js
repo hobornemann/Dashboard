@@ -79,7 +79,6 @@ function renderDateAndTime(){
     } else {
       console.error("Dashboard data is incomplete or missing.");
     }
-  console.log("updating date and time")
   } 
   catch(error){
     console.log("Error in the renderDateAndTime() function. ", error.message)
@@ -281,7 +280,7 @@ openWeatherDialog_button.addEventListener("click", () =>{
 
 // WEATHER 
 const changeWeatherLocation_button = document.querySelector(".change-weather-location-button");
-changeWeatherLocation_button.addEventListener("click", () =>{
+changeWeatherLocation_button.addEventListener("click", async () =>{
   try{
     let cityName = document.querySelector(".weather-cityName-input").value;
     let countryCode = document.querySelector(".weather-countryCode-input").value;
@@ -294,7 +293,7 @@ changeWeatherLocation_button.addEventListener("click", () =>{
     document.querySelector(".weather-countryCode-input").value = "";
     const weatherDialog = document.querySelector(".weather-dialog-outer");
     weatherDialog.close()
-    fetchWeatherData(cityName,countryCode);
+    await fetchWeatherData(cityName,countryCode);
     renderWeatherCards(); 
   }
   catch(error){

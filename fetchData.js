@@ -138,7 +138,7 @@ function validateWebsiteUrl(websiteUrl) {
 async function fetchWeatherData (cityName, countryCode){
   let dashboard = getDashboardFromLocalStorage();
   let weatherData = null; 
-  console.log("dashboard start of fetchWeatherData()",dashboard)
+  //console.log("dashboard start of fetchWeatherData()",dashboard)
   try{
     if(cityName == ""  || countryCode == ""){
       // get weather for the user's current Location
@@ -149,6 +149,7 @@ async function fetchWeatherData (cityName, countryCode){
       APIkey = "";  
       const weatherResponse = await axios.get(url)
       weatherData = weatherResponse.data;
+      saveWeatherDataToDashboardAndLocalStorage(weatherData);
     } else {
       // get weather for the cityName + countryCode location
       const apiKeysResponse = await getApiAccessKeys();
@@ -164,8 +165,8 @@ async function fetchWeatherData (cityName, countryCode){
       weatherData = weatherResponse.data;
       weatherData.city.coord.lat = lat;
       weatherData.city.coord.lon = lon;
+      saveWeatherDataToDashboardAndLocalStorage(weatherData);
     }
-    saveWeatherDataToDashboardAndLocalStorage(weatherData);
   }
   catch(error){
     console.log("Error: Unable to fetch weather data in fetchWeatherData () function.", error.message)
@@ -175,7 +176,7 @@ async function fetchWeatherData (cityName, countryCode){
 
 // WEATHER 
 function saveWeatherDataToDashboardAndLocalStorage(weatherData){
-  console.log("weatherData in saveWeatherData...", weatherData)
+  //console.log("weatherData in saveWeatherData...", weatherData)
   let dashboard = getDashboardFromLocalStorage();
   try{
     // Save cityName, countryCode etc
