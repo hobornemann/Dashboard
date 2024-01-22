@@ -29,20 +29,16 @@ import{
 // FEATURES/ELEMENTS 
 // -------------------------------------------------------------
 
-//TODO: 1. Delete or comment out localStorage = null when app has been developed
-//TODO: 2. Uncomment the code in fetchImage() function
-//TODO: 3. Change setInterval time to 10000 ms when app is finished
-
 // WINDOW  
 window.addEventListener("DOMContentLoaded", async () => { 
   try{
-    //localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+    //localStorage.setItem("dashboard", null); //TODO: comment out (or delete) when app has been fully developed
     let dashboard =  await getDashboardObject();
     await fetchWeatherData("","")
     await fetchNewsData();
     renderDynamicElementsOfIndexPage();
     renderIntialBackgroundImage();
-    setInterval(renderDateAndTime, 100000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
+    setInterval(renderDateAndTime, 10000);  
   }
   catch(error){
     console.log("Error in window.addEventListener function. ", error.message)
@@ -380,7 +376,7 @@ function renderIntialBackgroundImage(){
     triggerAnEvent(changeBackgroundImage_button, 'click');  
   }
   catch(error){
-   console.log("Error in redering initial background image in renderIntialBackgroundImage() function. ", error.message) 
+    console.log("Error in redering initial background image in renderIntialBackgroundImage() function. ", error.message) 
   }
 };
 
@@ -407,10 +403,4 @@ function triggerAnEvent(element, eventType, detail) {
     console.log("Error in triggering an event in the triggerAnEvent(element, eventType, detail) function.", error.message)
   }
 }
-
-
-
-// --------------------------------------------------------------
-// END OF CODE
-// --------------------------------------------------------------
 

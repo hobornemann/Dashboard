@@ -2,8 +2,7 @@ export{
     getDefaultDashboardObject,
     getDashboardFromLocalStorage,
     getDashboardObject,
-    setDashboardInLocalStorage
-    
+    setDashboardInLocalStorage 
 }
 
 

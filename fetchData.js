@@ -20,11 +20,10 @@ export{
 }
 
 
-//TODO: UNCOMMENT THE LINES BELOW WHEN PROJECT IS FINISHED
 // BACKGROUND IMAGE
 async function fetchImage(){
   let imageUrl ="/images/default-image.jpg";
- /*  try{
+  try{
     const apiKeyResponse = await getApiAccessKeys();
     let ACCESS_KEY = apiKeyResponse.data.unsplash;
     const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
@@ -35,7 +34,7 @@ async function fetchImage(){
   }
   catch(error){
     console.log("Error: Unable to fetch image from Unsplash in fetchImage() function.", error.message)
-  } */
+  }
   return imageUrl;
 } 
 
@@ -173,7 +172,6 @@ async function fetchWeatherData (cityName, countryCode){
   }
 } 
 
-
 // WEATHER 
 function saveWeatherDataToDashboardAndLocalStorage(weatherData){
   //console.log("weatherData in saveWeatherData...", weatherData)
@@ -259,7 +257,7 @@ async function fetchNewsData (){
     const url = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${APIkey}`    
     const newsResponse = await axios.get(url)
     const newsData = newsResponse.data; 
-    saveNewsDataToDashboardAndLocalStorage(newsData); // TODO:
+    saveNewsDataToDashboardAndLocalStorage(newsData); 
   }
   catch(error){
     console.log("Error in fetching News Data in fetchNewsData() function.", error.message)

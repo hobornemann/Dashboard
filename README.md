@@ -45,7 +45,7 @@ GitHub
 4. The HTML-documents requires links to the following style-sheet and javascript-file.
 <link rel="stylesheet" href="/style.css">
 <script type="module" src="/main.js" defer></script>
-5. Access to https://github.com/hobornemann/Dashboard 
+5. Access to https://github.com/hobornemann/Dashboard   
 
 ### Installation
 
@@ -196,13 +196,13 @@ The default dashboard object (which is also stored in local storage) looks as fo
 
 ```window.addEventListener("DOMContentLoaded", async () => { 
   try{
-    // localStorage.setItem("dashboard", null); //TODO: delete or comment out when app has been developed
+    // localStorage.setItem("dashboard", null); 
     let dashboard =  await getDashboardObject();
     await fetchWeatherData()
     await fetchNewsData();
     renderDynamicElementsOfIndexPage();
     renderIntialBackgroundImage();
-    setInterval(renderDateAndTime, 100000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
+    setInterval(renderDateAndTime, 10000);  
   }
   catch(error){
     console.log("Error in window.addEventListener function. ", error.message)
@@ -325,7 +325,7 @@ b) Security
 > The application has not been checked or tested from a security perspective at all. 
 
 c) Accessibility:
-> The application has only been subject to minimal accessibility tests, e.g. checking what happens to the page when the user increases the font-size. 
+> The application has only been subject to minimal accessibility tests.
 > No alt-texts have been added to the images retrieved from the external data providers
 
 d) Long names:
@@ -344,6 +344,9 @@ g) Language
 
 h) Overloaded functions 
 > Two similar functions could have been structured as one overloaded function (I didn't have time to look into how to do that). 
+
+i) Validation:
+> Lacking validation for the cityName & countryCode when changing location for the weather forecasts (I ran out of time)
 
 
 ## 5. Roadmap 
