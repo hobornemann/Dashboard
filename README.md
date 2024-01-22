@@ -67,7 +67,8 @@ The package.json needs to include the following two dependencies (or later versi
     "axios": "^1.6.5"
   } 
 5. Api Access Keys: 
-To be able to use the Dashboard application, you need to have/get a free personal API Access Key from:
+To be able to use the Dashboard application, you need to have/get a free personal API Access Key from the following data providers:
+
 https://unsplash.com/
 https://openweathermap.org/
 https://newsapi.org/

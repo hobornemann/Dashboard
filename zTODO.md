@@ -40,22 +40,22 @@ Extra utmaning: Låt användaren fylla i ett sökord som används för att hitta
 => KLART
 
 10. Clean up the project
-=> TODO:
+=> KLART
 
 10. b) Lägg till try-catch error handling
-=> TODO: 
+=> KLART
 
 11. VG-fråga:
 
 Denna del behöver du bara göra om du satsar på VG.
 
 I din readme-fil på github ska du ha med ett resonemang kring din kod. I denna ska du nyanserat resonera kring styrkor och brister i ditt genomförandet, alltså i den kod du utvecklat.
-=> TODO:
+=> KLART
 
 VG-nivån bedöms genom kvalitén på koden i kombination med din förmåga att se just styrkor och brister i den. Detta betyder att om din kod har allt för låg kvalité räcker det inte med resonemang kring det för att rädda upp, men det betyder också att ingen kod behöver vara helt perfekt men det är bra att du själv kan peka på de brister du då ser.
 
- 
+12. Inlämning  
+Lämna in länk till ett github-repo i Canvas TODO:
 
-12. Inlämning  TODO:
-Lämna in länk till ett github-repo i Canvas
-Obs! Publicera inte någon API-nyckel i ditt repo eller ev hostad sida (säkerhetsrisk). Skriv i ReadME att användaren kan hämta egen nyckel på sidan xxx.
+Obs! Publicera inte någon API-nyckel i ditt repo eller ev hostad sida (säkerhetsrisk). Skriv i ReadME att användaren kan hämta egen nyckel på sidan.
+=> KLART
