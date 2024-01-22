@@ -204,11 +204,20 @@ b) Naming:
 > HTML-elements, JS-objects/variables and functions have been given names that enable other developers to understand the code.
 
 c) Refactoring
-> 
-TODO:
+> All code that is related to fetching data from local storage or from external data providers via API has been refactored into separate functions. 
+> The rendering functions that require the rendering of dynamic HTML and the dynamic creation of event listeners have intentionally not been refactored into sub-functions. 
 
-d) Validation of User Input
-> The code contains at least a basic form of validation of user-input as regards the creation of new web links.
+d) Error handling 
+> all functions and event-listeners have been equipped with try-catch for error handling in order to catch errors at the source.
+> With a few intentional exceptions (the rendering functions), functions have been limited to only serve one purpose. Including try-catch error handling in each function makes sure that errors are caught at the source where they occur.  
+> However, the area of error handling is probably much larger than I have knowledge about at this point. Thus, error handling has also been listed as a weakness.
+
+e) Validation of User Input
+> The code contains at least a basic form of validation of user-input as regards the creation of new web links (checking that the input has the format of a valid website address, that the main domain can be extracted from the website address and that the number of web-links does not exceed the number that can be displayed on the web page).
+
+f) API-Access Keys
+> The API-Access Keys have been put into a separate json-file, which is not 
+
 
 
 2. Weaknesses
@@ -216,19 +225,18 @@ d) Validation of User Input
 a) Testing:
 > The application has not been properly tested. The project lacks both unit tests and UI-test.
 
-b) Error handling:
-> 
-TODO:
->
+b) Security
+> The application has not been checked or tested from a security point of view.
 
 c) Accessibility:
-> 
-TODO:
+> The application has only been subject to some accessibility tests, e.g. enlarging the font-size. 
+> No alt-texts have been added to the images retrieved from the external data providers
 
 d) Long names:
 > unless you use special software to shrink the size of the application, longer names has the disadvantage of making the application larger than needs to be from a performance perspective. However, performance should not be an issue for this application. The clarity of code aspect is more important in this case.    
 
-
+e) Error handling:
+> The area of error handling is probably much larger than I have knowledge to include into this project. Thus, error handling is probably also a major weakness of the project at this point.
 
 
 

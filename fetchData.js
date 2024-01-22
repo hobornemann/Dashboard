@@ -153,6 +153,7 @@ async function fetchWeatherData (){
 
 // WEATHER 
 function saveWeatherDataToDashboardAndLocalStorage(weatherData){
+  let dashboard = getDashboardFromLocalStorage();
   try{
     // Get array-index of today, tomorrow and tomorrow-next
     const dateTimeStringNow = weatherData.list[0].dt_txt;
@@ -174,7 +175,6 @@ function saveWeatherDataToDashboardAndLocalStorage(weatherData){
     }
   
     const indicesInOpenWeatherMap =[indexOfTodayInOpenWeatherMap, indexOfTomorrowInOpenWeatherMap, indexOfTomorrowNextInOpenWeatherMap]
-    let dashboard = getDashboardFromLocalStorage();
     let dayIndex = 0;
   
     indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {

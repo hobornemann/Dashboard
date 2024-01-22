@@ -16,5 +16,7 @@ Svar:  webLinkId var en sträng, medan webLink.id var en integer !!!! parseInt()
     - Eller, behöver man skapa en try-catch för varje funktion man kallar på?
     - Eller, räcker det med / ska man ha en try-catch i varje kod som innehåller minst en funktion 
 
-5. 
+5. Om man har try-catch på alla funktioner som ingår i en annan funktion, behöver man även ha try-catch för den övergripande funktionen, eller räcker det med att det finns try-catch på alla underliggande funktioner?
+
+6. 
 

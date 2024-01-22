@@ -7,7 +7,7 @@ export{
 }
 
 
-  // MODEL - Default Dashboard Object
+  // MODEL
   function getDefaultDashboardObject(){
     
     let dashboard = {
@@ -67,44 +67,56 @@ export{
   };
 
   
-  // MODEL - Get Dashboard Object
+  // MODEL 
   async function getDashboardObject(){
-    let dashboard;
-    const dashboardInLocalStorage = await getDashboardFromLocalStorage();
-    //console.log("dashboardInLocalStorage",dashboardInLocalStorage)
-    if(dashboardInLocalStorage == null) {
-      //console.log("dashboardInLocalStorage == null");
-      dashboard = getDefaultDashboardObject();
-    } else{
-      dashboard = dashboardInLocalStorage;
+    try{
+      let dashboard;
+      const dashboardInLocalStorage = await getDashboardFromLocalStorage();
+      if(dashboardInLocalStorage == null) {
+        dashboard = getDefaultDashboardObject();
+      } else{
+        dashboard = dashboardInLocalStorage;
+      }
+      setDashboardInLocalStorage(dashboard);  
+      return dashboard;
     }
-    setDashboardInLocalStorage(dashboard);  
-    return dashboard;
+    catch (error){
+      console.log("Error when getting the dashboard object in the getDashboardObject() function.", error.message)
+    }
   };
   
 
-  // MODEL - Set Dashboard Object in Local Storage
+  // MODEL 
   function setDashboardInLocalStorage(dashboard){
     try{
       localStorage.setItem("dashboard", JSON.stringify(dashboard));
     } catch (error) {
-      console.error("Error when setting dashboard object in local storage.", error);
+      console.error("Error when setting dashboard object in local storage in the setDashboardInLocalStorage(dashboard) function.", error.message);
     }
   }
   
 
-  // MODEL - Get Dashboard from Local Storage
+  // MODEL 
   function getDashboardFromLocalStorage(){
     let dashboard = null;
-    const localStorageData = localStorage.getItem("dashboard");
+    let localStorageData = null;
+    try{
+      localStorageData = localStorage.getItem("dashboard");
+    }
+    catch (error){
+      console.log("Error getting json-data from local storage in getDashboardFromLocalStorage() function.", error.message)
+    }
+
     if (localStorageData) {
       try {
         dashboard = JSON.parse(localStorageData);
       } catch (error) {
-        console.error("Error getting dashboard object from local storage (parsing JSON):", error.message);
+        console.error("Error parsing JSON in getDashboardFromLocalStorage() function.", error.message);
       }
+      return dashboard;
+    } else {
+      console.log("Error getting data from local storage in getDashboardFromLocalStorage() function.")
     }
-    return dashboard;
   }
   
   
