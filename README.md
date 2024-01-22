@@ -207,6 +207,9 @@ c) Refactoring
 > 
 TODO:
 
+d) Validation of User Input
+> The code contains at least a basic form of validation of user-input as regards the creation of new web links.
+
 
 2. Weaknesses
 

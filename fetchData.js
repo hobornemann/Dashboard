@@ -20,82 +20,40 @@ export{
 }
 
 
-// WEBLINK 
-function getFaviconUrl(websiteMainDomainUrl) {
-  try{
-    const faviconUrl = `https://www.google.com/s2/favicons?domain=${websiteMainDomainUrl}&sz=256`;
-    return faviconUrl;
+//TODO: UNCOMMENT THE LINES BELOW WHEN PROJECT IS FINISHED
+// BACKGROUND IMAGE
+async function fetchImage(){
+  let imageUrl ="/images/default-image.jpg";
+/*   try{
+    const apiKeyResponse = await getApiAccessKeys();
+    let ACCESS_KEY = apiKeyResponse.data.unsplash;
+    const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
+    const imageResponse = await axios.get(url)    
+    if(imageResponse){
+      imageUrl = imageResponse.data.urls.regular; 
+    }
   }
   catch(error){
-    alert("Unable to get the faviconUrl.", error.message)
-    const faviconUrl = "/images/default-icon.png";
-    return faviconUrl;
-  }
-}
-
-
-// WEBLINK 
-function extractMainDomainUrl(websiteUrl){
-  if(validateWebsiteUrl(websiteUrl)){
-    try{
-      const urlObject = new URL(websiteUrl);
-      const mainDomainUrl = urlObject.hostname;
-      return mainDomainUrl;
-    } 
-    catch(error){
-      alert("Unable to extract main domain url. Please check the spelling of the website-url.", error.message)
-    }
-  } else {
-    alert("Unable to extract main domain url. Please check the spelling of the website-url.")
-  }
-}
-
-
-// WEBLINK
-function validateWebsiteUrl(websiteUrl) {
-  var urlPattern = /^(https?:\/\/)?([a-z\d.-]+)\.([a-z]{2,})(\/[^\s]*)?$/i;
-  return urlPattern.test(websiteUrl);
-}
-
-
-//TODO: UNCOMMENT THE LINES BELOW WHEN PROJECT IS FINISHED
-// BACKGROUND IMAGE - GET IMAGE-URL 
-async function fetchImage(){
-    let imageUrl ="/images/default-image.jpg";
-    /* const response = await getApiAccessKeys();
-    let ACCESS_KEY = response.data.unsplash;
-    const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
-      try{
-        const response = await axios.get(url)    
-        if(response){
-          imageUrl = response.data.urls.regular; 
-        }
-      }
-      catch(error){
-        console.log("Error: ", error.message)
-      }
-      ACCESS_KEY=""; */
-      return imageUrl;
+    console.log("Error: Unable to fetch image from Unsplash in fetchImage() function.", error.message)
+  } */
+  return imageUrl;
 } 
 
 
-  
-  // ACCESS KEYS
-  async function getApiAccessKeys(){
-  
-    try{
-      const response = await axios.get('./apiAccessKeys.json')
-      const apiAccessKeys = response;
-      return apiAccessKeys;
-    }
-    catch(error){
-      console.error("Error: ", error.message)
-    }
+// ACCESS KEYS 
+async function getApiAccessKeys(){
+  try{
+    const response = await axios.get('./apiAccessKeys.json')
+    const apiAccessKeys = response;
+    return apiAccessKeys;
   }
-  
-  
-  
-  // DATE & TIME - GET DATE and TIME
+  catch(error){
+    console.error("Error: Unable to get ApiAccessKey in getApiAccessKeys() function.", error.message)
+  }
+}
+
+
+// DATE & TIME 
   function updateDateAndTime(){
     try{
       let dashboard = getDashboardFromLocalStorage();
@@ -114,11 +72,11 @@ async function fetchImage(){
       setDashboardInLocalStorage(dashboard);
     } 
     catch(error){
-      console.log("Kunde inte uppdatera datum och tid", error.message)
+      console.log("Error: Could not update date or time in updateDateAndTime() function.", error.message)
     }      
 }
 
-  // DATE & TIME - GET DATE and TIME
+// DATE & TIME 
   function getDateAndTimeString(dateTime){
     try{
       const myDateTime = new Date(dateTime); 
@@ -128,13 +86,55 @@ async function fetchImage(){
       return `${date} ${time}`
     } 
     catch(error){
-      console.log("Kunde inte konvertera dateTime till datum och tid", error.message)
+      console.log("Error: Unable to convert dateTime to date and time in getDateAndTimeString(dateTime) function.", error.message)
     }      
 }
 
 
-  
-// WEATHER - FETCH WEATHER DATA
+
+// WEBLINK  
+function getFaviconUrl(websiteMainDomainUrl) {
+  try{
+    const faviconUrl = `https://www.google.com/s2/favicons?domain=${websiteMainDomainUrl}&sz=256`;
+    return faviconUrl;
+  }
+  catch(error){
+    console.log("Error: Unable to get the faviconUrl in getFaviconUrl(websiteMainDomainUrl) function.", error.message)
+    const faviconUrl = "/images/default-icon.png";
+    return faviconUrl;
+  }
+}
+
+// WEBLINK 
+function extractMainDomainUrl(websiteUrl){
+  if(validateWebsiteUrl(websiteUrl)){
+    try{
+      const urlObject = new URL(websiteUrl);
+      const mainDomainUrl = urlObject.hostname;
+      return mainDomainUrl;
+    } 
+    catch(error){
+      console.log("Error: Unable to extract main domain url to retrieve the website icon (favicon) in extractMainDomainUrl(websiteUrl) function.", error.message)
+    }
+  } else {
+    alert("Webbadressen verkar innehålla någon felstavning eller saknar någonting. Kopiera gärna webbadressen från hemsidan du vill spara.")
+  }
+}
+
+// WEBLINK 
+function validateWebsiteUrl(websiteUrl) {
+  try{
+    var urlPattern = /^(https?:\/\/)?([a-z\d.-]+)\.([a-z]{2,})(\/[^\s]*)?$/i;
+    return urlPattern.test(websiteUrl);  
+  }
+  catch (error){
+    console.log("Error: Unable to validate website-url in validateWebsiteUrl(websiteUrl) function.", error.message)
+  }
+}
+
+
+
+// WEATHER 
 async function fetchWeatherData (){
   try{
     const coords = await getLocation();
@@ -147,90 +147,96 @@ async function fetchWeatherData (){
     saveWeatherDataToDashboardAndLocalStorage(weatherData); 
   }
   catch(error){
-    console.log("Error:", error.message)
+    console.log("Error: Unable to fetch weather data in fetchWeatherData () function.", error.message)
   }
 } 
 
-
+// WEATHER 
 function saveWeatherDataToDashboardAndLocalStorage(weatherData){
+  try{
+    // Get array-index of today, tomorrow and tomorrow-next
+    const dateTimeStringNow = weatherData.list[0].dt_txt;
+    const dateTime = new Date(dateTimeStringNow);
+    const hoursNow = dateTime.getHours();
   
-  // Get array-index of today, tomorrow and tomorrow-next
-  const dateTimeStringNow = weatherData.list[0].dt_txt;
-  const dateTime = new Date(dateTimeStringNow);
-  const hoursNow = dateTime.getHours();
-
-  let indexOfTodayInOpenWeatherMap = null;
-  let indexOfTomorrowInOpenWeatherMap = null;
-  let indexOfTomorrowNextInOpenWeatherMap = null;
-
-  if (hoursNow < 12){
-    indexOfTodayInOpenWeatherMap = (12-hoursNow)/3;
-    indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24/3);
-    indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
-  } else {
-    indexOfTodayInOpenWeatherMap = 0;
-    indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24-hoursNow)/3 + (12/3);
-    indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
+    let indexOfTodayInOpenWeatherMap = null;
+    let indexOfTomorrowInOpenWeatherMap = null;
+    let indexOfTomorrowNextInOpenWeatherMap = null;
+  
+    if (hoursNow < 12){
+      indexOfTodayInOpenWeatherMap = (12-hoursNow)/3;
+      indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24/3);
+      indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
+    } else {
+      indexOfTodayInOpenWeatherMap = 0;
+      indexOfTomorrowInOpenWeatherMap = indexOfTodayInOpenWeatherMap + (24-hoursNow)/3 + (12/3);
+      indexOfTomorrowNextInOpenWeatherMap = indexOfTomorrowInOpenWeatherMap + (24/3);
+    }
+  
+    const indicesInOpenWeatherMap =[indexOfTodayInOpenWeatherMap, indexOfTomorrowInOpenWeatherMap, indexOfTomorrowNextInOpenWeatherMap]
+    let dashboard = getDashboardFromLocalStorage();
+    let dayIndex = 0;
+  
+    indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {
+      dashboard.weatherForecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
+      dashboard.weatherForecasts[dayIndex].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[indexInOpenWeatherMap].weather[0].icon}@2x.png`;   
+      dashboard.weatherForecasts[dayIndex].temperature = weatherData.list[indexInOpenWeatherMap].main.temp;
+      dashboard.weatherForecasts[dayIndex].weatherDescription = weatherData.list[indexInOpenWeatherMap].weather[0].description;
+      dayIndex = dayIndex + 1;
+    })
   }
-
-  const indicesInOpenWeatherMap =[indexOfTodayInOpenWeatherMap, indexOfTomorrowInOpenWeatherMap, indexOfTomorrowNextInOpenWeatherMap]
-  let dashboard = getDashboardFromLocalStorage();
-  let dayIndex = 0;
-
-  indicesInOpenWeatherMap.forEach(indexInOpenWeatherMap => {
-    dashboard.weatherForecasts[dayIndex].dateTime = weatherData.list[indexInOpenWeatherMap].dt_txt;;
-    dashboard.weatherForecasts[dayIndex].weatherIconUrl = `https://openweathermap.org/img/wn/${weatherData.list[indexInOpenWeatherMap].weather[0].icon}@2x.png`;   
-    dashboard.weatherForecasts[dayIndex].temperature = weatherData.list[indexInOpenWeatherMap].main.temp;
-    dashboard.weatherForecasts[dayIndex].weatherDescription = weatherData.list[indexInOpenWeatherMap].weather[0].description;
-    dayIndex = dayIndex + 1;
-  })
+  catch (error){
+    console.log("Error: Unable to update dashboard object with weather data in saveWeatherDataToDashboardAndLocalStorage(weatherData) function.", error.message)
+  }
   setDashboardInLocalStorage(dashboard); 
   dashboard = getDashboardFromLocalStorage();
- };
+};
 
-
- // WEATHER - Get GeoLocation
+// WEATHER 
 function getLocation() {
-  if (navigator.geolocation) {
-    return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(position => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-          resolve({ lat, lon });
-        },
-        error => {
-          reject(error); 
-          console.log("getCurrentPosition generated an error in the getLocation function.", error.message)
-        });
-    });
-  } else {
-    console.log("Geolocation is not supported by this browser.");
+  try{
+    if (navigator.geolocation) {
+      return new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(position => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            resolve({ lat, lon });
+          },
+          error => {
+            reject(error); 
+            console.log("getCurrentPosition generated an error in the getLocation() function.", error.message)
+          });
+      });
+    } else {
+      console.log("Geolocation is not supported by this browser. A message sent from the getLocation() function.");
+    }
+  }
+  catch(error){
+    console.log("Error in getting the location in getLocation() function.", error.message)
   }
 };
 
 
 
-// NEWS - FETCH NEWS DATA
+// NEWS 
 async function fetchNewsData (){
   try{
-  const apiKeysResponse = await getApiAccessKeys();
-  let APIkey = apiKeysResponse.data.newsApi;
-  //const url = `https://newsapi.org/v2/top-headlines?country=se&apiKey=${APIkey}`
-  //const url = `https://newsapi.org/v2/everything?q=Apple&from=2024-01-21&sortBy=popularity&apiKey=${APIkey}`
-  //const url = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${APIkey}`
-  const url = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${APIkey}`
-  APIkey = "";
-  
-  const newsResponse = await axios.get(url)
-  const newsData = newsResponse.data; 
-  saveNewsDataToDashboardAndLocalStorage(newsData); // TODO:
+    const apiKeysResponse = await getApiAccessKeys();
+    let APIkey = apiKeysResponse.data.newsApi;
+    //const url = `https://newsapi.org/v2/top-headlines?country=se&apiKey=${APIkey}`
+    //const url = `https://newsapi.org/v2/everything?q=Apple&from=2024-01-21&sortBy=popularity&apiKey=${APIkey}`
+    //const url = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${APIkey}`
+    const url = `https://newsapi.org/v2/top-headlines?sources=bbc-news&apiKey=${APIkey}`    
+    const newsResponse = await axios.get(url)
+    const newsData = newsResponse.data; 
+    saveNewsDataToDashboardAndLocalStorage(newsData); // TODO:
   }
   catch(error){
-    console.log("Error:", error.message)
+    console.log("Error in fetching News Data in fetchNewsData() function.", error.message)
   }
 } 
 
-// NEWS - Save News Data to Dashboard and LocalStorage
+// NEWS 
 function saveNewsDataToDashboardAndLocalStorage(newsData){
   try{
       let dashboard = getDashboardFromLocalStorage();
@@ -252,6 +258,6 @@ function saveNewsDataToDashboardAndLocalStorage(newsData){
       setDashboardInLocalStorage(dashboard); 
     } 
     catch (error){
-      console.log("Error occurred when saving news data.", error.message);
+      console.log("Error in saving news data to dashboard object and local storage.", error.message);
     }
 }

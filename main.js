@@ -30,8 +30,8 @@ import{
 // -------------------------------------------------------------
 
 //TODO: delete or comment out localStorage = null when app has been developed
-//TODO: uncomment unsplash image code
-//TODO: ändra setInterval till 30000 när appen är färdig
+//TODO: uncomment the code in fetchImage() function
+//TODO: ändra setInterval till 10000 när appen är färdig
 
 // WINDOW - ON-LOAD  
 window.addEventListener("DOMContentLoaded", async () => {
@@ -41,9 +41,10 @@ window.addEventListener("DOMContentLoaded", async () => {
   await fetchNewsData();
   renderDynamicElementsOfIndexPage();
   renderIntialBackgroundImage();
-  setInterval(renderDateAndTime(), 120000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
+  setInterval(renderDateAndTime, 100000);  //TODO:  SKA ÄNDRAS TILL 30000 när appen är färdig
 });
 
+// DATE & TIME
 
 // WINDOW - RENDER DYNAMIC CONTENT
 function renderDynamicElementsOfIndexPage(){
@@ -71,6 +72,7 @@ function displayDateAndTime(){
   const timeElement = document.querySelector(".time");
   dateElement.textContent = dashboard.date;
   timeElement.textContent = dashboard.time;
+  console.log("updating and displaying date and time. ")
 };
 
 

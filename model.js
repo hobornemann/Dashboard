@@ -88,7 +88,7 @@ export{
     try{
       localStorage.setItem("dashboard", JSON.stringify(dashboard));
     } catch (error) {
-      console.error("Error setting object in local storage: ", error);
+      console.error("Error when setting dashboard object in local storage.", error);
     }
   }
   
@@ -101,7 +101,7 @@ export{
       try {
         dashboard = JSON.parse(localStorageData);
       } catch (error) {
-        console.error("Error parsing JSON:", error);
+        console.error("Error getting dashboard object from local storage (parsing JSON):", error.message);
       }
     }
     return dashboard;
