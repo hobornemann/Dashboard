@@ -31,7 +31,8 @@ async function fetchImage(searchString){
       const url = `https://api.unsplash.com/search/photos?query=${searchString}&client_id=${ACCESS_KEY}`;
       const imageResponse = await axios.get(url)    
       if(imageResponse){
-        imageUrl = imageResponse.data.urls.regular; 
+        console.log("imageResponse: ",imageResponse)
+        imageUrl = imageResponse.data.results[0].urls.regular; 
       }
     }
     catch(error){

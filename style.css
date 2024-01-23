@@ -60,7 +60,8 @@
 
 
 .empty-container1, .empty-container2{
-  height: clamp(10px, 5vw, 5vw);
+  min-height: 10px;
+  height: 5vw;
 }
 
 .empty-container1{
@@ -69,7 +70,6 @@
 
 .empty-container2{
   grid-area: emptyContainer2;
-  margin-top: 1vh;
   min-height: 1vh;
 }
 
@@ -92,7 +92,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  
 }
 
 
