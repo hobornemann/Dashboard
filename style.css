@@ -61,7 +61,8 @@
 
 .empty-container1, .empty-container2{
   min-height: 10px;
-  height: 5vw;
+  height: 3vh;
+  max-height: 4vh;
 }
 
 .empty-container1{
