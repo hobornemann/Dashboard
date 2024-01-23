@@ -31,7 +31,7 @@ Extra utmaning: Gör så att användaren kan anpassa orten som visas
 => Klart
 
 Extra utmaning: Låt användaren fylla i ett sökord som används för att hitta en randomiserad bild så att det blir inom ett tema som användaren önskar.
-=> TODO:
+=> KLART
  
 8. Lägga ACCESS-KEYS i secret.json filen 
 => KLART
