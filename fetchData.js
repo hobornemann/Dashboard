@@ -21,19 +21,35 @@ export{
 
 
 // BACKGROUND IMAGE
-async function fetchImage(){
+async function fetchImage(searchString){
   let imageUrl ="/images/default-image.jpg";
-  try{
-    const apiKeyResponse = await getApiAccessKeys();
-    let ACCESS_KEY = apiKeyResponse.data.unsplash;
-    const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
-    const imageResponse = await axios.get(url)    
-    if(imageResponse){
-      imageUrl = imageResponse.data.urls.regular; 
+  if(searchString){
+    try{
+      const apiKeyResponse = await getApiAccessKeys();
+      let ACCESS_KEY = apiKeyResponse.data.unsplash;
+      //const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
+      const url = `https://api.unsplash.com/search/photos?query=${searchString}&client_id=${ACCESS_KEY}`;
+      const imageResponse = await axios.get(url)    
+      if(imageResponse){
+        imageUrl = imageResponse.data.urls.regular; 
+      }
     }
-  }
-  catch(error){
-    console.log("Error: Unable to fetch image from Unsplash in fetchImage() function.", error.message)
+    catch(error){
+      console.log("Error: Unable to fetch searched random image from Unsplash in fetchImage() function.", error.message)
+    }
+  } else {
+    try{
+      const apiKeyResponse = await getApiAccessKeys();
+      let ACCESS_KEY = apiKeyResponse.data.unsplash;
+      const url = `https://api.unsplash.com/photos/random?client_id=${ACCESS_KEY}`;
+      const imageResponse = await axios.get(url)    
+      if(imageResponse){
+        imageUrl = imageResponse.data.urls.regular; 
+      }
+    }
+    catch(error){
+      console.log("Error: Unable to fetch random image from Unsplash in fetchImage() function.", error.message)
+    }
   }
   return imageUrl;
 } 
@@ -139,17 +155,7 @@ async function fetchWeatherData (cityName, countryCode){
   let weatherData = null; 
   //console.log("dashboard start of fetchWeatherData()",dashboard)
   try{
-    if(cityName == ""  || countryCode == ""){
-      // get weather for the user's current Location
-      const coords = await getLocation();
-      const apiKeysResponse = await getApiAccessKeys();
-      let APIkey = apiKeysResponse.data.openWeatherMap;
-      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${APIkey}&units=metric&lang=sv`
-      APIkey = "";  
-      const weatherResponse = await axios.get(url)
-      weatherData = weatherResponse.data;
-      saveWeatherDataToDashboardAndLocalStorage(weatherData);
-    } else {
+    if(cityName !== ""  && countryCode !== ""){
       // get weather for the cityName + countryCode location
       const apiKeysResponse = await getApiAccessKeys();
       let APIkey = apiKeysResponse.data.openWeatherMap;
@@ -164,6 +170,16 @@ async function fetchWeatherData (cityName, countryCode){
       weatherData = weatherResponse.data;
       weatherData.city.coord.lat = lat;
       weatherData.city.coord.lon = lon;
+      saveWeatherDataToDashboardAndLocalStorage(weatherData);
+    } else {
+      // get weather for the user's current Location
+      const coords = await getLocation();
+      const apiKeysResponse = await getApiAccessKeys();
+      let APIkey = apiKeysResponse.data.openWeatherMap;
+      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${coords.lat}&lon=${coords.lon}&appid=${APIkey}&units=metric&lang=sv`
+      APIkey = "";  
+      const weatherResponse = await axios.get(url)
+      weatherData = weatherResponse.data;
       saveWeatherDataToDashboardAndLocalStorage(weatherData);
     }
   }

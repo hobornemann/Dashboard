@@ -26,8 +26,8 @@ export{
           cityId: 0,
           lat: 0,
           lon: 0,
-          cityName: "",
-          countryCode: "",
+          cityName: "Stockholm",
+          countryCode: "SE",
           forecasts: [
             {
               dateTime: "",
@@ -68,7 +68,7 @@ export{
           content: "A man who has recently been diagnosed with Alzheimer's disease has written a song to remember his love for his wife.\r\nMick Smith is a country singer, from Syston in Leicestershire, and performs at de… [+393 chars]"
         }  
       ],
-      note: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt.",
+      note: "Här kan du skriva dina anteckningar. Anteckningarna sparas automatiskt."
     }; 
     return dashboard;
   };

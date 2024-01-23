@@ -143,10 +143,15 @@
 .footer-container{
   grid-area: footerContainer;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   height: 5vh;
+  width: 100vw;
   margin-bottom: 2vh;
 }
+
+
 
 /* ---------------------------------------------------------------- */
 /* DATE & TIME */
@@ -417,4 +422,6 @@ a{
   color: var(--color01);
 }
 
-
+.background-image-search-input{
+  width: 15vw;
+}

@@ -33,8 +33,8 @@ import{
 window.addEventListener("DOMContentLoaded", async () => { 
   try{
     //localStorage.setItem("dashboard", null); //TODO: comment out (or delete) when app has been fully developed
-    let dashboard =  await getDashboardObject();
-    await fetchWeatherData("","")
+    await getDashboardObject();
+    await fetchWeatherData("","");
     await fetchNewsData();
     renderDynamicElementsOfIndexPage();
     renderIntialBackgroundImage();
@@ -387,8 +387,10 @@ function renderIntialBackgroundImage(){
 const changeBackgroundImage_button = document.querySelector(".change-background-image-button");
 changeBackgroundImage_button.addEventListener("click", async () => {
   try{  
-    const imageUrl = await fetchImage();  
+    const backgroundImageSearch_input = document.querySelector(".background-image-search-input")
+    const imageUrl = await fetchImage(backgroundImageSearch_input.value);  
     document.body.style.backgroundImage = `url(${imageUrl})`;
+    backgroundImageSearch_input.value = "";
   }
   catch(error){
     console.log("Error in adding event listener to changeBackgroundImage_button.", error.message)
